@@ -1,0 +1,78 @@
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  width: 100%;
+  font-size: 1.6em;
+  /* height: 100vh; */
+  background-color: var(--bg-primary);
+  transition: 0.5s
+}
+a {
+  color: var(--secondary-typeface);
+  text-decoration: none;
+}
+
+.main-layout {
+  width: 100%;
+  display: flex;
+  // @include flex(row, center, flex-start);
+  // text-align: center;
+  // flex: 1;
+}
+
+.main-container {
+  // width: 80vw;
+  // width: 100%;
+  width: 100vw;
+  // padding: 0 72px 0 72px;
+  // padding: 0 72px 0 84px;
+  padding: 0 12px 0 84px;
+  // width: 74%;
+}
+
+.container {
+  margin: auto;
+  @include flex(row, center, initial);
+  // display: flex;
+  // justify-content: center;
+  // @include viewport-size(mobile-phone-small) {
+  //   width: 300px;
+  // }
+  // @include viewport-size(mobile-phone-med) {
+  //   width: 414px;
+  // }
+  // @include viewport-size(mobile-tablet-med) {
+  //   width: 786px;
+  // }
+  // @include viewport-size(mobile-tablet-large) {
+  //   width: 1024px;
+  // }
+  @include viewport-size(lg) {
+    width: 60%;
+  }
+
+  .main-aside {
+    display: flex;
+    align-items: flex-start;
+  }
+  &.feed-container {
+    // @include flex(column, flex-start, flex-start);
+    // @include flex(row, flex-start, flex-start);
+  }
+  // @include viewport-size(xxl) {
+  //   max-width: 60%;
+  // }
+}

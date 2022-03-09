@@ -1,0 +1,426 @@
+.theme-purple-prime {
+  // navbar, links
+  --color-logo: rgb(245, 238, 238);
+  // --color-icon: rgb(245, 238, 238);
+  --color-icon: rgb(175, 150, 250);
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(100, 100, 100);
+  // --color-text: rgb(67, 67, 67);
+  --color-text: rgb(181, 181, 181);
+  --color-form-label: rgb(175, 150, 250);
+  --color-link: rgb(175, 150, 250); // --link-color
+  // --color-navbar: rgb(175, 150, 250);
+  --color-navbar-active: rgb(255, 255, 255);
+  --color-navbar-primary: rgb(67, 67, 67);
+  // --color-navbar-primary: rgb(175, 150, 250);
+  --color-navbar-text: rgb(181, 181, 181);
+  --color-navbar: rgb(67, 67, 67);
+  --color-navbar-a: rgba(175, 150, 250, 1);
+  // --color-navbar-2: rgba(175, 150, 250, 0.8);
+  --color-navbar-2: rgba(138, 119, 197, 0.6);
+
+  // Border Color
+  --primary-border: #161c2d; // --primary-Border
+
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-hover: #2b50c7;
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(175, 150, 250);
+  --color-btn-hover: rgb(255, 249, 249);
+  --color-btn-secondary-text: rgb(175, 150, 250);
+  --color-btn-secondary-border: rgb(175, 150, 250);
+  --color-btn-secondary-hover: rgb(175, 150, 250);
+
+  // Primary Backgrounds
+  --primary-color: rgb(175, 150, 250);
+  --bg-panel: rgb(67, 67, 67);
+  --bg-primary: rgb(51, 51, 51);
+  --bg-secondary: rgba(231, 231, 231, 0.259);
+  --bg-quatenary: rgb(255, 255, 255);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45);
+  --secondary-typeface: rgb(57, 57, 57);
+  --tetiary-Typeface: rgb(134, 154, 184);
+  --quatenary-Typeface: rgb(255, 255, 255);
+
+  // Alerts / Tags
+  --overlay-text: rgb(245, 238, 238);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}
+
+.theme-purple-max {
+  // navbar, links
+  --color-logo: rgb(245, 238, 238);
+  --color-icon: rgb(175, 150, 250); // --link-color
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(100, 100, 100);
+  --color-text: rgb(181, 181, 181);
+  // --color-text: rgb(67, 67, 67);
+  --color-form-label: rgb(175, 150, 250);
+  --color-link: rgb(175, 150, 250); // --link-color
+  --color-navbar-text: rgb(67, 67, 67);
+  --color-navbar-active: rgb(255, 255, 255);
+  --color-navbar-primary: rgb(175, 150, 250);
+  --color-navbar: rgb(175, 150, 250);
+  --color-navbar-a: rgba(175, 150, 250, 1);
+  --color-navbar-2: rgba(138, 119, 197, 0.6);
+  
+  // Border Color
+  --primary-border: #161c2d; // --primary-Border
+  
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-hover: #2b50c7;
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(175, 150, 250);
+  --color-btn-hover: rgb(255, 249, 249);
+  --color-btn-secondary-text: rgb(175, 150, 250);
+  --color-btn-secondary-border: rgb(175, 150, 250);
+  --color-btn-secondary-hover: rgb(175, 150, 250);
+  
+  // Primary Backgrounds
+  --primary-color: rgb(170, 150, 250);
+  --bg-panel: rgb(67, 67, 67);
+  // --bg-panel: rgb(201, 184, 252);
+  --bg-primary: rgb(51, 51, 51);
+  // --bg-primary: rgb(175, 150, 250);
+  // --bg-panel: rgb(192, 32, 139);
+  // --bg-primary: rgb(192, 32, 139);
+  // --bg-primary: rgb(211, 214, 222);
+  --bg-secondary: rgba(231, 231, 231, 0.259);
+  --bg-quatenary: rgb(255, 255, 255);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45);
+  --secondary-typeface: rgb(57, 57, 57);
+  --tetiary-Typeface: rgb(134, 154, 184);
+  --quatenary-Typeface: rgb(255, 255, 255);
+
+  // Alerts / Tags
+  --overlay-text: rgb(245, 238, 238);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+.theme-bee-light {
+  // navbar, links
+  --color-logo: rgb(51, 51, 51);
+  --color-icon: rgb(51, 51, 51);
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(230, 245, 30);
+  --color-text: rgb(67, 67, 67);
+  --color-form-label: rgb(222, 201, 6);
+  --color-link: rgb(222, 201, 6);
+  --color-navbar-text: rgb(67, 67, 67);
+  // --color-navbar-active: rgb(228, 228, 228);
+  --color-navbar-active: rgb(46, 46, 46);
+  --color-navbar-primary: rgb(222, 201, 6);
+  --color-navbar: rgb(222, 201, 6);
+  --color-navbar-a: rgba(222, 201, 6, 1);
+  // --color-navbar-2: rgba(140, 127, 5, 0.6);
+  // --color-navbar-2: rgba(154, 124, 15, 0.8);
+  // --color-navbar: rgb(202, 182, 2);
+
+  // Border Color
+  --primary-border: #161c2d; // --primary-Border
+  
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-hover: #2b50c7;
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(222, 201, 6);
+  --color-btn-hover: rgb(245, 238, 238);
+  --color-btn-secondary-text: rgb(222, 201, 6);
+  --color-btn-secondary-border: rgb(222, 201, 6);
+  --color-btn-secondary-hover: rgb(222, 201, 6);
+  
+  // Primary Backgrounds
+  --primary-color: rgb(222, 201, 6);
+  // --primary-color: rgb(67, 67, 67);
+  --bg-panel: rgb(197, 197, 214);
+  --bg-primary: rgb(211, 214, 222);
+  --bg-secondary: rgba(231, 231, 231, 0.259);
+  --bg-quatenary: rgb(255, 255, 255);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45);
+  --secondary-typeface: rgb(57, 57, 57);
+  --tetiary-Typeface: rgb(134, 154, 184);
+  --quatenary-Typeface: rgb(255, 255, 255);
+  
+  // Alerts / Tags
+  --overlay-text: rgb(252, 252, 252);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}
+
+.theme-bee {
+  // navbar, links
+  --color-logo: rgb(51, 51, 51);
+  --color-icon: rgb(32, 32, 32);
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(230, 245, 30);
+  --color-text: rgb(181, 181, 181);
+  --color-form-label: rgb(222, 201, 6);
+  --color-link: rgb(222, 201, 6);
+  --color-navbar-text: rgb(67, 67, 67);
+  --color-navbar-active: rgb(46, 46, 46);
+  --color-navbar-primary: rgb(222, 201, 6);
+  --color-navbar: rgb(222, 201, 6);
+  --color-navbar-a: rgba(222, 201, 6, 1);
+  // --color-navbar-2: rgba(140, 127, 5, 0.6);
+  // --color-navbar-2: rgba(154, 124, 15, 0.8);
+  // --color-navbar: rgb(202, 182, 2);
+  
+  // Border Color
+  --primary-border: #161c2d; // --primary-Border
+  
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-hover: #2b50c7;
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(222, 201, 6);
+  --color-btn-hover: rgb(245, 238, 238);
+  --color-btn-secondary-text: rgb(222, 201, 6);
+  --color-btn-secondary-border: rgb(222, 201, 6);
+  --color-btn-secondary-hover: rgb(222, 201, 6);
+
+  // Primary Backgrounds
+  --primary-color: rgb(222, 201, 6);
+  --bg-panel: rgb(67, 67, 67);
+  // --bg-panel: rgb(225, 246, 67);
+  --bg-primary: rgb(51, 51, 51);
+  --bg-secondary: rgba(231, 231, 231, 0.259);
+  --bg-quatenary: rgb(255, 255, 255);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45);
+  --secondary-typeface: rgb(57, 57, 57);
+  --tetiary-Typeface: rgb(134, 154, 184);
+  --quatenary-Typeface: rgb(255, 255, 255);
+
+  // Alerts / Tags
+  --overlay-text: rgb(252, 252, 252);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+.theme-redcomet {
+  // navbar, links
+  --color-logo: rgb(29, 1, 1);
+  --color-icon: rgb(31, 31, 31);
+  // --color-icon: rgb(197, 197, 214);
+  // --color-icon: rgb(243, 8, 28);
+  // --color-icon: rgb(67, 67, 67);
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(248, 56, 56);
+  --color-text: rgb(181, 181, 181);
+  // --color-text: rgb(36, 18, 18);
+  --color-form-label: rgba(181, 181, 181, 0.8);
+  --color-link: rgb(243, 28, 28);
+  --color-navbar-text: rgb(51, 51, 51);
+  --color-navbar-active: rgb(20, 20, 20);
+  --color-navbar-primary: rgb(243, 28, 28);
+  --color-navbar: rgb(243, 28, 28);
+  --color-navbar-a: rgba(243, 28, 28, 1);
+  // --color-navbar-2: rgba(123, 2, 2, 0.8);
+  // --color-navbar-2: rgba(152, 18, 18, 0.6);
+
+  // Border Color
+  --primary-border: #161c2d; // --primary-Border
+
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-hover: #2b50c7;
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(243, 28, 28);
+  --color-btn-hover: rgb(245, 238, 238);
+  --color-btn-secondary-text: rgb(245, 238, 238);
+  --color-btn-secondary-border: rgb(245, 238, 238);
+  // --color-btn-secondary-text: rgb(243, 28, 28);
+  // --color-btn-secondary-border: rgb(243, 28, 28);
+  --color-btn-secondary-hover: rgb(243, 28, 28);
+  
+  // Primary Backgrounds
+  // --primary-color: rgb(197, 197, 214);;
+  --primary-color: rgb(243, 28, 28);
+  --bg-panel: rgb(67, 67, 67);
+  --bg-primary: rgb(51, 51, 51);
+  --bg-secondary: rgba(231, 231, 231, 0.259); // --secondary-BG-Color
+  --bg-quatenary: rgb(255, 255, 255); // --quatenary-BG-Color
+  // --bg-panel: rgb(229, 17, 17);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45);
+  --secondary-typeface: rgb(57, 57, 57);
+  --tetiary-Typeface: rgb(134, 154, 184);
+  --quatenary-Typeface: rgb(255, 255, 255);
+
+  // Alerts / Tags
+  --overlay-text: rgb(252, 252, 252);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}
+
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+// ++++++++++++++++++++++++++++++++++++++++++++++++++
+.theme-blueberry {
+  // navbar, links
+  --color-logo: rgb(245, 238, 238);
+  --color-icon: rgb(181, 181, 181);
+  // --color-icon: rgb(31, 31, 31);
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(100, 100, 100);
+  --color-text: rgb(181, 181, 181);
+  --color-form-label: rgb(175, 150, 250);
+  --color-link: rgb(175, 150, 250);
+  // --color-navbar: rgb(51, 94, 234);
+  // --color-navbar-text: rgb(67, 67, 67);
+  // --color-navbar-text: rgb(181, 181, 181);
+  --color-navbar-text: rgb(194, 194, 194);
+  --color-navbar-active: rgb(255, 255, 255);
+  --color-navbar-primary: rgb(14, 39, 121);
+  --color-navbar: rgb(14, 39, 121);
+  // --color-navbar: rgb(58, 61, 247);
+  --color-navbar-a: rgba(51, 94, 234, 1);
+  --color-navbar-2: rgba(138, 119, 197, 0.6);
+
+  // Border Color
+  --primary-border: #161c2d;
+  
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-hover: #2b50c7;
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(175, 150, 250);
+  --color-btn-hover: rgb(255, 249, 249);
+  --color-btn-secondary-text: rgb(51, 94, 234);
+  --color-btn-secondary-border: rgb(51, 94, 234);
+  --color-btn-secondary-hover: rgb(175, 150, 250);
+  
+  // Primary Backgrounds
+  --primary-color: rgb(51, 94, 234);
+  // --bg-panel: rgb(51, 94, 234);
+  --bg-panel: rgb(14, 39, 121);
+  // --bg-primary: rgb(51, 94, 234);
+  // --bg-primary: rgb(14, 53, 180);
+  --bg-primary: rgb(1, 17, 68);
+  --bg-secondary: rgba(231, 231, 231, 0.259);
+  --bg-quatenary: rgb(255, 255, 255);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45);
+  --secondary-typeface: rgb(57, 57, 57);
+  --tetiary-Typeface: rgb(134, 154, 184);
+  --quatenary-Typeface: rgb(255, 255, 255);
+
+  // Alerts / Tags
+  --overlay-text: rgb(245, 238, 238);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}
+
+.theme-blue-dark {
+  // navbar, links
+  --color-logo: rgb(245, 238, 238);
+  --color-icon: rgb(31 31, 31);
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(100, 100, 100);
+  --color-text: rgb(181, 181, 181);
+  --color-form-label: rgb(175, 150, 250);
+  --color-link: rgb(175, 150, 250); // --link-color
+  
+  // --color-navbar-text: rgb(67, 67, 67);
+  --color-navbar-text: rgb(51, 51, 51);
+  --color-navbar-active: rgb(20, 20, 20);
+  --color-navbar-primary: rgb(51, 94, 234);
+  --color-navbar: rgb(51, 94, 234);
+  --color-navbar-a: rgba(51, 94, 234, 1);
+  
+  // Border Color
+  --primary-border: #161c2d;
+  
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45);
+  --secondary-btn-bg: #c56a2d;
+  --tetiary-btn-hover: #2b50c7; 
+  --color-navbar-2: rgba(138, 119, 197, 0.6);
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(175, 150, 250);
+  --color-btn-hover: rgb(255, 249, 249);
+  --color-btn-secondary-text: rgb(51, 94, 234);
+  --color-btn-secondary-border: rgb(51, 94, 234);
+  --color-btn-secondary-hover: rgb(175, 150, 250);
+  
+  // Primary Backgrounds
+  --primary-color: rgb(51, 94, 234);
+  --bg-panel: rgb(67, 67, 67);
+  --bg-primary: rgb(51, 51, 51);
+  --bg-secondary: rgba(231, 231, 231, 0.259);
+  --bg-quatenary: rgb(255, 255, 255);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45);
+  --secondary-typeface: rgb(57, 57, 57);
+  --tetiary-Typeface: rgb(134, 154, 184);
+  --quatenary-Typeface: rgb(255, 255, 255);
+
+  // Alerts / Tags
+  --overlay-text: rgb(245, 238, 238);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}

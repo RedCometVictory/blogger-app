@@ -1,0 +1,10 @@
+.trending {
+  margin: 0 0 0 1rem;
+  &__container {
+    background-color: var(--bg-panel);
+    min-width: 300px;
+    margin: 1rem 0 0 0;
+    border-radius: 6px;
+    padding: 12px;
+  }
+}

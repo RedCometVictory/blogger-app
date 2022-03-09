@@ -1,0 +1,159 @@
+// :root.light {
+.theme-light {
+  // navbar, links
+  --color-logo: rgb(245, 238, 238);
+  --color-icon: rgb(67, 67, 67);
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(100, 100, 100);
+  --color-text: rgb(67, 67, 67);
+  --color-form-label: rgb(175, 150, 250);
+  
+  --color-link: rgb(80, 102, 144); // --link-color
+  --color-navbar-text: rgb(67, 67, 67);
+  --color-navbar-active: rgb(0, 0, 0);
+  --color-navbar-primary: rgb(197, 197, 214);
+  --color-navbar: rgb(197, 197, 214);
+  // --color-navbar: rgb(211, 214, 222);
+  --color-navbar-a: rgba(211, 214, 222, 1);
+  // --color-navbar-2: rgba(175, 150, 250, 0.8);
+
+  
+  // Border Color
+  --primary-border: #161c2d; // --primary-Border
+
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45); // --primary-Btn-BG
+  --secondary-btn-bg: #c56a2d; // --secondary-Btn-BG
+  --tetiary-btn-hover: #2b50c7; // --tetiary-Btn-Hover-Color
+  --color-navbar-2: rgba(138, 119, 197, 0.6);
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(175, 150, 250);
+  --color-btn-hover: rgb(255, 249, 249);
+  --color-btn-secondary-text: rgb(51, 94, 234);
+  --color-btn-secondary-border: rgb(51, 94, 234);
+  --color-btn-secondary-hover: rgb(211, 214, 222);
+  // Backgrounds
+
+  // Primary Backgrounds
+  --primary-color: rgb(51, 94, 234);
+  --primary-color-a: rgba(51, 94, 234, 0.8);
+  --primary-color-a-6: rgba(51, 94, 234, 0.6);
+  --primary-color-a-4: rgba(51, 94, 234, 0.4);
+  --primary-color-a-2: rgba(51, 94, 234, 0.2);
+  // --bg-primary: rgb(211, 214, 222); // --primary-BG-Color
+  --bg-primary: rgb(222, 225, 238); // --primary-BG-Color
+  --bg-secondary: rgba(231, 231, 231, 0.259); // --secondary-BG-Color
+  --bg-quatenary: rgb(255, 255, 255); // --quatenary-BG-Color
+  --bg-panel: rgb(197, 197, 214);
+  // --bg-panel: rgb(103, 150, 134); // --panel-BG-Color
+  // --bg-panel: rgb(192, 32, 139);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45); // --primary-Typeface
+  --secondary-typeface: rgb(57, 57, 57); // --secondary-typeface
+  --tetiary-Typeface: rgb(134, 154, 184); // --tetiary-Typeface
+  --quatenary-Typeface: rgb(255, 255, 255); // --quatenary-Typeface
+
+  // Alerts / Tags
+  --overlay-text: rgb(245, 238, 238);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}
+
+.theme-dark {
+  // navbar, links
+  --color-logo: rgb(245, 238, 238);
+  --color-icon: rgb(181, 181, 181);
+  --color-tagbox: rgb(181, 181, 181);
+  --color-header: rgb(100, 100, 100);
+  --color-text: rgb(181, 181, 181);
+  --color-form-label: rgb(51, 51, 51);
+
+  --color-link: rgb(80, 102, 144); // --link-color
+  --color-navbar-text: rgb(181, 181, 181);
+  --color-navbar-active: rgb(255, 255, 255);
+  --color-navbar-primary: rgb(67, 67, 67);
+  --color-navbar: rgb(67, 67, 67);
+  --color-navbar-a: rgba(51, 51, 51, 1);
+  // --color-navbar-2: rgba(175, 150, 250, 0.8);
+  --color-navbar-2: rgba(138, 119, 197, 0.6);
+
+  
+  // Border Color
+  --primary-border: #161c2d; // --primary-Border
+
+  // Buttons
+  --primary-btn-bg: rgb(22, 28, 45); // --primary-Btn-BG
+  --secondary-btn-bg: #c56a2d; // --secondary-Btn-BG
+  --tetiary-btn-hover: #2b50c7; // --tetiary-Btn-Hover-Color
+  --color-btn-text: rgb(245, 238, 238);
+  --color-btn-text-hover: rgb(175, 150, 250);
+  --color-btn-hover: rgb(255, 249, 249);
+  --color-btn-secondary-text: rgb(51, 94, 234);
+  --color-btn-secondary-border: rgb(51, 94, 234);
+  --color-btn-secondary-hover: rgb(175, 150, 250);
+  // Backgrounds
+
+  // Primary Backgrounds
+  --primary-color: rgb(51, 94, 234);
+  --primary-color-a: rgba(51, 94, 234, 0.8);
+  --primary-color-a-6: rgba(51, 94, 234, 0.6);
+  --primary-color-a-4: rgba(51, 94, 234, 0.4);
+  --primary-color-a-2: rgba(51, 94, 234, 0.2);
+   // --primary-BG-Color
+  --bg-primary: rgb(51, 51, 51); // --primary-BG-Color
+  --bg-secondary: rgba(231, 231, 231, 0.259); // --secondary-BG-Color
+  --bg-quatenary: rgb(255, 255, 255); // --quatenary-BG-Color
+  --bg-panel: rgb(67, 67, 67); // --panel-BG-Color
+  // --bg-panel: rgb(192, 32, 139);
+
+  // Typography Color
+  --primary-typeface: rgb(22, 28, 45); // --primary-Typeface
+  --secondary-typeface: rgb(57, 57, 57); // --secondary-typeface
+  --tetiary-Typeface: rgb(134, 154, 184); // --tetiary-Typeface
+  --quatenary-Typeface: rgb(255, 255, 255); // --quatenary-Typeface
+
+  // Alerts / Tags
+  --overlay-text: rgb(245, 238, 238);
+  --alert-neutral: #f4f4f4;
+  --alert-danger: #dc3545;
+  --alert-success: #28a745;
+  --danger-color: #dc3545;
+
+  // OTHER
+  --fixed-header-height: 4.5rem;
+}
+// // :root.light {
+  
+// ======================================
+// .theme-light {
+//   --primary-color: #335eea;
+  
+//   // Backgrounds
+//   --primary-BG-Color: #d3d6de;
+//   --secondary-BG-Color: #e7e7e742;
+//   --quatenary-BG-Color: #ffffff;
+  
+//   // Typography Color
+//   --primary-Typeface: #161c2d;
+//   --secondary-Typeface: #393939;
+//   --tetiary-Typeface: #869ab8;
+//   --quatenary-Typeface: #ffffff;
+//   --panel-BG-Color: rgb(103, 150, 134);
+  
+//   // Buttons
+//   --primary-Btn-BG: #161c2d;
+//   --secondary-Btn-BG: #c56a2d;
+//   --tetiary-Btn-Hover-Color: #2b50c7;
+  
+//   // Border Color
+//   --primary-Border: #161c2d;
+  
+//   --link-color: #506690;
+//   --fixed-header-height: 4.5rem;
+// }

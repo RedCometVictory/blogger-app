@@ -1,0 +1,117 @@
+.post {
+  width: 100%;
+  @include flex(column, flex-start, center);
+  &__card {
+    max-width: 800px;
+    background-color: var(--bg-panel);
+    padding: 1.2rem;
+    border-radius: 12px;
+    margin: 0 0 1.2rem 0;
+    color: var(--color-text);
+    // @include flex(inherit, space-evenly, flex-start);
+    // align-items: flex-start;
+  }
+  &__content {
+    width: 100%;
+  }
+  &__title {
+    // margin: 0 0 1rem 0;
+  }
+  &__info-section {
+
+  }
+  &__image {
+    @include flex(row, center, center);
+    margin: 1rem 0 1rem 0;
+    // > div {
+    > span {
+      position: unset !important;
+    }
+  }
+  &__img {
+    // width: 800px;
+    object-fit: contain;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+    max-width: 800px !important;
+  }
+  &__information {
+    // margin: 1rem 0 0 0;
+    @include flex(row, space-between, center);
+  }
+  &__user-sec {
+    // background-color: green;
+    padding: 0.5rem 0 0.5rem 0;
+    @include flex(row, flex-start, center);
+  }
+  &__user-avatar {
+    // > div {
+      height: 50px;
+      width: 50px;
+      border-radius: 50%;
+      // background-color: orangered;
+    > span {
+      position: unset !important;
+    }
+  }
+  &__img-avatar {
+    // ***!important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
+    // width: 800px;
+    object-fit: contain;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+    min-width: unset !important;
+    max-width: 50px !important;
+    border-radius: 50% !important;
+  }
+  &__user-name {
+    margin: 0 0 0 1.2rem;
+  }
+  &__likes-sec {
+    @include flex(row, space-evenly, center);
+  }
+  &__thumb-sec {
+    @include flex(row, space-evenly, center);
+    padding: 8px 8px 6px;
+    &.comments {
+      padding: 0 0 0 10px;
+    }
+  }
+  &__thumb {
+    // padding: 8px 8px 6px;
+    cursor: pointer;
+    .up {
+      padding: 0 0 0 4px;
+    }
+    .down {
+      padding: 0 0 0 4px;
+    }
+  }
+  &__count {
+    padding: 0 6px 4px 0;
+  }
+  &__tags {
+    margin: 1rem 0 0 0;
+    // @include flex(row, space-around, center);
+    display: grid;
+    width: 50%;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    row-gap: 10px;
+  }
+  &__tag-item {
+    font-size: 1.4rem;
+    padding: 2px;
+    border-radius: 6px;
+    margin: 0 6px 0 6px;
+    cursor: pointer;
+    transition: ease-in-out 0.5s;
+    height: min-content;
+    &:hover {
+      color: var(--bg-panel);
+      background-color: var(--color-text);
+      // transition: ease-in-out 0.5s;
+    }
+  }
+}
