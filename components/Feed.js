@@ -95,7 +95,7 @@ const Feed = ({feedPost}) => {
               <Link
                 passHref
                 href={{
-                  pathname: '/posts/[slug]',
+                  pathname: '/posts/f/[slug]',
                   query: { slug: 'create' },
                 }}>
                 <div className="text btn btn-secondary">Create</div>

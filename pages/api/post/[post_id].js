@@ -47,9 +47,9 @@ handler.get(async (req, res) => {
 
   // *** alternative could be putting this code client side
   // *** convert string array to string
-  if (Array.isArray(postData.tags)) {
-    postData.tags = postData.tags.join(', ');
-  }
+  // if (Array.isArray(postData.tags)) {
+  //   postData.tags = postData.tags.join(', ');
+  // }
   
   res.status(200).json({
     status: "Post retrieved.",
@@ -64,6 +64,8 @@ handler.get(async (req, res) => {
 // update Post
 // *** insomnia tested - passed
 handler.use(upload.single('image_url')).put(async (req, res) => {
+  console.log("###req.query###")
+  console.log(req.query)
   const { post_id } = req.query;
   const { id } = req.user;
   // console.log("req.user")

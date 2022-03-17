@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import Image from "next/image";
+import dynamic from 'next/dynamic';
 import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
-import { ControlGroup, ControlGroupFileUpload } from "../../../components/UI/FormControlGroup";
+import { ControlGroup, ControlGroupTextField, ControlGroupFileUpload } from "../../../components/UI/FormControlGroup";
 import { createUpdatePostForm } from "@/utils/formDataServices";
+import Editor from "../../../components/editor/Editor";
+// let Editor = dynamic(() => import("../../../components/editor/Editor"), { ssr: false });
 // import { updateUserForm, createUpdateProfileForm } from '@/utils/formDataServices';
 // import NavBar from "components/NavBar";
 // import AsideNav from 'components/UI/Aside'; 
@@ -35,12 +38,17 @@ blog/wfwtclu5bom2i6mqahe1.gif',
 const BlogForm = ({ blogData }) => {
   console.log("blogData")
   console.log(blogData)
+  if (blogData) {
+    console.log("parsed - blogData.text")
+    let parsed = JSON.parse(blogData.text)
+    console.log(parsed)
+  }
   const { state, dispatch } = useAppContext();
   const { auth, post } = state;
   const router = useRouter();
   const [fileTypeError, setFileTypeError] = useState(false);
   const [fileSizeError, setFileSizeError] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [showImageData, isShowImageData] = useState(false);
   const [formData, setFormData] = useState({
@@ -52,6 +60,7 @@ const BlogForm = ({ blogData }) => {
     category: blogData.category || "",
     tags: blogData.tags || []
   });
+  let [editorInstance, setEditorInstance] = useState({});
 
   const {title, text, category, tags} = formData;
 
@@ -61,6 +70,8 @@ const BlogForm = ({ blogData }) => {
 
   const onChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    console.log("formData")
+    console.log(formData)
   };
 
   const handleImageChange = (e) => {
@@ -99,9 +110,25 @@ const BlogForm = ({ blogData }) => {
     return setFileSizeError(false);
   };
 
+  const handleInstance = (instance) => {
+    setEditorInstance(instance)
+  }
+
   const submitBlogHandler = async (e) => {
     e.preventDefault();
-    setUploading(true);
+    let formText = await editorInstance.save();
+    formData.text = JSON.stringify(formText);
+    setIsLoading(true);
+    if (formData.text?.blocks?.length === 0 || Object.keys(formData.text).length === 0) {
+      let textObj = Object.keys(formData.text).length;
+      console.log("textObj")
+      console.log(textObj)
+      console.log("formData - submission")
+      console.log("editorinstance failed to be saved")
+      console.log(formData);
+      setIsLoading(false);
+      return;
+    };
     if (blogData) {
       try {
         console.log("update")
@@ -112,14 +139,14 @@ const BlogForm = ({ blogData }) => {
         let res = await api.put(`/post/${blogData._id}`, servicedData);
         // dispatch({ type: "UPDATE_USER_INFO", payload: res.data.data.updateUserInfo });
         toast.success("success")
-        setUploading(false);
+        setIsLoading(false);
         router.push("/");
       } catch (err) {
         const errors = err.response.data.errors;
         if (errors) {
           errors.forEach(error => toast.error(error.msg));
         }
-        setUploading(false);
+        setIsLoading(false);
       }
     } else {
       console.log("create")
@@ -127,35 +154,39 @@ const BlogForm = ({ blogData }) => {
       try {
         let servicedData = await createUpdatePostForm(formData);
         let res = await api.post("/post/create", servicedData);
-        setUploading(false);
+        setIsLoading(false);
         router.push("/");
       } catch (err) {
         const errors = err.response.data.errors;
         if (errors) {
           errors.forEach(error => toast.error(error.msg));
         }
-        setUploading(false);
+        setIsLoading(false);
       }
     };
   };
-  // {auth.user.avatarImage && (
-  //   <Image
-  //     src={auth.user.avatarImage}
-  //     fill="layout"
-  //     alt="user avatar"
-  //     width={500}
-  //     height={250}
-  //     // layout="fill"
-  //     // image is stretched, apply custom css to fix
-  //   />
-  // )}
-  // {/* <div className="">{blogData.coverImage}</div> */}
 
+  const onSaveHandler = (textValue) => {
+    console.log("saving info")
+    console.log(textValue);
+    // formData.text = textValue;
+    setIsLoading(true);
+    // setFormData({...formData, text: textValue})
+    console.log("updTE/CREATE - pafe = formData")
+    console.log(formData)
+    if (formData.text) submitBlogHandler(e)
+  };
+  const deleteModalHandler = () => {
+    console.log("opening delete modal")
+  };
+  const onDeleteHandler = () => {
+    console.log("deleting blog... please wait...")
+  };
   return (<>
     <div className="blog">
       <section className="blogForm__section">
         <div className="blogForm__form-header">
-          <h2>{!blogData ? 'Create' : 'Update'} Blog Post</h2>
+          <h2>{blogData ? 'Update' : 'Create'} Blog Post</h2>
         </div>
         {blogData && blogData.coverImage && (
           <Image
@@ -185,7 +216,7 @@ const BlogForm = ({ blogData }) => {
                 value={title}
                 required={false}
               />
-              <ControlGroup
+              {/* <ControlGroupTextField
                 name={"text"}
                 type={"text"}
                 placeholder={"Write here."}
@@ -194,7 +225,7 @@ const BlogForm = ({ blogData }) => {
                 onChange={onChange}
                 value={text}
                 required={false}
-              />
+              /> */}
               <select name="category" className="feed__category-select" value={category} onChange={e => onChange(e)} required>
                 <option value="">Select Category</option>
                 <option value="Entertainment">Entertainment</option>
@@ -225,6 +256,20 @@ const BlogForm = ({ blogData }) => {
                 Submit
               </button>
             </form>
+            {Editor && (
+              <Editor
+                data={text}
+                handleInstance={handleInstance}
+                updateValue={blogData ? true : false}
+                // currentValue={text}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+                onSave={(blogText) => onSaveHandler(blogText)}
+                // value={text}
+                // onDelete={() => onDeleteHandler()}
+                onDelete={deleteModalHandler}
+              />
+            )}
           </div>
         </div>
       </section>
@@ -232,17 +277,38 @@ const BlogForm = ({ blogData }) => {
   </>);
 };
 export default BlogForm;
+/*
+<div className="editor__btns-container">
+        <div className="save">
+          <button className="btn btn-secondary" onClick={() => onSaveHandler(editorInstance)}>
+            {isLoading ? "Submitted" : blogUpdate ? 'Update' : 'Submit'}
+          </button>
+        </div>
+        <div className="delete">
+          {blogUpdate ? (
+            <button className="btn btn-secondary" onClick={() => onDeleteHandler()}>Delete</button>
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
+*/
 export const getServerSideProps = async (context) => {
   console.log("context.params")
   console.log(context.params)
+  console.log("context.query")
+  console.log(context.query)
   console.log("+++++++++++++++++++++++++")
   try {
-    let post_id = context.query.slug;
+    let post_id;
     let initPostInfo = '';
     // let token = context.req.cookies.blog__token;
     // console.log("token")
     // console.log(token)
-    if (context.query.slug !== 'create') {
+    if (context.query.slug[0] !== 'create') {
+      post_id = context.query.slug[1];
+      console.log("updating post of -> post_id")
+      console.log(post_id)
       // retreive post data
       initPostInfo = await axios({
         method: 'get',

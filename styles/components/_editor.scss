@@ -1,0 +1,129 @@
+.editor {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-panel);
+  margin: 0 0 6rem;
+  padding: 0 10px 2rem;
+  &__component {
+    width: 100%;
+    height: 100%;
+  }
+  // &__toolbar {
+  //   background-color: yellowgreen;
+  // }
+  // &__wrapper {
+  //   background-color: red;
+  // }
+  // &__editor {
+  //   background-color: white;
+  // }
+  // &__preview {
+  //   padding: 1rem;
+  //   color: var(--color-text);
+  //   p {}
+  //   ol, ul {
+  //     // font-style: italic;
+  //     padding: 0 0 0 3rem;
+  //   }
+  // }
+  // &__code {
+  //   background: #000;
+  //   color: #fff;
+  //   padding: 20px;
+  //   display: block;
+  // }
+}
+.context-editor {
+  &__redactor {}
+
+}
+.ce-block {
+  &__content {
+    .cdx-block {
+      padding: 0;
+    }
+    .cdx-list {
+      margin: 0 0 0 16px;
+    }
+    .ce-header{
+      
+    }
+    .ce-code {
+      &__textarea {
+        color: var(--color-text);
+        background-color: var(--bg-panel);
+        overflow-y: scroll;
+        resize: none;
+        scrollbar-width: none; /* hide scroll in Firefox */
+        // for fairfox only, color of bar dragger and bg
+        scrollbar-color: grey transparent;
+        scrollbar-width: thin; // width
+        // webkit for chrome, edge, safari, ie
+        &::-webkit-scrollbar {
+          // width of scrollbar
+          width: 12px;
+        }
+        &::-webkit-scrollbar-track {
+          background-color: rgba(88, 88, 86, 0.5);
+        }
+        &::-webkit-scrollbar-thumb {
+          // draggable area chrome
+          background-color: rgb(82, 82, 85);
+          border-radius: 20px;
+        }
+      }
+    }
+  }
+}
+.ce-toolbar {
+  color: var(--color-text);
+  &__actions {
+    border-radius: 6px;
+    color: var(--color-text);
+    background-color: var(--bg-panel);
+  }
+  &__plus {
+    color: var(--color-text);
+    transition: all 0.5s ease-in-out;
+    &:hover {
+      transition: all 0.5s ease-in-out;
+    }
+  }
+  &__actions-buttons {
+    color: var(--color-text);
+    // margin: 0 5px;
+    width: 26px;
+  }
+  &__settings-btn {
+    margin: 0;
+    width: 100%;
+    color: var(--color-text);
+    transition: all 0.5s ease-in-out;
+    &:hover {
+      transition: all 0.5s ease-in-out;
+    }
+  }
+}
+.ce-toolbox {
+  border-radius: 6px;
+  background-color: var(--bg-panel);
+  &__button {
+    color: var(--color-text);
+    transition: all 0.5s ease-in-out;
+    &:hover {
+      transition: all 0.5s ease-in-out;
+    }
+  }
+}
+.ce-inline-toolbar {
+  opacity: 1;
+  color: var(--color-text);
+  background-color: var(--bg-panel);
+}
+.ce-conversion-toolbar {
+  // opacity: 1;
+  background-color: var(--bg-panel);
+  // background-color: darkgreen;
+
+  // visibility: visible;
+}

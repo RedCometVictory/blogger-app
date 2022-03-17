@@ -21,7 +21,8 @@ body {
   transition: 0.5s
 }
 a {
-  color: var(--secondary-typeface);
+  // color: var(--secondary-typeface);
+  color: var(--primary-color);
   text-decoration: none;
 }
 

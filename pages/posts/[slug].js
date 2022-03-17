@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
+import dynamic from 'next/dynamic';
+// import Output from "editorjs-react-renderer";
+const Output = dynamic(() => import("editorjs-react-renderer"), { ssr: false });
+import Blocks from "editorjs-blocks-react-renderer";
 import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
-import { ControlGroup, ControlGroupFileUpload } from "../../components/UI/FormControlGroup";
-import { createUpdatePostForm } from "@/utils/formDataServices";
-// import { updateUserForm, createUpdateProfileForm } from '@/utils/formDataServices';
-// import NavBar from "components/NavBar";
-// import AsideNav from 'components/UI/Aside'; 
 import axios from 'axios';
 import api from "../../utils/api";
 import { FaUpload } from 'react-icons/fa';
@@ -39,105 +38,62 @@ const Blog = ({ blogData }) => {
   const { state, dispatch } = useAppContext();
   const { auth, post } = state;
   const router = useRouter();
-  const [fileTypeError, setFileTypeError] = useState(false);
-  const [fileSizeError, setFileSizeError] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [imageData, setImageData] = useState(null);
-  const [showImageData, isShowImageData] = useState(false);
-  const [formData, setFormData] = useState({
-    // username: ,
-    // avatarImage: ,
-    image_url: "",
-    title: blogData.title || "",
-    text: blogData.text || "",
-    category: blogData.category || "",
-    tags: blogData.tags || []
-  });
-
-  const {title, text, category, tags} = formData;
+  let [parsedBlocks, setParsedBlocks] = useState(JSON.parse(blogData.text));
 
   useEffect(() => {
     if (!auth.isAuthenticated && auth.user.role !== 'user') return router.push("/");
   }, []);
 
-  const onChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  console.log("typeof(blogData.text)")
+  console.log(typeof(blogData.text))
+  let parser = JSON.parse(blogData.text)
+  console.log("typeof(parser)")
+  console.log(typeof(parser))
+  console.log("parsedBlocks")
+  console.log(typeof(parsedBlocks))
+  console.log(parsedBlocks)
+  
+  let renderedContent = parsedBlocks.blocks
+  console.log("rendered blocks")
+  console.log(renderedContent)
 
-  const handleImageChange = (e) => {
-    let fileToUpload = e.target.files[0];
-    checkFileType(fileToUpload);
-    checkFileSize(fileToUpload);
-
-    setProfileData({
-      ...profileData,
-      [e.target.name]: e.target.files[0],
-    });
-    // * set up image preview, if valid
-    if (fileToUpload) {
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        setImageData(reader.result)
-        isShowImageData(true);
-      });
-      reader.readAsDataURL(fileToUpload);
-    }
-  };
-
-  const checkFileType = (img) => {
-    const types = ["image/png", "image/jpg", "image/jpeg", "image/gif"];
-    if (types.every((type) => img.type !== type)) {
-      return setFileTypeError(true);
-    }
-    return setFileTypeError(false);
-  };
-
-  const checkFileSize = (img) => {
-    let size = 3 * 1024 * 1024; // size limit 3mb
-    if (img.size > size) {
-      return setFileSizeError(true);
-    }
-    return setFileSizeError(false);
-  };
-
-  const submitBlogHandler = async (e) => {
-    e.preventDefault();
-    setUploading(true);
-    if (blogData) {
-      try {
-        console.log("update")
-        console.log(formData);
-        let servicedData = await createUpdatePostForm(formData);
-        console.log("servicedData - user update")
-        console.log(servicedData)
-        let res = await api.put(`/post/${blogData._id}`, servicedData);
-        // dispatch({ type: "UPDATE_USER_INFO", payload: res.data.data.updateUserInfo });
-        toast.success("success")
-        setUploading(false);
-        router.push("/");
-      } catch (err) {
-        const errors = err.response.data.errors;
-        if (errors) {
-          errors.forEach(error => toast.error(error.msg));
-        }
-        setUploading(false);
+  // parent class is blog__text
+  const blocksConfig={
+    code: {
+      className: "code-block"
+    },
+    delimiter: {
+      className: "delimiter"
+    },
+    embed: {
+      className: "border-0"
+    },
+    header: {
+      className: "header"
+    },
+    image: {
+      className: "w-full max-w-screen-md",
+      actionsClassNames: {
+        stretched: "w-full h-80 object-cover",
+        withBorder: "border border-2",
+        withBackground: "p-2",
       }
-    } else {
-      console.log("create")
-      console.log(formData);
-      try {
-        let servicedData = await createUpdatePostForm(formData);
-        let res = await api.post("/post/create", servicedData);
-        setUploading(false);
-        router.push("/");
-      } catch (err) {
-        const errors = err.response.data.errors;
-        if (errors) {
-          errors.forEach(error => toast.error(error.msg));
-        }
-        setUploading(false);
+    },
+    list: {
+      className: "list"
+    },
+    paragraph: {
+      className: "text-base",
+      actionsClassNames: {
+        alignment: "text-{alignment}", // This is a substitution placeholder: left or center.
       }
-    };
+    },
+    quote: {
+      className: "py-3 px-5 italic font-serif"
+    },
+    table: {
+      className: "table-auto"
+    }
   };
 
   return (<>
@@ -184,23 +140,28 @@ const Blog = ({ blogData }) => {
                 <Link
                   passHref
                   // href={`/posts/update/${post?._id}`}
-                  href={`/posts/update/${blogData._id}`}
+                  href={`/posts/f/update/${blogData._id}`}
                 >
                   <button className="btn btn-secondary">Edit</button>
                 </Link>
               )}
             </div>
             <p>Category: {blogData.category}</p>
-            <div className="blog__listed-tags">
+            <div className="blog__tags">
               {blogData?.tags.map((tag, index) => (
-                <div className="tag-item" key={index}>
+                <div className="blog__tag-item" key={index}>
                   {tag.startsWith("#") ? tag : `#${tag}`}
                 </div>
               ))}
             </div>
           </div>
           <div className="blog__content">
-            <div className="blog__text">{blogData.text}</div>
+            <div className="blog__text">
+              <Blocks
+                data={parsedBlocks}
+                config={blocksConfig}
+              />
+            </div>
           </div>
         </div>
       </section>

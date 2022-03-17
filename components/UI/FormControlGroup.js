@@ -13,6 +13,30 @@ export const ControlGroup = ({type, placeholder, id, className, name, labelActiv
     </div>
   )
 }
+export const ControlGroupTextField = ({type, placeholder, id, className, name, labelActive, onChange, value, required}) => {
+//   const [controlData, configureControlData] = useState("");
+  // const sendDataToState = (event) =>{
+    // configureControlData(event.target.value);
+  // }
+  return(
+    <div className="control-group">
+      <textarea
+        className={`login-field ${className !== undefined ? className :""}`}
+        placeholder={placeholder} id={id}
+        type={type}
+        name={name}
+        value={value}
+        onChange={event => onChange(event)}
+        cols="30"
+        rows="10"
+        required={required}
+      >
+
+      </textarea>
+      {/* <label htmlFor={id} className={`login-field-icon ${labelActive === undefined ? {display:"none"}: className}`}></label> */}
+    </div>
+  )
+}
 
 export const ControlGroupFileUpload = ({action,icon}) =>{
   return(<>
