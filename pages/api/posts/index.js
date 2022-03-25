@@ -76,7 +76,7 @@ handler.get(async (req, res) => {
       ...categoryFilter,
       ...tagFilter,
     }
-  ).skip(offset).limit(limit).sort({"timestamps": -1}).lean();
+  ).skip(offset).limit(limit).sort({createdAt: -1}).lean();
 
   await db.disconnect();
   count = totalBlogs;

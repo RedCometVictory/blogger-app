@@ -8,9 +8,11 @@ import Blocks from "editorjs-blocks-react-renderer";
 import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
 import axios from 'axios';
-import api from "../../utils/api";
-import { FaUpload } from 'react-icons/fa';
+import api from "@/utils/api";
+import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Comment from '../../components/comments/Comment';
+import CommentForm from '../../components/comments/CommentForm';
 /*
 postData: {
     _id: '61998119ba44de7f62ede84e',
@@ -33,29 +35,51 @@ blog/wfwtclu5bom2i6mqahe1.gif',
 
 */
 const Blog = ({ blogData }) => {
-  console.log("blogData")
-  console.log(blogData)
+  // console.log("blogData")
+  // console.log(blogData)
   const { state, dispatch } = useAppContext();
   const { auth, post } = state;
+  // console.log("**** comments ****")
+  // console.log(post.post.comments)
   const router = useRouter();
-  let [parsedBlocks, setParsedBlocks] = useState(JSON.parse(blogData.text));
+  // let [parsedBlocks, setParsedBlocks] = useState(JSON.parse(blogData.text));
+  let [parsedBlocks, setParsedBlocks] = useState();
+  let [postComments, setPostComments] = useState([]);
+
+  
+  const isValidJSONString = (str) => {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+  }
 
   useEffect(() => {
     if (!auth.isAuthenticated && auth.user.role !== 'user') return router.push("/");
+    let validJson = isValidJSONString(blogData.text);
+    if (validJson) {
+      setParsedBlocks(JSON.parse(blogData.text));
+    }
+    dispatch({type: "GET_POST_BY_ID", payload: blogData});
   }, []);
 
-  console.log("typeof(blogData.text)")
-  console.log(typeof(blogData.text))
-  let parser = JSON.parse(blogData.text)
-  console.log("typeof(parser)")
-  console.log(typeof(parser))
-  console.log("parsedBlocks")
-  console.log(typeof(parsedBlocks))
-  console.log(parsedBlocks)
+  // useEffect(() => {
+  //   setPostComments(postComments = JSON.parse(post.post.comments))
+  // }, []);
+  // console.log("typeof(blogData.text)")
+  // console.log(typeof(blogData.text))
+  // let parser = JSON.parse(blogData.text) //====
+  // console.log("typeof(parser)")
+  // console.log(typeof(parser))
+  // console.log("parsedBlocks")
+  // console.log(typeof(parsedBlocks))
+  // console.log(parsedBlocks)
   
-  let renderedContent = parsedBlocks.blocks
-  console.log("rendered blocks")
-  console.log(renderedContent)
+  // let renderedContent = parsedBlocks.blocks
+  // console.log("rendered blocks")
+  // console.log(renderedContent)
 
   // parent class is blog__text
   const blocksConfig={
@@ -96,6 +120,27 @@ const Blog = ({ blogData }) => {
     }
   };
 
+  const likeHandler = async (id) => {
+    try {
+      let res = await api.post(`/post/like/${blogData._id}`);
+      dispatch({type: "LIKE_POST", payload: res.data.data.likes});
+      
+      toast.success("Post liked!")
+    } catch (err) {
+      toast.error("Post could not be liked!")
+    }
+  };
+  
+  const unLikeHandler = async (id) => {
+    try {
+      let res = await api.put(`/post/unlike/${blogData._id}`);
+      dispatch({type: "UNLIKE_POST", payload: res.data.data.likes});
+      toast.success("Post unliked!")
+    } catch (err) {
+      toast.error("Post not yet liked!")
+    }
+  };
+
   return (<>
     <div className="blog">
       <section className="blog__page">
@@ -123,7 +168,7 @@ const Blog = ({ blogData }) => {
                     src={blogData.avatarImage}
                     fill="layout"
                     alt="user avatar"
-                    // width={500}
+              ze      // width={500}
                     // height={250}
                     layout="fill"
                     // image is stretched, apply custom css to fix
@@ -135,16 +180,32 @@ const Blog = ({ blogData }) => {
                 <span><em>Written By: {`${blogData.username}`}</em></span>
               </div>
             </div>
+
+
+            
+
             <div className="blog__options">
               {auth.isAuthenticated && auth.user._id === blogData?.user && (
                 <Link
                   passHref
-                  // href={`/posts/update/${post?._id}`}
                   href={`/posts/f/update/${blogData._id}`}
                 >
                   <button className="btn btn-secondary">Edit</button>
                 </Link>
               )}
+              <div className="comment__options blog-header">
+                <div className="comment__thumbs">
+                  <div className="thumb" onClick={() => likeHandler()}>
+                    <FaRegThumbsUp />
+                  </div>
+                  <div className="">{post.post.likes?.length > 0 ? post.post.likes.length : 0}</div>
+                  <span className='spacer'>|</span>
+                  <div className="thumb" onClick={() => unLikeHandler()}>
+                    <FaRegThumbsDown />
+                  </div>
+                  {/* <div className="">{post.post.likes?.length > 0 ? post.post.likes.length : 0}</div> */}
+                </div>
+              </div>
             </div>
             <p>Category: {blogData.category}</p>
             <div className="blog__tags">
@@ -157,12 +218,18 @@ const Blog = ({ blogData }) => {
           </div>
           <div className="blog__content">
             <div className="blog__text">
-              <Blocks
-                data={parsedBlocks}
-                config={blocksConfig}
-              />
+              {parsedBlocks ? (
+                <Blocks
+                  data={parsedBlocks}
+                  config={blocksConfig}
+                />
+              ) : (
+                <>{blogData.text}</>
+              )}
             </div>
           </div>
+          <CommentForm prodId={blogData._id} />
+          <Comment comments={post?.post?.comments} />
         </div>
       </section>
     </div>
@@ -170,9 +237,9 @@ const Blog = ({ blogData }) => {
 };
 export default Blog;
 export const getServerSideProps = async (context) => {
-  console.log("context.params")
-  console.log(context.params)
-  console.log("+++++++++++++++++++++++++")
+  // console.log("context.params")
+  // console.log(context.params)
+  // console.log("+++++++++++++++++++++++++")
   try {
     let post_id = context.query.slug;
     let initPostInfo = '';
@@ -188,17 +255,17 @@ export const getServerSideProps = async (context) => {
       });
     }
 
-    console.log("+++++++++++++++++++++++++")
-    console.log("+++++++++++++++++++++++++")
+    // console.log("+++++++++++++++++++++++++")
+    // console.log("+++++++++++++++++++++++++")
     
-    console.log("initPostInfo.data.data")
-    console.log(initPostInfo.data.data)
-    console.log("+++++++++++++++++++++++++")
-    console.log("+++++++++++++++++++++++++")
-    console.log("+++++++++++++++++++++++++")
+    // console.log("initPostInfo.data.data")
+    // // console.log(initPostInfo.data.data)
+    // console.log("+++++++++++++++++++++++++")
+    // console.log("+++++++++++++++++++++++++")
+    // console.log("+++++++++++++++++++++++++")
     let initBlog = initPostInfo.data.data;
 
-    console.log(initBlog)
+    // console.log(initBlog)
 
     return {
       props: { blogData: initBlog ? initBlog.postData : '' }

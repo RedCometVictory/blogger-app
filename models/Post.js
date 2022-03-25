@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { v4 as uuidv4} from "uuid";
 const PostSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -45,6 +46,11 @@ const PostSchema = new mongoose.Schema({
   ],
   comments: [
     {
+      _id: {
+        type: String,
+        default: () => uuidv4(),
+        required: true
+      },
       user: {
         type: mongoose.Schema.Types.ObjectId
       },
@@ -58,6 +64,17 @@ const PostSchema = new mongoose.Schema({
       avatarImage: {
         type: String
       },
+      parentCommentId: {
+        type: String,
+        default: null
+      },
+      likes: [
+        {
+          user: {
+            type: mongoose.Schema.Types.ObjectId
+          },
+        }
+      ],
       createdAt: {
         type: String, 
         default: Date().mow

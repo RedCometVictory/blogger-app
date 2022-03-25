@@ -7,24 +7,15 @@ const Editor = ({data, handleInstance, updateValue, isLoading, setIsLoading, onS
   // const ReactEditorJS = createReactEditorJS();
   let editorInstance;
 
-  console.log("EDITOR COMPONENT")
-  console.log("props")
-  // console.log(props)
   const [editorTools, setEditorTools] = useState();
   const [blogUpdate, isBlogUpdate] = useState(updateValue);
 
-  // let receivedBlogText = props.blogData?.text ? props.blogData?.text : null;
-  // let receivedBlogText = props.data ? props.data : "";
   let receivedBlogText = data ? data : "";
-  console.log("receivedBlogText")
-  console.log(receivedBlogText)
-  console.log("typeof +++ receivedBlogText")
-  console.log(typeof(receivedBlogText))
   if (typeof(receivedBlogText) === 'string') {
-    receivedBlogText = JSON.parse(receivedBlogText);
-  }
-
-  
+    if (receivedBlogText.length > 0) {
+      receivedBlogText = JSON.parse(receivedBlogText);
+    }
+  };
 
   const onSaveHandler = async (editorInstance) => {
     try {

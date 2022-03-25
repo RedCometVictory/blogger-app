@@ -8,8 +8,7 @@ import { createUpdatePostForm } from "@/utils/formDataServices";
 import Editor from "../../../components/editor/Editor";
 // let Editor = dynamic(() => import("../../../components/editor/Editor"), { ssr: false });
 // import { updateUserForm, createUpdateProfileForm } from '@/utils/formDataServices';
-// import NavBar from "components/NavBar";
-// import AsideNav from 'components/UI/Aside'; 
+// https://www.youtube.com/watch?v=yHX9EFyrCRc 
 import axios from 'axios';
 import api from "@/utils/api";
 import { FaUpload } from 'react-icons/fa';
@@ -79,8 +78,8 @@ const BlogForm = ({ blogData }) => {
     checkFileType(fileToUpload);
     checkFileSize(fileToUpload);
 
-    setProfileData({
-      ...profileData,
+    setFormData({
+      ...formData,
       [e.target.name]: e.target.files[0],
     });
     // * set up image preview, if valid
@@ -252,24 +251,39 @@ const BlogForm = ({ blogData }) => {
                 value={tags}
                 required={false}
               />
-              <button className="feed__submit" type="submit">
+              {/* <button className="feed__submit" type="submit">
                 Submit
-              </button>
+              </button> */}
+            {/* </form> */}
+              {Editor && (
+                <Editor
+                  data={text}
+                  handleInstance={handleInstance}
+                  updateValue={blogData ? true : false}
+                  // currentValue={text}
+                  isLoading={isLoading}
+                  setIsLoading={setIsLoading}
+                  onSave={(blogText) => onSaveHandler(blogText)}
+                  // value={text}
+                  // onDelete={() => onDeleteHandler()}
+                  onDelete={deleteModalHandler}
+                />
+              )}
+              <div className="editor__btns-container">
+                <div className="save">
+                  <button className="btn btn-secondary" type="submit">
+                    {isLoading ? "Submitted" : blogData ? 'Update' : 'Submit'}
+                  </button>
+                </div>
+                <div className="delete">
+                  {blogData ? (
+                    <button className="btn btn-secondary" onClick={() => onDeleteHandler()}>Delete</button>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </div>
             </form>
-            {Editor && (
-              <Editor
-                data={text}
-                handleInstance={handleInstance}
-                updateValue={blogData ? true : false}
-                // currentValue={text}
-                isLoading={isLoading}
-                setIsLoading={setIsLoading}
-                onSave={(blogText) => onSaveHandler(blogText)}
-                // value={text}
-                // onDelete={() => onDeleteHandler()}
-                onDelete={deleteModalHandler}
-              />
-            )}
           </div>
         </div>
       </section>

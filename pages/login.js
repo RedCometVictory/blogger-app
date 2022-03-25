@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAppContext } from "context/Store";
 import { toast } from "react-toastify";
-import Navbar from "../components/NavBar";
+// import Navbar from "../components/NavBar";
 import { ControlGroup, ControlGroupGender } from "../components/UI/FormControlGroup";
 import {Button} from "../components/UI/Button";
 import api from "@/utils/api";
@@ -49,7 +49,6 @@ const Login = () => {
 
   return(<>  
     <div className="container">
-      <Navbar />
     </div>
     <div className="login-body">
       <div id="login-id" className="login">

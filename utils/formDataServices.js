@@ -1,3 +1,15 @@
+export const postComment = (formData) => {
+  console.log("servicing post comment")
+  console.log(formData)
+  let data = new FormData();
+  
+  formData.text && data.append("text", formData.text);
+  
+  console.log("resulting servicing post comment")
+  console.log(data)
+  return data;
+};
+
 export const updateUserForm = (formData) => {
   console.log("servicing updating user form")
   console.log(formData)

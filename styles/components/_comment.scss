@@ -1,0 +1,244 @@
+.comment {
+  &__section {
+    hr {
+      margin: 1.2rem 0 2.2rem;
+    }
+  }
+  // ############################################
+  &__form {}
+  &__form-options {
+    @include flex(row, space-between, center);
+    margin: 16px 0 0 0;
+    button {
+      margin: 0 0 1.2rem;
+    }
+  }
+  &__form-group {
+    .form-textarea {
+      border: 1px solid var(--color-text);
+      border-radius: 6px;
+      background-color: var(--bg-primary);
+      resize: none;
+      width: 100%;
+      outline: none;
+      // .code-block {
+      // display: flex;
+      // border-radius: 2px;
+      // border: 2px solid var(--color-text);
+      color: var(--color-text);
+      // background-color: var(--bg-panel);
+      // background-color: var(--bg-primary);
+      overflow-y: scroll;
+      // height: 28rem;
+      // width: 100%;
+      padding: 1.2rem;
+      // margin: 2rem 0;
+      // scrollbar-width: none;
+      scrollbar-color: var(--bg-panel);
+      scrollbar-width: thin;
+      &::-webkit-scrollbar {
+        // width of scrollbar
+        width: 12px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: rgba(88, 88, 86, 0.5);
+      }
+      &::-webkit-scrollbar-thumb {
+        // draggable area chrome
+        background-color: rgb(82, 82, 85);
+        border-radius: 20px;
+      }
+    }
+  }
+  &__buttons {
+    @include flex(row, initial, center);
+    .edit {
+      margin: 0 6px 0 0;
+    }
+    .del {
+      padding: 3px 6px;
+    }
+  }
+  &__delete-btns {
+    @include flex(row, space-evenly, center);
+    .btns {
+      border: 1px solid var(--color-text);
+      border-radius: 4px;
+      background-color: none;
+      padding: 4px 6px 4px;
+      margin: 6px 0 0 0;
+    }
+  }
+  // &__delete {
+  //   &.del {
+  //     padding: 2px 6px;
+  //   }
+  // }
+  // ############################################
+  &__card {
+    width: 100%;
+    padding: 1rem 1rem 1rem;
+    border: 1px solid white;
+    border-radius: 6px;
+    margin: 0 0 1.2rem 0;
+  }
+  &__header {
+    @include flex(row, space-between, center);
+    &.section-title {
+      margin: 0 0 0.8rem 0;
+    }
+  }
+  &__header-info {
+    @include flex(row, flex-start, center);
+  }
+  // &__username {}
+  // &__buttons {}
+  &__image-avatar {
+    // width: 100%;
+    // height: 260px;
+    overflow: hidden;
+    height: 40px;
+    width: 40px;
+    max-height: 40px;
+    max-width: 40px;
+    background-color: var(--bg-primary);
+    border-radius: 50%;
+    @include flex(row, center, center);
+    
+    > span {
+      position: unset !important;
+    }
+    &.avatar {
+      margin: 0 16px 0 0;
+    }
+  }
+  &__img {
+    // ***!important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
+    // width: 800px;
+    object-fit: contain;
+    // object-fit: none;
+    width: 100% !important;
+    position: relative !important;
+    height: unset !important;
+    max-width: 800px !important;
+    z-index: 50;
+  }
+  &__content {
+    margin: 1rem 0 0 0;
+  }
+  &__text {
+    // word-wrap: pre;
+    white-space: pre-line;
+  }
+  &__reply-section {
+    // border: 1px solid white;
+    // border-radius: 6px;
+    padding: 0 0 10px 3.5rem;
+  }
+  &__reply-item {
+    @include flex(row, flex-start, center);
+    padding: 6px 0 6px;
+    border: 1px solid var(--bg-primary);
+    border-radius: 6px;
+    margin: 12px 0 12px;
+  }
+  &__reply-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 0 0 12px;
+    .avatar {
+      margin: 8px 0 8px 0;
+    }
+    .username {
+      margin: 0 0 8px 0;
+    }
+  }
+  &__reply-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0 10px 0 16px;
+    .username {
+      // padding: 0 0 0 16px;
+      font-style: italic;
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
+    .edit-reply-form {
+      width: 100%;
+    }
+  }
+  &__reply-options {
+    display: flex;
+    align-items: center;
+  }
+  &__reply-options {
+    display: flex;
+    align-items: center;
+    font-size: 26px;
+    cursor: pointer;
+    .reply-edit {
+      margin: 0 6px 0 0;
+      font-size: 16px;
+    }
+    .reply-delete {
+      transition: 0.25s ease-in;
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
+  }
+  &__reply {
+    // padding: 0 0 0 16px;
+    width: 100%;
+    white-space: pre-line;
+    margin: 1.6rem 0;
+  }
+  &__options {
+    @include flex(row, flex-start, center);
+    margin: 6px 0 0 0;
+    // padding: 0 0 0 16px;
+    &.blog-header {
+      margin: 16px 0 0 0;
+    }
+  }
+  &__reply-btn {
+    margin: 0 16px 0 0;
+    cursor: pointer;
+    &.list {
+      width: max-content;
+      border: 1px solid white;
+      border-radius: 6px;
+      padding: 2px 4px 4px;
+      margin: 16px 0 0 0;
+      display: flex;
+      align-items: center;  
+    }
+  }
+  &__thumbs {
+    @include flex(row, flex-start, center);
+    .thumb {
+      cursor: pointer;
+      margin: 0 8px 00 0;
+    }
+    .spacer {
+      margin: 0 10px;
+    }
+  }
+}
+
+
+// comments: [
+//     {
+//       _Id: {},
+//       user: {},
+//       text: {},
+//       username: {},
+//       avatarImage: {},
+//       parentCommentId: {},
+//       createdAt: {}
+//     }
+//   ]

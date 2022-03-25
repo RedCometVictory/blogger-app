@@ -1,10 +1,38 @@
 .trending {
   margin: 0 0 0 1rem;
-  &__container {
+  &__card {
     background-color: var(--bg-panel);
-    min-width: 300px;
+    min-width: 170px;
+    max-width: 280px;
     margin: 1rem 0 0 0;
     border-radius: 6px;
     padding: 12px;
+    color: var(--color-text);
+  }
+  &__name {}
+  &__intro {
+    margin: 0.25rem 0 0.5rem 0;
+    font-weight: 500;
+  }
+  &__list {}
+  &__item {
+    padding: 8px 0px 0px;
+    font-weight: 600;
+  }
+  &__title {
+    cursor: pointer;
+  }
+  &__stat {
+    @include flex(row, flex-start, center);
+    margin: 3px 0 0;
+  }
+  &__count {
+    @include flex(row, flex-start, center);
+    &.first {
+      padding: 0 12px 0 0;
+    }
+  }
+  &__icon {
+    padding: 0 4px 0 0;
   }
 }

@@ -95,7 +95,6 @@ const Register = () => {
 
   return (<>
     <div className="container">
-      <Navbar />
     </div>
     <div className="login-body">
       <div id="login-id" className="login">

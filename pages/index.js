@@ -15,6 +15,7 @@ import GridMain from "../components/GridMain";
 import GridItem from "../components/UI/GridItem";
 // import AsideNav from "components/UI/Aside";
 import Feed from '../components/Feed';
+import TrendAside from "../components/TrendAside";
 // import Footer from "../components/Footer";
 import HeroGraphic from "../img/hero.svg";
 import Blog1 from "../img/blog1.jpg";
@@ -58,12 +59,15 @@ import image_creditCards from "../img/credit-cards.png";
 //     }
 // });
 
-const Home = ({initGeneral}) => {
-  console.log("initGzeneral - beginning of page")
-  console.log(initGeneral)
+const Home = ({initGeneral, initTrend}) => {
+  // console.log("initGzeneral - beginning of page")
+  // console.log(initGeneral)
   const { state, dispatch } = useAppContext();
   const { auth, post } = state;
+  const [trendList, setTrendList] = useState(initTrend);
 
+  console.log("trendList")
+  console.log(trendList)
   // useEffect(() => {
   //   if (!auth.isAuthenticated && auth.user.role !== 'user') {
   //     setstate
@@ -71,23 +75,15 @@ const Home = ({initGeneral}) => {
   //   };
   // }, []);
   useEffect(() => {
-    dispatch({type: "GET_ALL_POSTS", payload: initGeneral.posts})
+    // dispatch({type: "GET_ALL_POSTS", payload: initGeneral.posts})
+    dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
   }, []);
 
   return auth.isAuthenticated ? (
     <section className="feed__layout">
       <div className="container feed-container">
           <Feed />
-          <aside className="trending">
-            <div className="trending__container">
-              <div className="trend-box">this</div>
-              <div className="trend-box">is the</div>
-              <div className="trend-box">trends</div>
-              <div className="trend-box">section</div>
-              <div className="trend-box">highlighted posts can go here</div>
-              <div className="trend-box">perhaps a news api</div>
-            </div>
-          </aside>
+          <TrendAside />
       </div>
     </section>
   ) : (<>
@@ -288,28 +284,38 @@ const Home = ({initGeneral}) => {
 }
 export default Home;
 export const getServerSideProps = async (context) => {
-  console.log("context")
-  console.log(context)
-  console.log("+++++++++++++++++++++++++")
+  // console.log("context")
+  // console.log(context)
+  // console.log("+++++++++++++++++++++++++")
   try {
     let token = context.req.cookies.blog__token;
-    console.log("token")
-    console.log(token)
-    console.log("+++++++++++++++++++++++++")
-    console.log("+++++++++++++++++++++++++")
+    // console.log("token")
+    // console.log(token)
+    // console.log("+++++++++++++++++++++++++")
+    // console.log("+++++++++++++++++++++++++")
     
     const initGeneralFeed = await axios({
       method: 'get',
       url: 'http://localhost:3000/api/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
       headers: context.req ? { cookie: context.req.headers.cookie } : undefined
     });
-    console.log("initGeneralFeed.data.data")
-    console.log("+++++++++++++++++++++++++")
-    console.log("+++++++++++++++++++++++++")
-    console.log("+++++++++++++++++++++++++")
-    console.log(initGeneralFeed.data.data)
+    // console.log("initGeneralFeed.data.data")
+    // console.log("+++++++++++++++++++++++++")
+    // console.log("+++++++++++++++++++++++++")
+    // console.log("+++++++++++++++++++++++++")
+    // console.log(initGeneralFeed.data.data)
     // let initGeneral = initGeneralFeed.data.data;
 
+    const initTrendingFeed = await axios({
+      method: 'get',
+      url: 'http://localhost:3000/api/posts/trending',
+      headers: context.req ? { cookie: context.req.headers.cookie } : undefined
+    });
+    // console.log("initTrendingFeed")
+    // console.log(initTrendingFeed.data.data)
+    // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
+    // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
+    // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
     // const initPersonalFeed = await axios({
     //   method: 'get',
     //   url: 'http://localhost:3000/api/',
@@ -325,7 +331,10 @@ export const getServerSideProps = async (context) => {
     // console.log(initLikeFeed.data.data)
     // initGeneral: {posts: [{}, ...], page: #, pages: 12 || 20}
     return {
-      props: { initGeneral: initGeneralFeed.data.data }
+      props: {
+        initGeneral: initGeneralFeed.data.data,
+        initTrend: initTrendingFeed.data.data.defaultTrends
+      }
     }
   } catch (err) {
     return {
