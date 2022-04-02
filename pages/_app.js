@@ -71,3 +71,32 @@ const MyApp = ({ Component, pageProps }) => {
   )
 }
 export default MyApp;
+// Cookie “blog__userInfo” will be soon rejected because it has the “SameSite” attribute set to “None” or an invalid value, without the “secure” attribute. To know more about the “SameSite“ attribute, read https://developer.mozilla.org/docs/Web/HTTP/Headers/Set-Cookie/SameSite i
+// export const getServerSideProps = async (context) => {
+//   // console.log("context")
+//   // console.log(context)
+//   // console.log("+++++++++++++++++++++++++")
+//   try {
+//     let token = context.req.cookies.blog__token;
+//     console.log("token")
+//     console.log(token)
+//     console.log("++++++++++++***+++++++++++++")
+//     console.log("++++++++++++***+++++++++++++")
+
+//     if (!token) {
+//       console.log("deleting blog token")
+//       Cookies.remove("blog__token");
+//       res.writeHead(301, { Location: '/' });
+//       res.end()
+//       return;
+//     };
+//   } catch (err) {
+//     return {
+//       props: {
+//         initGeneral: [],
+//         initPersonal: [],
+//         initLiked: []
+//       }
+//     }
+//   }
+// };

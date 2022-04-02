@@ -28,10 +28,14 @@ const Navbar = ({openMenu, setOpenMenu}) => {
       console.log(res.data)
       dispatch({type: "LOGOUT"});
       // Cookies.remove("token");
+      Cookies.remove("blog__isLoggedIn");
       Cookies.remove("blog__userInfo");
       router.push("/");
     } catch (err) {
-      toast.error(err);
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach(error => toast.error(error.msg));
+      }
     }
   };
 

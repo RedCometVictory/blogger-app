@@ -45,18 +45,38 @@ handler.post(async (req, res) => {
   console.log("user - final check")
   console.log(user)
 
+  // res.setHeader(
+  //   "Set-Cookie",
+  //   cookie.serialize("blog__token", jwtAccessToken, cookieOptions)
+  // );
+  
   res.setHeader(
-    "Set-Cookie",
-    cookie.serialize("blog__token", jwtAccessToken, cookieOptions)
+    "Set-Cookie", [
+      cookie.serialize("blog__token", jwtAccessToken, cookieOptions),
+      cookie.serialize("blog__isLoggedIn", true, {path: "/"})
+    ]
   );
+
+  /*
+  res.setHeader(
+        'Set-Cookie',
+        cookie.serialize('token', data.jwt, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== 'development',
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+          sameSite: 'strict',
+          path: '/',
+        })
+      )
+  */
 
   console.log("cookie made")
   console.log("jwt access tokwn")
   console.log(jwtAccessToken)
   console.log("cookie options")
   console.log(cookieOptions)
-  console.log("red")
-  console.log(res)
+  // console.log("red")
+  // console.log(res)
   // res.cookie('token', jwtAccessToken, cookieOptions);
   return res.status(201).json({
     status: "User logged in!",

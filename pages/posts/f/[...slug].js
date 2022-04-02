@@ -64,7 +64,7 @@ const BlogForm = ({ blogData }) => {
   const {title, text, category, tags} = formData;
 
   useEffect(() => {
-    if (!auth.isAuthenticated && auth.user.role !== 'user') return router.push("/");
+    if (!auth.isAuthenticated || auth.user.role !== 'user') return router.push("/");
   }, []);
 
   const onChange = (e) => {
@@ -324,11 +324,14 @@ export const getServerSideProps = async (context) => {
       console.log("updating post of -> post_id")
       console.log(post_id)
       // retreive post data
-      initPostInfo = await axios({
-        method: 'get',
-        url: `http://localhost:3000/api/post/${post_id}`,
-        headers: context.req ? { cookie: context.req.headers.cookie } : undefined
-      });
+      // initPostInfo = await axios({
+      //   method: 'get',
+      //   url: `http://localhost:3000/api/post/${post_id}`,
+      //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
+      // });
+      initPostInfo = await api.get(`/post/${post_id}`,
+      { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+      );
     }
 
     console.log("+++++++++++++++++++++++++")

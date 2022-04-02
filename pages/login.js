@@ -43,7 +43,11 @@ const Login = () => {
       console.log(res.data)
       router.push('/');
     } catch (err) {
-      toast.error(err);
+      toast.error('Invalid password or email. Try again.')
+      // const errors = err.response.data.errors;
+      // if (errors) {
+      //   errors.forEach(error => toast.error(error.msg));
+      // }
     }
   };
 
@@ -89,7 +93,7 @@ const Login = () => {
             required={true}
           />
           <button id="btn-reg" className="btn-primary btn-large btn-block" type="submit">
-            Sign Up
+            Sign In
           </button>
         </form>
       </div>

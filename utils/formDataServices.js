@@ -1,18 +1,18 @@
 export const postComment = (formData) => {
-  console.log("servicing post comment")
-  console.log(formData)
+  // console.log("servicing post comment")
+  // console.log(formData)
   let data = new FormData();
   
   formData.text && data.append("text", formData.text);
   
-  console.log("resulting servicing post comment")
-  console.log(data)
+  // console.log("resulting servicing post comment")
+  // console.log(data)
   return data;
 };
 
 export const updateUserForm = (formData) => {
-  console.log("servicing updating user form")
-  console.log(formData)
+  // console.log("servicing updating user form")
+  // console.log(formData)
   let data = new FormData();
 
   formData.firstName && data.append("firstName", formData.firstName);
@@ -26,8 +26,8 @@ export const updateUserForm = (formData) => {
 
 // in backend code, compare values of current username & avatarimage, replace those values if they are different (update) before saving updated info to db for post model
 export const createUpdatePostForm = (formData) => {
-  console.log("servicing updating user form")
-  console.log(formData)
+  // console.log("servicing updating user form")
+  // console.log(formData)
   let data = new FormData();
 
   formData.title && data.append("title", formData.title);
@@ -40,8 +40,8 @@ export const createUpdatePostForm = (formData) => {
 };
 
 export const createUpdateProfileForm = (formData) => {
-  console.log("servicing profile data")
-  console.log(formData)
+  // console.log("servicing profile data")
+  // console.log(formData)
   let data = new FormData();
 
   formData.bio && data.append("bio", formData.bio);

@@ -31,10 +31,10 @@ const Feed = ({feedPost}) => {
   useEffect(() => {
     if (!feedPosts) setFeedPosts(post.posts); 
   }, []);
-  console.log("**********feedPosts***********")
-  console.log(feedPosts)
-  console.log("**********state posts***********")
-  console.log(post.posts)
+  // console.log("**********feedPosts***********")
+  // console.log(feedPosts)
+  // console.log("**********state posts***********")
+  // console.log(post.posts)
 
   // <div className='feed profileCenter'>
   return (

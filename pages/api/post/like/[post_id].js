@@ -36,7 +36,7 @@ handler.post(async (req, res) => {
     return res.status(403).json({ errors: [{ msg: "Post is already liked." }] });
   }
 
-  // remove the like
+  // add the like
   post.likes.unshift({ user: req.user.id });
 
   await post.save();

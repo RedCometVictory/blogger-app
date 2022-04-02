@@ -9,12 +9,12 @@ import { createUpdateProfileForm } from '@/utils/formDataServices';
 import { ControlGroup, ControlGroupFileUpload } from '../UI/FormControlGroup';
 
 const ProfileForm = ({initProfile, setProfileForm}) => {
-  console.log("Props")
-  console.log(initProfile)
+  // console.log("Props")
+  // console.log(initProfile)
   const { state, dispatch } = useAppContext();
   const { auth, profile } = state;
-  console.log("component profile state")
-  console.log(profile)
+  // console.log("component profile state")
+  // console.log(profile)
   const [fileTypeError, setFileTypeError] = useState(false);
   const [fileSizeError, setFileSizeError] = useState(false);
   const [profileData, setProfileData] = useState({
@@ -99,14 +99,14 @@ const ProfileForm = ({initProfile, setProfileForm}) => {
     e.preventDefault();
     setUploading(true);
     try {
-      console.log("submitting profile create")
-      console.log(profileData)
+      // console.log("submitting profile create")
+      // console.log(profileData)
       let servicedData = await createUpdateProfileForm(profileData);
-      console.log("servicedData - profile create")
-      console.log(servicedData)
+      // console.log("servicedData - profile create")
+      // console.log(servicedData)
       let res = await api.post("/user/profile-create", servicedData);
-      console.log("profile create response")
-      console.log(res.data.data)
+      // console.log("profile create response")
+      // console.log(res.data.data)
       dispatch({type: "CREATE_PROFILE", payload: res.data.data.profile});
       setUploading(false);
       setProfileForm(false);
@@ -120,22 +120,25 @@ const ProfileForm = ({initProfile, setProfileForm}) => {
     e.preventDefault();
     setUploading(true);
     try {
-      console.log("submitting --- profile update")
-      console.log(profileData)
-      console.log("user id")
-      console.log(auth.user._id)
-      console.log("77777777777777777777777")
+      // console.log("submitting --- profile update")
+      // console.log(profileData)
+      // console.log("user id")
+      // console.log(auth.user._id)
+      // console.log("77777777777777777777777")
       let servicedData = await createUpdateProfileForm(profileData);
-      console.log("servicedData - profile update")
-      console.log(servicedData)
+      // console.log("servicedData - profile update")
+      // console.log(servicedData)
       let res = await api.put(`/user/edit/${auth.user._id}`, servicedData);
-      console.log("profile update response")
-      console.log(res.data.data)
+      // console.log("profile update response")
+      // console.log(res.data.data)
       dispatch({type: "UPDATE_PROFILE", payload: res.data.data.profile});
       setUploading(false);
       setProfileForm(false);
     } catch (err) {
-      toast.error(err);
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach(error => toast.error(error.msg));
+      }
       setProfileForm(false);
     }
   };

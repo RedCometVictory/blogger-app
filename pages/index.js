@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState} from "react";
+import Cookies from "js-cookie";
+import cookie from "cookie";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import { useAppContext } from "context/Store";
 import axios from "axios";
+import api from "@/utils/api"
 import { HiOutlineDesktopComputer, HiViewGridAdd, HiOutlineCode } from "react-icons/hi";
 import { AiOutlineArrowRight } from "react-icons/ai";
 // import Navbar from "../components/NavBar";
@@ -59,11 +63,12 @@ import image_creditCards from "../img/credit-cards.png";
 //     }
 // });
 
-const Home = ({initGeneral, initTrend}) => {
+const Home = ({initGeneral, initTrend, token}) => {
   // console.log("initGzeneral - beginning of page")
   // console.log(initGeneral)
   const { state, dispatch } = useAppContext();
   const { auth, post } = state;
+  const router = useRouter();
   const [trendList, setTrendList] = useState(initTrend);
 
   console.log("trendList")
@@ -75,11 +80,19 @@ const Home = ({initGeneral, initTrend}) => {
   //   };
   // }, []);
   useEffect(() => {
-    // dispatch({type: "GET_ALL_POSTS", payload: initGeneral.posts})
+    if (!token) {
+      console.log("useeffect, logging out")
+      dispatch({type: "LOGOUT"});
+      Cookies.remove("blog__isLoggedIn");
+      Cookies.remove("blog__userInfo");
+      router.push("/");
+    }
     dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+    localStorage.setItem("blog__trends", JSON.stringify(initTrend));
+    // Cookies.set("blog__trends", JSON.stringify(initTrend));
   }, []);
 
-  return auth.isAuthenticated ? (
+  return auth.isAuthenticated && Cookies.get("blog__isLoggedIn") ? (
     <section className="feed__layout">
       <div className="container feed-container">
           <Feed />
@@ -103,7 +116,13 @@ const Home = ({initGeneral, initTrend}) => {
             </h3>
             <ControlGroup type={"email"} placeholder={"Enter Your email"} id={"heroEmailInput"} className={"heroMainInput"} />
             <Link passHref href={"/register"}>
-              <Button id={"heroMainSignUpButton"} className={"heroMainSignUp"} btnText={"Sign Up"} icon={<AiOutlineArrowRight className={"innerIcon"} size={"25"}/>}/> 
+              <div className="heroMainSignUp" id="heroMainSignUpButton">
+                <span>
+                  Sign Up 
+                </span>
+                <AiOutlineArrowRight className={"innerIcon"} size={"25"}/> 
+              </div>
+              {/* <Button id={"heroMainSignUpButton"} className={"heroMainSignUp"} btnText={"Sign Up"} icon={<AiOutlineArrowRight className={"innerIcon"} size={"25"}/>}/>  */}
             </Link>
           </div>
           <div className="heroGraphicWrapper">
@@ -248,21 +267,24 @@ const Home = ({initGeneral, initTrend}) => {
         <GridMain>
           <GridItem height={"300px"}>
             <div className="gridItemImageWrapper">
-              <Image id="globe" layout={"fill"} className="gridItemImage" width={"100px"} height={"100px"} src={image_localization} alt={""} />
+              <Image id="globe" className="gridItemImage" width={"100px"} height={"100px"} src={image_localization} alt={""}
+              />
             </div>
             <h2 className="gridItemHeading">Localisation</h2>
             {/*GridItemLink */}
           </GridItem>
           <GridItem height={"300px"}>
             <div className="gridItemImageWrapper">
-              <Image id="cash" layout={"fill"} className="gridItemImage" width="100px" height="100px"  src={image_money} alt={""} />
+              <Image id="cash" className="gridItemImage" width="100px" height="100px"  src={image_money} alt={""}
+              />
             </div>
             <h2 className="gridItemHeading">Monetization</h2>
             {/*GridItemLink */}
           </GridItem>
           <GridItem height={"300px"}>
             <div className="gridItemImageWrapper">
-              <Image id="security" layout={"fill"} className="gridItemImage" width="100px" height="100px" src={image_creditCards} alt={""} />
+              <Image id="security" className="gridItemImage" width="100px" height="100px" src={image_creditCards} alt={""}
+              />
             </div>
             <h2 className="gridItemHeading">Security</h2>
             {/*GridItemLink */}
@@ -288,29 +310,129 @@ export const getServerSideProps = async (context) => {
   // console.log(context)
   // console.log("+++++++++++++++++++++++++")
   try {
+    console.log(">>>>> context.req.headers.cookie <<<<<")
+    console.log(context.req.headers.cookie)
+    console.log(">>>>> context.req.headers.cookie <<<<<")
+    // let cookies = context.req.cookies;
+    // console.log(">>>>> cookies <<<<<")
+    // console.log(cookies)
+    // console.log(">>>>> cookies <<<<<")
     let token = context.req.cookies.blog__token;
-    // console.log("token")
-    // console.log(token)
-    // console.log("+++++++++++++++++++++++++")
-    // console.log("+++++++++++++++++++++++++")
-    
-    const initGeneralFeed = await axios({
-      method: 'get',
-      url: 'http://localhost:3000/api/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
-      headers: context.req ? { cookie: context.req.headers.cookie } : undefined
-    });
+    let userInfo = context.req.cookies.blog__userInfo;
+    console.log("token")
+    console.log(token)
+    // console.log("userinfo")
+    // console.log(userInfo)
+    console.log("++++++++++++^^^+++++++++++++")
+    console.log("++++++++++++^^^+++++++++++++")
+
+    // if (!token) {
+    //   console.log("token is expired, emoveing logged in coolie")
+    //   Cookies.remove("blog__isLoggedIn")
+    //   context.res.setHeader(
+    //     "Set-Cookie", [
+    //     // `blog__token=deleted; Max-Age=0`,
+    //     `blog__isLoggedIn=deleted; Max-Age=0`,
+    //     `blog__userInfo=deleted; Max-Age=0`]
+    //   );
+    // };
+
+
+    // if (!token) {
+    //   // Cookies.remove("blog__userInfo")
+    //   // Cookies.remove(userInfo)
+    //   // Cookies.set("blog__userInfo", '')
+    //   // Cookies.remove(userInfo)
+    //   // console.log("dispatch logout")
+    //   // console.log("userinfo")
+    //   // console.log(userInfo)
+    //   // context.res.setHeader(
+    //   //   "Set-Cookie", [
+    //   //     `blog__isLoggedIn=deleted; Max-Age=0`,
+    //   //     `blog__userInfo=deleted; Max-Age=0`]
+    //   // );
+
+
+    //   // context.res.setHeader(
+    //   //   "Set-Cookie", [
+    //   //   `blog__token=deleted; Max-Age=0`,
+    //   //   `blog__isLoggedIn=deleted; Max-Age=0`,
+    //   //   `blog__userInfo=deleted; Max-Age=0`]
+    //   // );
+
+
+    //   // dispatch({ type: "LOGOUT" });
+    //   // ctx.res.setHeader(
+    //   //   "Set-Cookie", [
+    //   //   `WebsiteToken=deleted; Max-Age=0`,
+    //   //   `AnotherCookieName=deleted; Max-Age=0`]
+    //   // );
+    //   // console.log("attempting to remove cookie")
+    //   // Cookies.remove("blog__userInfo");
+    //   // Cookies.set("blog__token", '', { expires: new Date(1), path: '/' })
+    //   // res.writeHead(302, { Location: '/' });
+    //   // res.end()
+    //   // res.setHeader(
+    //   //   "Set-Cookie",
+    //   //   cookie.serialize("blog__token", '', { expires: new Date(1), maxAge: -1, path: '/' })
+    //   // );
+    //   // const logout = await axios({
+    //   const logout = await api.post('/auth/signout', 
+    //   { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    //   );
+    //   // await axios({
+    //   //   method: 'post',
+    //   //   url: 'http://localhost:3000/api/auth/signout',
+    //   //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined,
+    //   //   withCredentials: true,
+    //   //   credentials: 'include'
+    //   // });
+    //   console.log("**********++^^^++**********")
+    //   // console.log("token")
+    //   // console.log(token)
+    //   // console.log("logout")
+    //   // console.log(logout)
+    //   console.log("**********++^^^++**********")
+    //   return {
+    //     props: {
+    //       initGeneral: [],
+    //       initPersonal: [],
+    //       initLiked: []
+    //     }
+    //   }
+    // };
+
+
+
+
+    let inHeaderToken;
+    inHeaderToken = cookie.parse(context.req.headers.cookie.blog__token ? context.req.headers.cookie.blog__token || '?' : "");
+    console.log("inHeaderToken")
+    console.log(inHeaderToken)
+    // cookie.parse(req ? req.headers.cookie || '' : '')
+        
+    // const initGeneralFeed = await axios({
+    //   method: 'get',
+    //   url: 'http://localhost:3000/api/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
+    //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
+    // });
+    const initGeneralFeed = await api.get('/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
+    {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    );
     // console.log("initGeneralFeed.data.data")
     // console.log("+++++++++++++++++++++++++")
     // console.log("+++++++++++++++++++++++++")
     // console.log("+++++++++++++++++++++++++")
     // console.log(initGeneralFeed.data.data)
     // let initGeneral = initGeneralFeed.data.data;
-
-    const initTrendingFeed = await axios({
-      method: 'get',
-      url: 'http://localhost:3000/api/posts/trending',
-      headers: context.req ? { cookie: context.req.headers.cookie } : undefined
-    });
+    const initTrendingFeed = await api.get('/posts/trending', 
+    { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    );
+    // const initTrendingFeed = await axios({
+    //   method: 'get',
+    //   url: 'http://localhost:3000/api/posts/trending',
+    //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
+    // });
     // console.log("initTrendingFeed")
     // console.log(initTrendingFeed.data.data)
     // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
@@ -333,15 +455,28 @@ export const getServerSideProps = async (context) => {
     return {
       props: {
         initGeneral: initGeneralFeed.data.data,
-        initTrend: initTrendingFeed.data.data.defaultTrends
+        initTrend: initTrendingFeed.data.data.defaultTrends,
+        token: token
       }
     }
   } catch (err) {
+    console.log("ERROR!!!!!!!!")
+    // Cookies.remove("blog__isLoggedIn")
+    // Cookies.remove("blog__userInfo")
+    // Cookies.set("blog__userInfo", '')
+    //   // Cookies.remove(userInfo)
+    // // dispatch({ type: "LOGOUT" });
+    //   context.res.setHeader(
+    //     "Set-Cookie", [
+    //     `blog__token=deleted; Max-Age=0`,
+    //     `blog__isLoggedIn=deleted; Max-Age=0`,
+    //     `blog__userInfo=deleted; Max-Age=0`]
+    //   );
     return {
       props: {
         initGeneral: [],
-        initPersonal: [],
-        initLiked: []
+        initTrend: [],
+        token: ""
       }
     }
   }

@@ -9,7 +9,7 @@ export const TrendAside = () => {
 
   return (
     <aside className="trending">
-      {post && post?.trends.map((topics, index) => (
+      {post && post?.trends?.map((topics, index) => (
         <div className="trending__card" key={index}>
           <h3 className="trending__name">
             {topics.name.startsWith("#") ? topics.name : `#${topics.name}`}

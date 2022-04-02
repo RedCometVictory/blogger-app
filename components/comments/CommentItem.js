@@ -1,40 +1,35 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import api from "@/utils/api";
+import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
+import { toast } from "react-toastify";
 import { FaCaretUp, FaCaretDown, FaRegThumbsUp, FaRegThumbsDown, FaRegWindowClose } from "react-icons/fa";
 import ReplyItem from './reply/ReplyItem';
 import { postComment } from "@/utils/formDataServices";
+import Cookies from 'js-cookie';
 
-// const CommentItem = ({ comment }) => {
 const CommentItem = ({ comment, replies }) => {
-  // console.log("comment - begin of page")
-  // console.log(comment)
-  console.log("replies - begin of page")
-  console.log(replies)
   const { state, dispatch } = useAppContext();
   const { auth, post } = state;
+  const router = useRouter();
   const [editForm, showEditForm] = useState(false);
-  // const [replies, setReplies] = useState([]);
   const [showReplies, isShowReplies] = useState(false);
   const [replyForm, showReplyForm] = useState(false);
   const [setConfirmDelete, isSetConfirmDelete] = useState(false);
-  // const [editFormData, setEditFormData] = useState({title: `${review.title}`, description: `${review.description}`});
-  // const [editFormData, setEditFormData] = useState({text: `${post.post.comment.text}`});
+
   const [editFormData, setEditFormData] = useState({
     text: comment.text || ""
   });
   const [replyFormData, setReplyFormData] = useState({
     reply: ""
   });
-  /*
-    useEffect(() => {
-    comments?.filter(totalComment => totalComment.parentCommentId === commentId)
-    console.log("reloading replies")
-    let replies = post.post.comments?.filter(reply => reply.parentCommentId === comment._id)
-    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
-    return replies;
-  */
+  
+  useEffect(() => {
+    if (!Cookies.get("blog__userInfo") || !Cookies.get("blog_isLoggedIn")) {
+      router.push("/")
+    }
+  }, []);
   
   const { text } = editFormData;
   const { reply } = replyFormData;
@@ -56,31 +51,80 @@ const CommentItem = ({ comment, replies }) => {
   };
 
   const deleteCommentHandler = async (id) => {
-    await api.delete(`/post/comment/${post.post._id}/delete/${comment._id}`);
-    dispatch({type: "DELETE_COMMENT", payload: id})
+    try {
+      await api.delete(`/post/comment/${post.post._id}/delete/${comment._id}`);
+      dispatch({type: "DELETE_COMMENT", payload: id})
+    } catch (err) {
+      console.error(err);
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      toast.error("Failed to delete comment.");
+    }
   };
 
   const submitEditHandler = async (e) => {
     e.preventDefault();
-    let text = editFormData.text;
-
-    let res = await api.put(`/post/comment/${post.post._id}/update/${comment._id}`, {text});
-
-    dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment})
-    // setEditFormData({ text: '' });
-    showEditForm(false);
+    try {
+      let text = editFormData.text;
+  
+      let res = await api.put(`/post/comment/${post.post._id}/update/${comment._id}`, {text});
+  
+      dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment})
+      // setEditFormData({ text: '' });
+      showEditForm(false);
+    } catch (err) {
+      console.log(err);
+      toast.error("Failure to submit reply edit.")
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+    }
   };
 
   const submitReplyHandler = async (e) => {
     e.preventDefault();
-    let text = replyFormData.reply;
+    try {
+      let text = replyFormData.reply;
+  
+      let res = await api.post(`/post/comment/${post.post._id}/reply/${comment._id}`, {text});
+  
+      dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]})
+      setReplyFormData({ reply: '' });
+      showReplyForm(false);
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to submit reply.")
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+    }
+  };
 
-    let res = await api.post(`/post/comment/${post.post._id}/reply/${comment._id}`, {text});
-
-    // dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment})
-    dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]})
-    setReplyFormData({ reply: '' });
-    showReplyForm(false);
+  const likeHandler = async (id) => {
+    try {  
+      let res = await api.post(`/post/comment/${post.post._id}/like/${id}`);
+      dispatch({type: "LIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes}});
+      
+      toast.success("Post liked!")
+    } catch (err) {
+      console.error(err)
+      toast.error("Unable to like post.")
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/");
+      // const errors = err.response.data.errors;
+      // if (errors) {
+        //   errors.forEach(error => toast.error(error.msg));
+        // }
+      }
+    };
+    
+    const unLikeHandler = async (id) => {
+      try {
+        let res = await api.put(`/post/comment/${post.post._id}/unlike/${id}`);
+        dispatch({type: "UNLIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes, userId: auth.user._id}});
+        toast.success("Post unliked!")
+      } catch (err) {
+        toast.error("Unable to unlike post.")
+        if (!Cookies.get("blog__isLoggedIn")) router.push("/");
+      // const errors = err.response.data.errors;
+      // if (errors) {
+      //   errors.forEach(error => toast.error(error.msg));
+      // }
+    }
   };
   
   let classes = "comments__form-collapse right-comp btn btn-secondary";
@@ -121,11 +165,11 @@ const CommentItem = ({ comment, replies }) => {
                 </div>
               )}
             </div>
-            {!editForm && !setConfirmDelete && auth.user._id === comment.user && (<>
+            {!editForm && !setConfirmDelete && auth?.user?._id === comment.user && (<>
               <button className="btn btn-secondary edit" onClick={() => editFormHandler(true)}>
                 Edit
               </button>
-              <button className="comment__delete del" onClick={() => isSetConfirmDelete(true)}>X</button>
+              <FaRegWindowClose className="reply-delete" onClick={() => isSetConfirmDelete(true)} />
             </>)}
           </div>
         </div>
@@ -207,15 +251,15 @@ const CommentItem = ({ comment, replies }) => {
                 <span className="" onClick={() => replyFormHandler(true)}>Reply</span>
               </div>
               <div className="comment__thumbs">
-                <div className="thumb">
+                <div className="thumb" onClick={() => likeHandler(comment._id)}>
                   <FaRegThumbsUp />
                 </div>
-                <div className="">0</div>
+                <div className="">{comment?.likes?.length > 0 ? comment.likes.length : 0}</div>
                 <span className='spacer'>|</span>
-                <div className="thumb">
+                <div className="thumb" onClick={() => unLikeHandler(comment._id)}>
                   <FaRegThumbsDown />
                 </div>
-                <div className="">0</div>
+                {/* <div className="">0</div> */}
               </div>
             </div>
           </div>
@@ -228,43 +272,3 @@ const CommentItem = ({ comment, replies }) => {
   )
 }
 export default CommentItem;
-
-        /* {!setConfirmDelete && userInfo && userInfo.id === review.user_id && (
-            <>
-            <div className="comment__edit" onClick={() => editFormHandler()}>
-              {!editForm ? (
-                <>Edit Comment</>
-              ) : (
-                <>Cancel</>
-              )}
-            </div>
-            <div className="">
-              <button className="comment__delete" onClick={() => isSetConfirmDelete(true)}>X</button>
-            </div>
-            </>
-          )} */
-          // <button className="btn btn-secondary" onClick={() => editFormHandler()}>
-          //   {!editForm ? (
-          //     <>Edit</>
-          //   ) : (
-          //     <></>
-          //   )}
-          // </button>
-
-/*
-comment obj:
-​
-_id: "b09d12e1-66be-49ff-85b2-90f632724084"
-​
-avatarImage: "https://res.cloudinary.com/dhvryypso/image/upload/v1636353979/blog/Default-welcomer_fhdikf.png"
-​
-text: "10\nik"
-​
-user: "620fd9908f14a9af7c1eb7ca"
-​
-username: "red112"
-​
-<prototype>: Object { … }
-CommentItem.js:7:10
-
-*/

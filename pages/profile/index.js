@@ -69,7 +69,7 @@ const Profile = ({initProfile}) => {
   const [profileForm, setProfileForm] = useState(false);
 
   useEffect(() => {
-    if (!auth.isAuthenticated && auth.user.role !== 'user') return router.push("/");
+    if (!auth.isAuthenticated || auth.user.role !== 'user') return router.push("/");
   }, []);
 
   useEffect(() => {
@@ -167,11 +167,14 @@ export const getServerSideProps = async (context) => {
 
     console.log("Token")
     console.log(token)
-    const initProfileData = await axios({
-      method: 'get',
-      url: 'http://localhost:3000/api/user/my-profile',
-      headers: context.req ? { cookie: context.req.headers.cookie } : undefined
-    })
+    const initProfileData = await api.get('/user/my-profile',
+    { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    );
+    // const initProfileData = await axios({
+    //   method: 'get',
+    //   url: 'http://localhost:3000/api/user/my-profile',
+    //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
+    // })
     console.log("initProfileData")
     console.log(initProfileData.data.data)
     return {

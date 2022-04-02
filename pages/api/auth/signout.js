@@ -7,19 +7,40 @@ import { onError, onNoMatch } from '@/utils/ncOptions';
 const handler = nc({onError, onNoMatch});
 // *** Insomnia tested - passed
 handler.post(async (req, res) => {
-  console.log("req.cookies")
-  console.log(req.cookies)
-  const { blog__token } = req.cookies;
-  console.log("token");
-  // console.log(blog__token);
-  // if (!blog__token) {
-  //   return res.status(403).json({ errors: [{ msg: "Unauthorized. Nothing found!" }] });
-  // }
+  // console.log("req.cookies - logout")
+  // console.log(req.cookies)
+  // const { blog__token } = req.cookies;
+  // console.log("token");
+
+  // res.setHeader(
+  //   "Set-Cookie",
+  //   cookie.serialize("blog__userInfo", '', { expires: new Date(1), maxAge: -1, path: '/' })
+  // );
   res.setHeader(
     "Set-Cookie",
-    cookie.serialize("blog__token", '', { expires: new Date(1), path: '/' })
+    // cookie.serialize("blog__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
+    cookie.serialize("blog__token", '', {
+      sameSite: "strict",
+      secure: process.env.NODE_ENV !== 'development',
+      maxAge: -1,
+      path: '/',
+      httpOnly: true,
+      expires: new Date(0)
+    })
   );
-  // res.cookie('token', '', { expires: new Date(1) });
+  /*
+   const serialised = serialize("OursiteJWT", null, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+      maxAge: -1,
+      path: "/",
+    });
+  */
   res.send({ success: "Logged out successfully!" });
+  /*
+  res.setHeader('Allow', ['POST'])
+    res.status(405).json({ message: `Method ${req.method} not allowed` })
+  */
 });
 export default handler;

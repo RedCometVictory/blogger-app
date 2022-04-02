@@ -29,9 +29,12 @@ function accessTokenCookieOptions() {
       // expires: new Date(Date.now() + 300*1000), // 120sec
       // apply domain only for build, ommit entirely when in dev
       // domain: NODE_ENV === 'production' ? DOMAIN : DOMAIN_LOCAL,
-      expires: new Date(Date.now() + 7*24*60*60*1000), //7d
-      secure: NODE_ENV === 'production' ? true : false,
-      httpOnly: NODE_ENV === 'production' ? true : false,
+      expires: new Date(Date.now() + 60*1000), //60secs
+      // expires: new Date(Date.now() + 7*24*60*60*1000), //7d
+      secure: NODE_ENV === 'production' ? true : true,
+      httpOnly: NODE_ENV === 'production' ? true : true,
+      // secure: NODE_ENV === 'production' ? true : false,
+      // httpOnly: NODE_ENV === 'production' ? true : false,
       sameSite: 'strict',
       // "/" access whole app
       path: '/'
@@ -50,7 +53,7 @@ function accessTokenGenerator (user_id, role) {
   return jwt.sign(
     // payload, JWT_SECRET, { expiresIn: '1800s' }, //30m
     // payload, JWT_SECRET, { expiresIn: '180s' },
-    payload, JWT_SECRET, { expiresIn: "7d" }
+    payload, JWT_SECRET, { expiresIn: "8d" }
   );
 };
 

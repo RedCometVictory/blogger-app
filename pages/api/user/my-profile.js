@@ -32,7 +32,7 @@ handler.use(verifAuth, authRole).get(async (req, res) => {
   console.log(profile)
   console.log("+++++ profile +++++")
   if (profile) {
-    if (profile.themes === [] || !profile.themes) profile.themes = "";
+    if (profile.themes.length === 0 || !profile.themes) profile.themes = "";
     if (profile.themes.length > 1 && Array.isArray(profile.themes)) {
       profile.themes = profile.themes.join(', ');
     }

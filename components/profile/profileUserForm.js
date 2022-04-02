@@ -85,7 +85,10 @@ const ProfileUserForm = ({setUserForm}) => {
       setUploading(false);
       setUserForm(false);
     } catch (err) {
-      toast.error(err);
+      const errors = err.response.data.errors;
+      if (errors) {
+        errors.forEach(error => toast.error(error.msg));
+      }
       setUserForm(false);
     }
   };

@@ -7,8 +7,8 @@ import * as yup from 'yup';
 async function yupValidator(schema, handler) {
   // return async (req, res, next) => {
     // console.log(req)
-    console.log("888888888888888")
-    console.log(schema)
+    // console.log("888888888888888")
+    // console.log(schema)
     // return async (req, res, next) => {
     // const body = req.body;
     try {

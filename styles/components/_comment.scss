@@ -58,6 +58,13 @@
     .del {
       padding: 3px 6px;
     }
+    .reply-delete {
+      transition: 0.25s ease-in;
+      font-size: 26px;
+      &:hover {
+        color: var(--primary-color);
+      }
+    }
   }
   &__delete-btns {
     @include flex(row, space-evenly, center);

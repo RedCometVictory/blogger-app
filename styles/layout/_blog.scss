@@ -1,6 +1,7 @@
 .blog {
-  @include flex(column, initial, center);
+  // @include flex(column, initial, center);
   &__page {
+    @include flex(column, initial, center);
     width: 100%;
     max-width: 720px;
   }
@@ -67,8 +68,27 @@
     @include flex(row, flex-start, center);
     margin: 0.8rem 0 0.8rem 0;
   }
+  // ++++++++++++++++ ASIDE +++++++++++++++
+  // author block on blog page
+  &__author-block {
+    @include flex(row, flex-start, center);
+    max-width: 196px;
+    .author-name {
+      margin: 0 0 0 12px;
+    }
+  }
+  &__follow {
+    margin: 16px 0;
+  }
+  // ++++++++++++++++ ASIDE +++++++++++++++
   &__author {
     padding: 0 0 0 2.4rem;
+    &.blog-block {
+      background-color: var(--bg-panel);
+      border-radius: 6px;
+      margin: 10px 0 0 10px;
+      padding: 12px;
+    }
   }
   &__options {
     margin: 0.6rem 0;

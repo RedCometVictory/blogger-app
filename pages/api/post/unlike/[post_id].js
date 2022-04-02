@@ -44,7 +44,7 @@ handler.put(async (req, res) => {
   await post.save();
   await db.disconnect();
 
-  console.log("likes")
+  console.log("unlikes")
   console.log(post.likes)
 
   res.status(201).json({

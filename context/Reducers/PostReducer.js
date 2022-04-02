@@ -1,7 +1,13 @@
+import Cookies from "js-cookie";
 export const postInitialState = {
   post: {},
   posts: [],
-  trends: [],
+  trends: []
+  // trends: typeof window === "undefined" ? [] : localStorage.getItem("blog__trends") ? JSON.parse(localStorage.getItem("blog__trends")) : []
+  // trends: typeof window === "undefined" ? [] : localStorage.getItem("blog__trends") ? JSON.parse(localStorage.getItem("blog__trends")) : []
+  // trends: typeof window !== "undefined" ? localStorage.getItem("blog__trends") : [] ? JSON.parse(localStorage.getItem("blog__trends")) : []
+  ,
+  // trends: Cookies.get("blog__trends") ? JSON.parse(Cookies.get("blog__trends")) : [],
   loading: true,
   error: {}
 };
@@ -57,25 +63,12 @@ export const PostReducer = (state = postInitialState, action) => {
         ...state,
         posts: null
       }
-/*
-    case UPDATE_LIKES:
-      return {
-        ...state,
-        posts: state.posts.map((post) =>
-          post._id === payload.id ? { ...post, likes: payload.likes } : post
-        ),
-        loading: false
-      };
-*/
     case "LIKE_POST": 
       return {
         ...state,
         post: {
           post: {
             ...state.post.post,
-            // postData: {...state.post.postData},
-            // postComments: [...state.post.postComments],
-            // likes: [payload, ...state.post.post.likes]
             likes: [payload]
           }
         },
@@ -87,52 +80,64 @@ export const PostReducer = (state = postInitialState, action) => {
         post: {
           post: {
             ...state.post.post,
-            likes: [payload]
-            // postData: {...state.post.postData},
-            // postComments: [...state.post.postComments],
-            // postLikes: state.post.postLikes.filter(posti => posti.user_id !== payload.userId)
+            likes: payload
           },
         },
         loading: false
       };
-    case "LIKE_FEED_POST": {
-      const index = state.posts.findIndex(posti => posti.id === payload.postId);
-      state.posts[index].postLikes.push(payload.postLike);
+    // case "LIKE_COMMENT":
+    //   let commentId = payload.commentId;
+    //   let updatedCommentLikes;
+    //   updatedCommentLikes = state.post.post.comments.map((comment, i) => {
+    //     if (comment._id === commentId) {
+    //       // updatedCommentLikes = state.post.post.comments[i].likes.unshift({ user: req.user.id });
+    //       //*** updatedCommentLikes = state.post.post.comments[i].likes = payload.commentLikes;
+    //       state.post.post.comments[i].likes.unshift({ user: payload.commentLikes });
+    //     };
+    //   });
+    //   return {
+    //     ...state,
+    //     post: {
+    //       post: {
+    //         ...state.post.post,
+    //         comments: [...state.post.post.comments, updatedCommentLikes]
+    //         // comments: updatedCommentLikes -
+    //         // comments: [payload] -
+    //         // update obj in arr
+    //       }
+    //     },
+    //     loading: false
+    //   };
+    case "LIKE_COMMENT":
+      let commentId = payload.commentId;
+      let updatedCommentLikes;
+      state.post.post.comments.map((comment, i) => {
+        if (comment._id === commentId) {
+          // updatedCommentLikes = state.post.post.comments[i].likes.unshift({ user: payload.commentLikes });
+          state.post.post.comments[i].likes.unshift(payload.commentLikes);
+        };
+      });
+
       return {
         ...state,
         loading: false
       };
-    };
-    case "UNLIKE_FEED_POST": {
-      const index = state.posts.findIndex(posti => posti.id === payload.postId);
-      const likeRemoved = state.posts[index].postLikes.filter(
-        postLike => postLike.user_id !== payload.userId
+      // const index = state.post.post.comments.findIndex(comment => comment._id === payload.commentId);
+      // state.post.post.comments[index].likes.unshift({ user: payload.commentLikes });
+      // return {
+      //   ...state,
+      //   loading: false
+      // };
+    case "UNLIKE_COMMENT":
+      const index = state.post.post.comments.findIndex(comment => comment._id === payload.commentId);
+      const likeRemoved = state.post.post.comments[index].likes.filter(
+        like => like.user !== payload.userId
       );
-      state.posts[index].postLikes = likeRemoved;
+      state.post.post.comments[index].likes = likeRemoved;
       return {
         ...state,
         loading: false
       };
-    };
-    case "LIKE_COMMENT": {
-      const index = state.post.postComments.findIndex(comment => comment.id === payload.commentId);
-      state.post.postComments[index].commentLikes.push(payload.likeComment);
-      return {
-        ...state,
-        loading: false
-      };
-    };
-    case "UNLIKE_COMMENT": {
-      const index = state.post.postComments.findIndex(comment => comment.id === payload.commentId);
-      const likeRemoved = state.post.postComments[index].commentLikes.filter(
-        commentLike => commentLike.user_id !== payload.userId
-      );
-      state.post.postComments[index].commentLikes = likeRemoved;
-      return {
-        ...state,
-        loading: false
-      };
-    };
     case "CREATE_COMMENT": 
       return {
         ...state,
@@ -206,3 +211,41 @@ export const PostReducer = (state = postInitialState, action) => {
       return state;
   }
 };
+
+
+/*
+let userId = 1;
+let currId = 3;
+let arr1 = {
+  comments: [
+    {
+      id: "c1",
+      userId: "u1",
+      likes: [
+        {
+          id: "c1",
+          user: "u1"
+        },
+        {
+          id: "c1",
+          user: "u2"
+        }
+      ]
+    },
+    {
+      id: "c2",
+      userId: "u1",
+      likes: [
+        {
+          id: "c2",
+          user: "u1"
+        },
+        {
+          id: "c2",
+          user: "u2"
+        }
+      ]
+    }
+  ]
+}
+*/
