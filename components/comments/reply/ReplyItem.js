@@ -35,7 +35,7 @@ const ReplyItem = ({reply}) => {
     } catch (err) {
       console.log(err);
       toast.error("Failed to submit reply edit.")
-      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      // if (!Cookies.get("blog__isLoggedIn")) router.push("/")
     }
   };
   
@@ -50,7 +50,7 @@ const ReplyItem = ({reply}) => {
     } catch (err) {
       console.log(err);
       toast.error("Failed to delete reply.")
-      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      // if (!Cookies.get("blog__isLoggedIn")) router.push("/")
     }
   };
   
@@ -68,7 +68,7 @@ const ReplyItem = ({reply}) => {
     } catch (err) {
       console.log(err);
       toast.error("Failed to like post.")
-      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      // if (!Cookies.get("blog__isLoggedIn")) router.push("/")
       const errors = err.response.data.errors;
       if (errors) {
         errors.forEach(error => toast.error(error.msg));
@@ -86,7 +86,7 @@ const ReplyItem = ({reply}) => {
     } catch (err) {
       console.log(err);
       toast.error("Failed to unlike post.")
-      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      // if (!Cookies.get("blog__isLoggedIn")) router.push("/")
       const errors = err.response.data.errors;
       if (errors) {
         errors.forEach(error => toast.error(error.msg));

@@ -15,7 +15,7 @@ import Comment from '../../components/comments/Comment';
 import CommentForm from '../../components/comments/CommentForm';
 import TrendAside from "../../components/TrendAside";
 
-const Blog = ({ blogData }) => {
+const Blog = ({ blogData, token }) => {
   const { state, dispatch } = useAppContext();
   const { auth, post } = state;
   const router = useRouter();
@@ -33,11 +33,22 @@ const Blog = ({ blogData }) => {
   useEffect(() => {
     console.log("auth.isAuthenticated")
     console.log(auth.isAuthenticated)
-    if (!Cookies.get("blog__isLoggedIn")) return router.push("/")
-    if (!auth.isAuthenticated || auth?.user?.role !== 'user') {
-      console.log("redirecting user to home page")
-      return router.push("/");
-    };
+    if (!token) {
+      console.log("useeffect, logging out")
+      dispatch({type: "LOGOUT"});
+      Cookies.remove("blog__isLoggedIn");
+      Cookies.remove("blog__userInfo");
+      router.push("/");
+    }
+    // TODO: if no posts -- then keep status to isloading
+    // if (!Cookies.get("blog__isLoggedIn")) {
+    //   console.log("cannot find loggin toekn")
+    //   return router.push("/")
+    // };
+    // if (!auth.isAuthenticated || auth?.user?.role !== 'user') {
+    //   console.log("redirecting user to home page")
+    //   return router.push("/");
+    // };
     let validJson = isValidJSONString(blogData.text);
     if (validJson) {
       setParsedBlocks(JSON.parse(blogData.text));
@@ -240,9 +251,11 @@ const Blog = ({ blogData }) => {
 export default Blog;
 export const getServerSideProps = async (context) => {
   try {
+    let token = context.req.cookies.blog__token;
+    let userInfo = context.req.cookies.blog__userInfo;
+
     let post_id = context.query.slug;
     let initPostInfo = '';
-    // let token = context.req.cookies.blog__token;
     if (context.query.slug !== 'create') {
       // retreive post data
       initPostInfo = await api.get(`/post/${post_id}`, 
@@ -255,17 +268,27 @@ export const getServerSideProps = async (context) => {
       // });
     }
     let initBlog = initPostInfo.data.data;
-
-    // console.log("initPostInfo");
-    // console.log(initPostInfo.data);
+    // if (!token) {
+    //   console.log("token is expired, emoveing logged in coolie")
+    //   context.res.setHeader(
+    //     "Set-Cookie", [
+    //     // `blog__token=deleted; Max-Age=0`,
+    //     `blog__isLoggedIn=deleted; Max-Age=0`,
+    //     `blog__userInfo=deleted; Max-Age=0`]
+    //   );
+    // };
 
     return {
-      props: { blogData: initBlog ? initBlog.postData : '' }
+      props: {
+        blogData: initBlog ? initBlog.postData : '',
+        token: token
+      }
     }
   } catch (err) {
     return {
       props: {
-        blogData: ''
+        blogData: '',
+        token: ""
       }
     }
   }

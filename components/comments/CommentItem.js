@@ -25,11 +25,12 @@ const CommentItem = ({ comment, replies }) => {
     reply: ""
   });
   
-  useEffect(() => {
-    if (!Cookies.get("blog__userInfo") || !Cookies.get("blog_isLoggedIn")) {
-      router.push("/")
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!Cookies.get("blog__userInfo") || !Cookies.get("blog_isLoggedIn")) {
+  //     console.log("commentitem - logging out")
+  //     router.push("/")
+  //   }
+  // }, []);
   
   const { text } = editFormData;
   const { reply } = replyFormData;

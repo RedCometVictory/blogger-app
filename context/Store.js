@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, useMemo } from "react";
+import { useHistory } from "next/router";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import cookie from "cookie";
@@ -7,6 +8,7 @@ const Store = createContext();
 
 export const StoreProvider = ({ reducer, initialState, children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const router = useRouter();
   console.log("currentState");
   console.log(state);
 
@@ -79,9 +81,11 @@ export const StoreProvider = ({ reducer, initialState, children }) => {
         console.log(data)
       } else {
         console.log("user auth checked - UNAUTHORIZED")
+        console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         Cookies.remove("blog__isLoggedIn")
         Cookies.remove("blog__userInfo")
         dispatch({type: "LOGOUT"});
+        history.push("/");
       }
     } catch (err) {
       console.error(err)
