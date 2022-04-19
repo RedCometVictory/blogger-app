@@ -1,9 +1,7 @@
 import Link from "next/link";
-
-const NavItem = ({ className, path, icon, text, logout }) => {
-
+const NavItem = ({ className, path, icon, text, ...props }) => {
   return (<>
-    <h3 className={`${className}`} onClick={logout}>
+    <h3 className={`${className}`} onClick={props?.logout}>
       <Link passHref href={path}>
         <div className="aside__item-logo">
           {icon !== undefined ? icon : ""}

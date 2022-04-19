@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { useAppContext } from "context/Store";
+import { toast } from "react-toastify";
 import axios from "axios";
 import api from "@/utils/api"
 import { HiOutlineDesktopComputer, HiViewGridAdd, HiOutlineCode } from "react-icons/hi";
@@ -63,16 +64,19 @@ import image_creditCards from "../img/credit-cards.png";
 //     }
 // });
 
-const Home = ({initGeneral, initTrend, token}) => {
+const Home = ({initGeneral, initTrend, initFollow, token}) => {
   // console.log("initGzeneral - beginning of page")
   // console.log(initGeneral)
   const { state, dispatch } = useAppContext();
-  const { auth, post } = state;
+  const { auth, follow } = state;
   const router = useRouter();
   const [trendList, setTrendList] = useState(initTrend);
+  const [emailList, setEmailList] = useState('');
 
   console.log("trendList")
   console.log(trendList)
+  console.log("initFollow")
+  console.log(initFollow)
   // useEffect(() => {
   //   if (!auth.isAuthenticated && auth.user.role !== 'user') {
   //     setstate
@@ -88,9 +92,29 @@ const Home = ({initGeneral, initTrend, token}) => {
       router.push("/");
     }
     dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+    console.log("HOME: GET_FOLLOW_STATUS")
+    console.log("initFollow")
+    console.log(initFollow)
+    dispatch({type: "GET_FOLLOW_STATUS", payload: initFollow});
     localStorage.setItem("blog__trends", JSON.stringify(initTrend));
+    localStorage.setItem("blog__follows", JSON.stringify(initFollow));
     // Cookies.set("blog__trends", JSON.stringify(initTrend));
   }, []);
+
+  // const onChange = (e) => {
+  //   setEmailList({ ...emailList, [e.target.name]: e.target.value })
+  // }
+
+  const emailSignUpHandler = async (e) => {
+    e.preventDefault();
+    if (typeof emailList === 'string' && emailList.length > 0) {
+      if (emailList.search('@') && emailList.length > 5) {
+        setEmailList('');
+        return toast.success("Thank you for signing-up!");
+      }
+      return toast.error("Please provide a email.");
+    }
+  };
 
   return auth.isAuthenticated && Cookies.get("blog__isLoggedIn") ? (
     <section className="feed__layout">
@@ -100,208 +124,123 @@ const Home = ({initGeneral, initTrend, token}) => {
       </div>
     </section>
   ) : (<>
-    <div className="landing hero">
-      <div className="container">
-        <div className="hero">
-          <div className="heroMain">
-            <h1 className="heroMainHeading">
-              Lorem, Ipsum 
-              <br/>
-              <span>BinaryBlog.</span>
-              <br/>
-              Blog About Anything
-            </h1>
-            <h3 className="heroMainSubText">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, repellat quidem.
+    <div className="landing">
+      <div className="hero">
+        <div className="hero__main">
+          <h1 className="hero__heading">
+            Zuit,{" "}
+            <span><em>The Quick Blog</em></span>
+          </h1>
+          <div className="hero__center">
+            <h3 className="hero__sub-text">
+              Blog, Share; Anything, Anywhere!
             </h3>
-            <ControlGroup type={"email"} placeholder={"Enter Your email"} id={"heroEmailInput"} className={"heroMainInput"} />
-            <Link passHref href={"/register"}>
-              <div className="heroMainSignUp" id="heroMainSignUpButton">
+            <h5 className="hero__email">
+              Sign up to our e-mail list for site updates and promotionals.
+            </h5>
+            <form onSubmit={emailSignUpHandler}>
+              <ControlGroup
+                type={"email"}
+                name={"emailList"}
+                placeholder={"Enter Your email"}
+                id={"heroEmailInput"}
+                className={"hero__input"}
+                onChange={e => setEmailList(e.target.value)}
+                value={emailList}
+              />
+              {/* <Button
+                id={"heroMainSignUpButton"}
+                className={"hero__sign-up"}
+                btnText={"Sign Up"}
+                icon={<AiOutlineArrowRight className={"innerIcon"} size={"25"}/>}
+                type={"submit"}
+              /> */}
+              <button
+                id="heroMainSignUpButton"
+                className="hero__sign-up"
+                type="submit"
+              >
+                Sign Up{" "}<AiOutlineArrowRight className={"innerIcon"} size={"25"}/>
+              </button>
+            </form>
+            {/* <Link passHref href={"/register"}>
+              <div className="hero__sign-up" id="heroMainSignUpButton">
                 <span>
                   Sign Up 
                 </span>
                 <AiOutlineArrowRight className={"innerIcon"} size={"25"}/> 
               </div>
-              {/* <Button id={"heroMainSignUpButton"} className={"heroMainSignUp"} btnText={"Sign Up"} icon={<AiOutlineArrowRight className={"innerIcon"} size={"25"}/>}/>  */}
-            </Link>
+            </Link> */}
           </div>
-          <div className="heroGraphicWrapper">
+          <div className="hero__graphic-wrapper">
+            {/* <img src={HeroGraphic} alt="hero graphic" /> */}
             <Image
               className={"heroGraphic"}
               src={HeroGraphic}
               alt='hero graphic'
-              width={700}
-              height={700}
+              // width={700}
+              // height={700}
+              // layout="fill"
+              layout="responsive"
+              // layout="raw"
             />
           </div>
         </div>
-      </div> 
+      </div>
+      <section className="landing__highlights">
+        <h2 className="header">
+          Simplistic UI - makes blogging easy.
+        </h2>
+        <div className="container">
+          <GridMain>
+            <GridItem icon={<HiOutlineDesktopComputer className={"grid__item-icon"} size={"30"} />}>
+              <h2 className="grid__item-heading">Blogs For Everyone</h2>
+              <p className="grid__item-text">Anyone can be a blogger! Share your thoughts with the world.</p>
+            </GridItem>          
+            <GridItem icon={<HiViewGridAdd className={"grid__item-icon"} size={30} />}>
+              <h2 className="grid__item-heading">Get Inspired</h2>
+              <p className="grid__item-text">Communicate with ease and explore other users&lsquo; blogs.</p>
+            </GridItem>            
+            <GridItem icon={<HiOutlineCode className={"grid__item-icon"} size={30} />} >
+              <h2 className="grid__item-heading">Blogger&lsquo;s Guide</h2>
+              <p className="grid__item-text">Our blogging editor is built with simple use and communication in mind. Making the chore of blogging easy!</p>
+            </GridItem>            
+          </GridMain>
+        </div>
+      </section>
+      <section className="landing__blogs">
+        <h2 className="blog-heading">Express Yourself</h2>
+        <p className="blog-sub-heading"> Pick from an assortment of themes to customize your experience!.</p>
+        <div className="blog-image">
+          <Image
+            className={"grid__item-image"}
+            src={Blog1}
+            alt={""}
+            layout="responsive"
+          />
+          <h3 className="grid__item-heading">Themes</h3>
+          <p className="grid__item-description">New themes to be added soon!
+          </p>
+        </div>
+      </section>
+      <section className="landing__testimonials">
+        <h2 className="heading">What They&#39;ve Said</h2>
+        <div className="testimonial">
+          <h3 className="landingSubHeading">-{" "}Ali Bravo{" "}-</h3>
+          <blockquote className="testimonial-text">
+            <em>
+              &quot;We have been able to cancel so many other subscriptions since using Zuit. There is no more cross-channel confusion and everyone is much more focused.&quot;
+            </em>
+          </blockquote>
+        </div>
+        <Link
+          passHref
+          href={"/register"}
+        >
+          <div className="start">Get started for free.</div>
+        </Link>
+      </section>
     </div>
-    <section className="highlights">
-      <div className="container">
-        <GridMain>
-          <GridItem icon={<HiOutlineDesktopComputer className={"gridItemIcon"} size={"30"} />}>
-            <h2 className="gridItemHeading">Blogs For Everyone</h2>
-            <p className="gridItemText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
-          </GridItem>            
-          <GridItem icon={<HiViewGridAdd className={"gridItemIcon"} size={30} />}>
-            <h2 className="gridItemHeading">Get Inspired</h2>
-            <p className="gridItemText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
-          </GridItem>            
-          <GridItem icon={<HiOutlineCode className={"gridItemIcon"} size={30} />} >
-            <h2 className="gridItemHeading">Developers Guide</h2>
-            <p className="gridItemText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
-          </GridItem>            
-        </GridMain>
-      </div>
-    </section>
-    <section className="topBlogs">
-      <h1 className="landingHeading">Top Blogs</h1>
-      <h2 className="landingSubHeading">Read the Best blogs From around The world.</h2>
-      <div className="container">
-        <GridMain >
-          <GridItem >
-            <Image className="gridItemImage"  width={"550px"} height={"400px"} src={Blog1} alt={""} />
-            <h2 className="gridItemHeading">Theme</h2>
-            <p className="gridItemDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-              Vel nemo eaque deserunt vitae voluptates.
-            </p>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem >
-            <Image className="gridItemImage"  width={"550px"} height={"650px"} src={Blog2} alt={""} />
-            <h2 className="gridItemHeading">Theme</h2>
-            <p className="gridItemDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-              Vel nemo eaque deserunt vitae voluptates.
-            </p>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem >
-            <Image className="gridItemImage"  width={"550px"} height={"400px"} src={Blog3} alt={""} />
-            <h2 className="gridItemHeading">Theme</h2>
-            <p className="gridItemDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            Vel nemo eaque deserunt vitae voluptates.
-            </p>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem >
-            <Image className="gridItemImage" width={"550px"} height={"650px"} src={Blog4} alt={""} />
-            <h2 className="gridItemHeading">Theme</h2>
-            <p className="gridItemDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            Vel nemo eaque deserunt vitae voluptates.
-            </p>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem >
-            <Image className="gridItemImage" width={"550px"} height={"400px"} src={Blog5} alt={""} />
-            <h2 className="gridItemHeading">Theme</h2>
-            <p className="gridItemDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            Vel nemo eaque deserunt vitae voluptates.
-            </p>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem >
-            <Image className="gridItemImage" width={"550px"} height={"650px"} src={Blog6} alt={""} />
-            <h2 className="gridItemHeading">Theme</h2>
-            <p className="gridItemDescription">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-            Vel nemo eaque deserunt vitae voluptates.
-            </p>
-            {/*GridItemLink */}
-          </GridItem>
-        </GridMain>
-      </div>
-    </section>
-    <section className="themes">
-      <h1 className="landingHeading">Themes</h1>
-      <h2 className="landingSubHeading">Try Our Recommented Themes to Customize Your Blog.</h2>
-      <div className="container">
-        <GridMain>
-          <GridItem >
-            <Image className="gridItemImage" width={"300px"} height={"300px"} src={theme_Osaka} alt={""} />
-            <h2 className="gridItemHeading">Theme : Osaka </h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem >
-            <Image className="gridItemImage" width={"300px"} height={"300px"} src={theme_florida} alt={""} />
-            <h2 className="gridItemHeading">Theme : Floria </h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem >
-            <Image className="gridItemImage" width={"300px"} height={"300px"} src={theme_illinois} alt={""} />
-            <h2 className="gridItemHeading">Theme : Illinois </h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem>
-            <Image className="gridItemImage" width={"300px"} height={"300px"} src={theme_texas} alt={""} />
-            <h2 className="gridItemHeading">Theme : Texas </h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem>
-            <Image className="gridItemImage" width={"300px"} height={"300px"} src={theme_tokyo} alt={""} />
-            <h2 className="gridItemHeading">Theme : Tokyo </h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem>
-            <Image className="gridItemImage" width={"300px"} height={"300px"} src={theme_sacramento} alt={""} />
-            <h2 className="gridItemHeading">Theme : Sacramento </h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem >
-            <Image className="gridItemImage" width={"300px"} height={"300px"} src={theme_toronto2} alt={""} />
-            <h2 className="gridItemHeading">Theme : Toronto 2 </h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem>
-            <Image className="gridItemImage" width={"300px"} height={"300px"} src={theme_Osaka} alt={""} />
-            <h2 className="gridItemHeading">Theme : Osaka </h2>
-            {/*GridItemLink */}
-          </GridItem>
-        </GridMain>
-        <Button className={"landingBtn"} btnText={"Start Your Free Trial"}/>
-      </div>
-    </section>
-    <section id="active-register-theme" className="active_reg">
-      <h1 className="landingHeading">Activate Your Themes</h1>
-      <h2 className="landingSubHeading">Begin Increasing Your Reputation to the world today.</h2>
-      <div className="container">
-        <GridMain>
-          <GridItem height={"300px"}>
-            <div className="gridItemImageWrapper">
-              <Image id="globe" className="gridItemImage" width={"100px"} height={"100px"} src={image_localization} alt={""}
-              />
-            </div>
-            <h2 className="gridItemHeading">Localisation</h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem height={"300px"}>
-            <div className="gridItemImageWrapper">
-              <Image id="cash" className="gridItemImage" width="100px" height="100px"  src={image_money} alt={""}
-              />
-            </div>
-            <h2 className="gridItemHeading">Monetization</h2>
-            {/*GridItemLink */}
-          </GridItem>
-          <GridItem height={"300px"}>
-            <div className="gridItemImageWrapper">
-              <Image id="security" className="gridItemImage" width="100px" height="100px" src={image_creditCards} alt={""}
-              />
-            </div>
-            <h2 className="gridItemHeading">Security</h2>
-            {/*GridItemLink */}
-          </GridItem>
-        </GridMain>
-        <Button className={"landingBtn"} btnText={"Start Your Free Trial"}/>
-      </div>
-    </section>
-    <section className="testimonials">
-      <h1 className="landingHeading">What They&#39;ve Said</h1>
-      <div className="testimonial">
-        <h3 className="landingSubHeading">Ali Bravo</h3>
-        <h2 className="testimonialText">We have been able to cancel so many other subscriptions since using BinaryBlog. There is no more cross-channel confusion and everyone is much more focused.</h2>
-      </div>
-      <Button className={"landingBtn"} btnText={"Get Started"}/>
-    </section>
-    {/* <Footer /> */}
   </>)
 }
 export default Home;
@@ -310,21 +249,21 @@ export const getServerSideProps = async (context) => {
   // console.log(context)
   // console.log("+++++++++++++++++++++++++")
   try {
-    console.log(">>>>> context.req.headers.cookie <<<<<")
-    console.log(context.req.headers.cookie)
-    console.log(">>>>> context.req.headers.cookie <<<<<")
+    // console.log(">>>>> context.req.headers.cookie <<<<<")
+    // console.log(context.req.headers.cookie)
+    // console.log(">>>>> context.req.headers.cookie <<<<<")
     // let cookies = context.req.cookies;
     // console.log(">>>>> cookies <<<<<")
     // console.log(cookies)
     // console.log(">>>>> cookies <<<<<")
     let token = context.req.cookies.blog__token;
     let userInfo = context.req.cookies.blog__userInfo;
-    console.log("token")
-    console.log(token)
+    // console.log("token")
+    // console.log(token)
     // console.log("userinfo")
     // console.log(userInfo)
-    console.log("++++++++++++^^^+++++++++++++")
-    console.log("++++++++++++^^^+++++++++++++")
+    // console.log("++++++++++++^^^+++++++++++++")
+    // console.log("++++++++++++^^^+++++++++++++")
 
     // if (!token) {
     //   console.log("token is expired, emoveing logged in coolie")
@@ -407,8 +346,8 @@ export const getServerSideProps = async (context) => {
 
     let inHeaderToken;
     inHeaderToken = cookie.parse(context.req.headers.cookie.blog__token ? context.req.headers.cookie.blog__token || '?' : "");
-    console.log("inHeaderToken")
-    console.log(inHeaderToken)
+    // console.log("inHeaderToken")
+    // console.log(inHeaderToken)
     // cookie.parse(req ? req.headers.cookie || '' : '')
         
     // const initGeneralFeed = await axios({
@@ -428,6 +367,10 @@ export const getServerSideProps = async (context) => {
     const initTrendingFeed = await api.get('/posts/trending', 
     { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
     );
+
+    const initFollow = await api.get('/user/follow/status', 
+    { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    );
     // const initTrendingFeed = await axios({
     //   method: 'get',
     //   url: 'http://localhost:3000/api/posts/trending',
@@ -437,25 +380,20 @@ export const getServerSideProps = async (context) => {
     // console.log(initTrendingFeed.data.data)
     // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
     // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
-    // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
-    // const initPersonalFeed = await axios({
-    //   method: 'get',
-    //   url: 'http://localhost:3000/api/',
-    //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
-    // });
-    // console.log(initPersonalFeed.data.data)
-    
+
     // const initLikeFeed = await axios({
     //   method: 'get',
     //   url: 'http://localhost:3000/api/',
     //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
     // });
+
     // console.log(initLikeFeed.data.data)
     // initGeneral: {posts: [{}, ...], page: #, pages: 12 || 20}
     return {
       props: {
         initGeneral: initGeneralFeed.data.data,
         initTrend: initTrendingFeed.data.data.defaultTrends,
+        initFollow: initFollow.data.data.followers,
         token: token
       }
     }
@@ -476,6 +414,7 @@ export const getServerSideProps = async (context) => {
       props: {
         initGeneral: [],
         initTrend: [],
+        initFollow: [],
         token: ""
       }
     }

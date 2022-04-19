@@ -16,7 +16,7 @@
   }
   &__theme-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     position: absolute;
     top: 90px;
@@ -101,6 +101,15 @@
     }
   }
 }
+
+@media (min-width: 240px) {
+  .palette {
+    &__theme-container {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+}
+
 /*
 #d8dcd6 - sidemenu
 --color-navbar: rgb(211, 214, 222);

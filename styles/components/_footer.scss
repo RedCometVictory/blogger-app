@@ -1,21 +1,32 @@
 .footer {
+  // display: flex;
+  // width: 100%;
+  // bottom: 0;
+  // align-items: center;
+  // background-color: var(--bg-panel);
+  // flex-direction: column;
+  // margin: 2rem 0 2rem 0;
+  // font-size: 0.5rem;
+  // -------------------------
   background: var(--bg-secondary);
   padding-top: 100px;
-  height: 350px;
+  height: 250px;
   z-index: 101;
   position: relative;
-  & Main {
-    height: 200px;
-    @include flex(column, space-between, center);
+  margin: 1rem 0 0 0;
+  &Main {
+    // height: 200px;
+    // @include flex(column, space-between, center);
+    text-align: center;
     .copyRight {
-      @include viewport-size(mobile-phone-small) {
-        text-align: center;
-      }
-      @include viewport-size(mobile-phone-med) {
-        text-align: center;
-      }
-      @include viewport-size(mobile-tablet-med) {
-      }
+      // @include viewport-size(mobile-phone-small) {
+      //   text-align: center;
+      // }
+      // @include viewport-size(mobile-phone-med) {
+      //   text-align: center;
+      // }
+      // @include viewport-size(mobile-tablet-med) {
+      // }
     }
   }
 }

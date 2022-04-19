@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { FaPalette, FaChevronLeft } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi"
 import { MdClose } from "react-icons/md"
-import api from "../utils/api";
+import api from "@/utils/api";
 import { ThemeContext } from 'use-theme-switcher';
 import { useAppContext } from '../context/Store';
 import NavItem from "./UI/NavItem";
@@ -30,12 +30,15 @@ const Navbar = ({openMenu, setOpenMenu}) => {
       // Cookies.remove("token");
       Cookies.remove("blog__isLoggedIn");
       Cookies.remove("blog__userInfo");
+      toast.success("Logged out.");
       router.push("/");
     } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach(error => toast.error(error.msg));
-      }
+      console.error(err);
+      toast.error("Failed to logout.");
+      // const errors = err.response.data.errors;
+      // if (errors) {
+      //   errors.forEach(error => toast.error(error.msg));
+      // }
     }
   };
 

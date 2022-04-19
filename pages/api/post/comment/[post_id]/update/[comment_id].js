@@ -33,27 +33,11 @@ handler.put(async (req, res) => {
 
   await db.connectToDB();
   const user = await User.findById(id).select('_id username avatarImage');
-  // const ownedPost = await Post.findById(post_id, 'user');
-  const ownedPost = await Post.findById(post_id, 'user');
-  
-  // console.log("id")
-  // console.log(id)
-  console.log("ownedPost")
-  console.log(ownedPost)
-  
-  ownedPost.user = ownedPost.user.toString();
-  console.log("ownedPost.user")
-  console.log(ownedPost.user = ownedPost.user.toString())
-  let postId = ownedPost.user.toString();
-  // if (id !== ownedPost.user) {
-  if (id !== postId) {
-    return res.status(403).json({ errors: [{ msg: "You are not the author of this post." }] });
-  }
+
   if (!user) {
     return res.status(403).json({ errors: [{ msg: "No user was found. Please sign in." }] });
   }
 
-  // const postExists = await Post.findById(post_id).select('');
   const postExists = await Post.findById(post_id);
   if (!postExists) {
     return res.status(403).json({ errors: [{ msg: "No post found. "}] });
@@ -62,14 +46,11 @@ handler.put(async (req, res) => {
   console.log("**** BACKEND COMMENT UPDATE ****")
   console.log("postExists")
   console.log(postExists)
-  
-  // console.log("++++++++++ before comment update ++++++++++++")
-  // console.log("postExists.comments")
-  // console.log(postExists.comments)
+
   postExists.comments.map(comment => comment._id === comment_id ? comment.text = text : comment);
   let updatedComment;
   for(let i = 0; i < postExists.comments.length; i++) {
-    if(comment_id === postExists.comments[i]._id) {
+    if(comment_id === postExists.comments[i]._id && postExists.comments[i].user.toString() === id) {
       updatedComment = postExists.comments[i];
     }
   }

@@ -1,5 +1,8 @@
 .trending {
-  margin: 0 0 0 1rem;
+  // margin: 0 0 0 1rem;
+  // visibility: collapse;
+  min-width: 200px;
+  display: none;
   &__card {
     background-color: var(--bg-panel);
     min-width: 170px;
@@ -34,5 +37,27 @@
   }
   &__icon {
     padding: 0 4px 0 0;
+  }
+}
+
+@media (min-width: 280px) {
+  .trending {
+    // width: 72px;
+    // min-width: 72px;
+    // max-width: 180px;
+    // padding: 0 1.2rem 0;
+    // padding: 0 0 0 12px;
+    transition: ease 0.45s;
+    &__card {
+      // min-width: 170px; // ---
+      max-width: 280px;
+    }
+    &__card {}
+  }
+}
+
+@media (min-width: 560px) {
+  .trending {
+    display: initial;
   }
 }

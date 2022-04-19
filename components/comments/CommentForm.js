@@ -25,12 +25,17 @@ const CommentForm = ({prodId}) => {
     e.preventDefault();
     try {
       let text = commentFormData.text;
-      // let servicedData = await postComment(commentFormData);
       
       let res = await api.post(`/post/comment/${post.post._id}`, {text});
-      dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]})
-      setCommentFormData({ text: '' });
-      setCommentForm(false);
+      if (res) {
+        dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]})
+
+        setCommentFormData({ text: '' });
+        setCommentForm(false);
+      } else {
+        console.log("new post comment failure")
+        router.push("/")
+      }
     } catch (err) {
       console.log(err);
       toast.error("Failed to create comment.")
@@ -69,7 +74,6 @@ const CommentForm = ({prodId}) => {
           </div>
           <div className="comment__form-group">
             <textarea
-              // className="form-input"
               className="form-textarea"
               name="text"
               placeholder="Comment here."

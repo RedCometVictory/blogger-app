@@ -1,18 +1,30 @@
 .post {
-  width: 100%;
-  @include flex(column, flex-start, center);
+  width: 100%; // ---
+//   @include flex(column, flex-start, center);
   &__card {
-    max-width: 800px;
+//     max-width: 800px;
     background-color: var(--bg-panel);
-    padding: 1.2rem;
-    border-radius: 12px;
+    padding: 0.6rem;
+    // padding: 1.2rem;
+    // padding: 1.2rem 0;
+    // border-radius: 12px;
     margin: 0 0 1.2rem 0;
     color: var(--color-text);
-    // @include flex(inherit, space-evenly, flex-start);
-    // align-items: flex-start;
+//     // @include flex(inherit, space-evenly, flex-start);
+//     // align-items: flex-start;
   }
   &__content {
-    width: 100%;
+    // width: 100%; //---
+  }
+  &__header {
+    margin: 0 0 16px 0;
+  }
+  &__title-container {
+    // word-break: break-all;
+    a {
+      color: var(--color-text);
+      text-decoration: none;
+    }
   }
   &__title {
     cursor: pointer;
@@ -39,7 +51,8 @@
   }
   &__information {
     // margin: 1rem 0 0 0;
-    @include flex(row, space-between, center);
+    // @include flex(row, space-between, center);
+    @include flex(column, initial, center);
   }
   &__user-sec {
     // background-color: green;
@@ -49,9 +62,13 @@
   &__user-avatar {
     // > div {
       height: 50px;
-      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      max-width: 50px;
+      max-height: 50px;
+      overflow: hidden;
       border-radius: 50%;
-      // background-color: orangered;
+      background-color: var(--bg-primary);
     > span {
       position: unset !important;
     }
@@ -59,15 +76,17 @@
   &__img-avatar {
     // ***!important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
     // width: 800px;
+    cursor: pointer;
     object-fit: contain;
     width: 100% !important;
     position: relative !important;
     height: unset !important;
     min-width: unset !important;
     max-width: 50px !important;
-    border-radius: 50% !important;
+    // border-radius: 50% !important;
   }
   &__user-name {
+    cursor: pointer;
     margin: 0 0 0 1.2rem;
   }
   &__likes-sec {
@@ -75,7 +94,7 @@
   }
   &__thumb-sec {
     @include flex(row, space-evenly, center);
-    padding: 8px 8px 6px;
+    padding: 8px 8px 6px 0;
     &.comments {
       padding: 0 0 0 10px;
     }
@@ -98,21 +117,65 @@
     // @include flex(row, space-around, center);
     display: grid;
     width: 50%;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    column-gap: 10px;
     row-gap: 10px;
   }
-  &__tag-item {
-    font-size: 1.4rem;
-    padding: 2px;
-    border-radius: 6px;
-    margin: 0 6px 0 6px;
-    cursor: pointer;
-    transition: ease-in-out 0.5s;
-    height: min-content;
-    &:hover {
-      color: var(--bg-panel);
-      background-color: var(--color-text);
-      // transition: ease-in-out 0.5s;
+//   &__tag-item {
+//     font-size: 1.4rem;
+//     padding: 2px;
+//     border-radius: 6px;
+//     margin: 0 6px 0 6px;
+//     cursor: pointer;
+//     transition: ease-in-out 0.5s;
+//     height: min-content;
+//     &:hover {
+  //       color: var(--bg-panel);
+  //       background-color: var(--color-text);
+  //       // transition: ease-in-out 0.5s;
+  //     }
+  //   }
+}
+
+@media (min-width: 182px) {
+  .post {
+    &__card {
+      border-radius: 12px;
+    }
+  }
+}
+@media (min-width: 200px) {
+  .post {
+    &__card {
+      padding: 1.2rem;
+      // border-radius: 12px;
+    }
+  }
+}
+
+@media (min-width: 240px) {
+  .post {
+    &__card {
+      padding: 1.2rem;
+      // border-radius: 12px;
+    }
+  }
+}
+
+@media (min-width: 400px) {
+  .post {
+    &__card {
+      // padding: 1.2rem;
+      // border-radius: 1.2rem;
+    }
+    &__information {
+      @include flex(row, space-between, center);
+    }
+    &__thumb-sec {
+      padding: 8px 8px 6px;
+    }
+    &__tags {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     }
   }
 }

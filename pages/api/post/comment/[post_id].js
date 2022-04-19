@@ -21,14 +21,14 @@ handler.post(async (req, res) => {
   // *** convert arrays to strings to make readable client side
   const { id } = req.user;
   const { post_id } = req.query;
-  console.log("BACKEND - creating coment")
+  // console.log("BACKEND - creating coment")
   
-  console.log("req.user")
-  console.log(req.user)
-  console.log("req.query")
-  console.log(req.query)
-  console.log("req.body")
-  console.log(req.body)
+  // console.log("req.user")
+  // console.log(req.user)
+  // console.log("req.query")
+  // console.log(req.query)
+  // console.log("req.body")
+  // console.log(req.body)
   // let newText;
   // if (req.body) {
   //   // if (req.body.text) {
@@ -52,10 +52,10 @@ handler.post(async (req, res) => {
   // const user = await User.findById(id).select('-password');
   const user = await User.findById(id).select('_id username avatarImage');
   
-  console.log("text")
-  console.log(text)
-  console.log("user")
-  console.log(user)
+  // console.log("text")
+  // console.log(text)
+  // console.log("user")
+  // console.log(user)
 
   const newComment = {
     user: id,

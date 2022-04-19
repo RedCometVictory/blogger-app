@@ -7,19 +7,32 @@ const Output = dynamic(() => import("editorjs-react-renderer"), { ssr: false });
 import Blocks from "editorjs-blocks-react-renderer";
 import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
-import axios from 'axios';
 import api from "@/utils/api";
-import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
+import { FaRegThumbsUp, FaRegThumbsDown, FaUserFriends } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Comment from '../../components/comments/Comment';
 import CommentForm from '../../components/comments/CommentForm';
 import TrendAside from "../../components/TrendAside";
+import Spinner from "../../components/Spinner";
 
 const Blog = ({ blogData, token }) => {
+  console.log("blogData")
+  console.log(blogData)
   const { state, dispatch } = useAppContext();
-  const { auth, post } = state;
+  const { auth, post, follow } = state;
   const router = useRouter();
   let [parsedBlocks, setParsedBlocks] = useState();
+  const [setConfirmDelete, isSetConfirmDelete] = useState(false);
+  let [isLoading, setIsLoading] = useState(true);
+  // const [hasMounted, setHasMounted] = useState(false);
+  let isCurrentlyFollowing;
+
+  let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id);
+  isCurrentlyFollowing = followResult?.length > 0;
+  console.log("isCurrentlyFollowing")
+  console.log(isCurrentlyFollowing)
+
+  let [showFollow, setShowFollow] = useState(isCurrentlyFollowing);
 
   const isValidJSONString = (str) => {
     try {
@@ -31,15 +44,13 @@ const Blog = ({ blogData, token }) => {
   }
 
   useEffect(() => {
-    console.log("auth.isAuthenticated")
-    console.log(auth.isAuthenticated)
     if (!token) {
-      console.log("useeffect, logging out")
       dispatch({type: "LOGOUT"});
       Cookies.remove("blog__isLoggedIn");
       Cookies.remove("blog__userInfo");
-      router.push("/");
+      return router.push("/");
     }
+    setIsLoading(false);
     // TODO: if no posts -- then keep status to isloading
     // if (!Cookies.get("blog__isLoggedIn")) {
     //   console.log("cannot find loggin toekn")
@@ -56,6 +67,11 @@ const Blog = ({ blogData, token }) => {
     dispatch({type: "GET_POST_BY_ID", payload: blogData});
   }, []);
 
+  // useEffect(() => {
+  //   setHasMounted(true);
+  // }, []);
+  
+  // if (!hasMounted) return null;
   // parent class is blog__text
   const blocksConfig={
     code: {
@@ -95,40 +111,110 @@ const Blog = ({ blogData, token }) => {
     }
   };
 
+  const followHandler = async (id) => {
+    try {
+      let res = await api.post(`/user/follow/${blogData.user}`);
+      if (res) {
+        dispatch({type: "FOLLOW_USER", payload: res.data.data.followUser});
+        // localStorage.setItem("blog__follows", JSON.stringify(follow.followers));
+        console.log("^^^^^ FOLLOW_USER ^^^^^")
+        console.log(res.data.data.followUser);
+        // set to false
+        setShowFollow(!showFollow);
+        toast.success("User followed.");
+      } else {
+        toast.error("Failed to follow user.")  
+      }
+    } catch (err) {
+      toast.error("Failure to follow user.");
+    }
+  };
+  
+  const unFollowHandler = async (id) => {
+    try {
+      let res = await api.put(`/user/follow/unfollow?user_id=${blogData.user}`);
+      if (res) {
+        dispatch({type: "UNFOLLOW_USER", payload: res.data.data.followers});
+        // localStorage.setItem("blog__follows", JSON.stringify(follow.followers));
+        setShowFollow(!showFollow);
+        toast.success("User unfollowed!");
+      } else {
+        toast.error("Failed to unfollow user.")
+      };
+    } catch (err) {
+      toast.error("Failure to follow user.");
+    }
+  };
+
   const likeHandler = async (id) => {
     try {
       let res = await api.post(`/post/like/${blogData._id}`);
-      dispatch({type: "LIKE_POST", payload: res.data.data.likes});
+      if (res) {
+        dispatch({type: "LIKE_POST", payload: res.data.data.likes});
       
-      toast.success("Post liked!")
-    } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach(error => toast.error(error.msg));
+        toast.success("Post liked!")
+      } else {
+        console.log("commnet like")
+        toast.error("Failed to like post.")  
       }
+    } catch (err) {
+      toast.error("Failure to like blog post.");
     }
   };
   
   const unLikeHandler = async (id) => {
     try {
       let res = await api.put(`/post/unlike/${blogData._id}`);
-      dispatch({type: "UNLIKE_POST", payload: res.data.data.likes});
-      toast.success("Post unliked!")
+      if (res) {
+        dispatch({type: "UNLIKE_POST", payload: res.data.data.likes});
+
+        toast.success("Post unliked!")
+      } else {
+        toast.error("Failed to unlike blog post.")
+      };
     } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach(error => toast.error(error.msg));
-      }
+      toast.error("Failure to unlike blog post.");
+    }
+  };
+  
+  const onDeleteHandler = async (id) => {
+    console.log("deleting blog... please wait...");
+    try {
+      setIsLoading(true);
+      // dispatch({type: "", payload})
+      await api.delete(`/post/${blogData._id}`)
+      toast.success("Deleted post!")
+      router.push("/")
+      console.log("deleted post...");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete post.")
+      setIsLoading(false);
     }
   };
 
-  // <section className="feed__layout">
-  //   <div className="container feed-container">
-  //       <Feed />
-  //       <TrendAside />
-  //   </div>
-  // </section>
-  return (<>
+  const DeleteModal = () => {
+    return (
+      <div className="blog__delete-modal">
+        <div className="comment__btns">
+          <div className="comment__delete-confirm">
+            <div>Delete post? Are you sure?</div>
+              <div className="comment__delete-btns">
+                <button className="btns del-primary" onClick={e => onDeleteHandler(blogData._id)}>Yes</button>
+                <button className="btns del-secondary" onClick={() => isSetConfirmDelete(false)}>No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  return isLoading ? (
+    <Spinner />
+  ) : (<>
+    {setConfirmDelete && (
+      <DeleteModal />
+    )}
     <div className="blog container">
       <section className="blog__page">
         {blogData && blogData.coverImage && (
@@ -149,33 +235,81 @@ const Blog = ({ blogData, token }) => {
             <h2>{blogData.title}</h2>
             <div className="blog__user-info">
               {blogData.avatarImage && (
-                <div className="blog__image-avatar">
-                  <Image
-                    className={"blog__img"}
-                    src={blogData.avatarImage}
-                    fill="layout"
-                    alt="user avatar"
-                    // width={500}
-                    // height={250}
-                    layout="fill"
-                    // image is stretched, apply custom css to fix
-                  />
-                </div>
+                <Link
+                  passHref
+                  href={`/profile/${blogData?.user}`}
+                >
+                  <div className="blog__image-avatar">
+                    <Image
+                      className={"blog__img"}
+                      src={blogData.avatarImage}
+                      fill="layout"
+                      alt="user avatar"
+                      // width={500}
+                      // height={250}
+                      layout="fill"
+                      // image is stretched, apply custom css to fix
+                    />
+                  </div>
+                </Link>
               )}
               <div className="blog__author">
-                {/* <span><em>Written By: {`${auth.user.firstName} ${auth.user.lastName}`}</em></span> */}
-                <span><em>Written By: {`${blogData.username}`}</em></span>
+                <span>
+                  <em>Written By:{" "}
+                    <Link
+                      className="blog__auth-name"
+                      passHref
+                      href={`/profile/${blogData?.user}`}
+                    >
+                      {`${blogData.username}`}
+                    </Link>
+                  </em>
+                </span>
               </div>
             </div>
             <div className="blog__options">
-              {auth.isAuthenticated && auth?.user?._id === blogData?.user && (
-                <Link
-                  passHref
-                  href={`/posts/f/update/${blogData._id}`}
-                >
-                  <button className="btn btn-secondary">Edit</button>
-                </Link>
-              )}
+              <div className="blog__option-btns">
+                {auth.isAuthenticated && auth?.user?._id === blogData?.user ? (<>
+                  <Link
+                    passHref
+                    href={`/posts/f/update/${blogData._id}`}
+                  >
+                    <button className="btn btn-secondary">Edit</button>
+                  </Link>
+                    <div className="delete">
+                      <button className="btn btn-secondary" onClick={() => isSetConfirmDelete(true)}>Delete</button>
+                    </div>
+                </>) : showFollow ? (
+                  <div className="blog__follow menu">
+                    <button className="btn btn-secondary" onClick={() => unFollowHandler()}>
+                      Unfollow
+                    </button>
+                  </div>
+                ) : (
+                  <div className="blog__follow menu">
+                    <button className="btn btn-secondary" onClick={() => followHandler()}>
+                      Follow
+                    </button>
+                  </div>
+                )}
+              </div>
+              {/* {auth?.user?._id === blogData?.user ? (
+            <>
+            <div className=""></div>
+            </>
+          ) : showFollow ? (
+            <div className="blog__follow">
+              <button className="btn btn-secondary" onClick={() => unFollowHandler()}>
+                Unfollow
+              </button>
+            </div>
+          ) : (
+            <div className="blog__follow">
+              <button className="btn btn-secondary" onClick={() => followHandler()}>
+                Follow
+              </button>
+            </div>
+          )} */}
               <div className="comment__options blog-header">
                 <div className="comment__thumbs">
                   <div className="thumb" onClick={() => likeHandler()}>
@@ -219,28 +353,47 @@ const Blog = ({ blogData, token }) => {
         <div className="blog__author blog-block">
           <div className="blog__author-block">
             {blogData.avatarImage && (
-              <div className="blog__image-avatar">
-                <Image
-                  className={"blog__img"}
-                  src={blogData.avatarImage}
-                  fill="layout"
-                  alt="user avatar"
-                  // width={500}
-                  // height={250}
-                  layout="fill"
-                  // image is stretched, apply custom css to fix
-                />
-              </div>
+              <Link
+                passHref
+                href={`/profile/${blogData?.user}`}
+              >
+                <div className="blog__image-avatar">
+                  <Image
+                    className={"blog__img"}
+                    src={blogData.avatarImage}
+                    fill="layout"
+                    alt="user avatar"
+                    layout="fill"
+                  />
+                </div>
+              </Link>
             )}
-            <div className="author-name">
-              {blogData.username}
+            <Link
+              passHref
+              href={`/profile/${blogData?.user}`}
+            >
+              <div className="author-name">
+                {blogData.username}
+              </div>
+            </Link>
+          </div>
+          {auth?.user?._id === blogData?.user ? (
+            <>
+            <div className=""></div>
+            </>
+          ) : showFollow ? (
+            <div className="blog__follow">
+              <button className="btn btn-secondary" onClick={() => unFollowHandler()}>
+                Unfollow
+              </button>
             </div>
-          </div>
-          <div className="blog__follow">
-            <button className="btn btn-secondary">
-              Follow
-            </button>
-          </div>
+          ) : (
+            <div className="blog__follow">
+              <button className="btn btn-secondary" onClick={() => followHandler()}>
+                Follow
+              </button>
+            </div>
+          )}
           <div className="joined">Joined {blogData?.createdAt?.slice(0, 10)}</div>
         </div>
         <TrendAside />

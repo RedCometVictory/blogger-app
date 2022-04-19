@@ -29,7 +29,7 @@ export const StoreProvider = ({ reducer, initialState, children }) => {
     // } else {
     //   console.log("blog__token = false")
     // }
-    checkUserLoggedIn()
+    // checkUserLoggedIn();
     if (Cookies.get("blog__token")) {
       // Cookies.set("blog__isLoggedIn", true);
     };
@@ -58,6 +58,8 @@ export const StoreProvider = ({ reducer, initialState, children }) => {
       // Cookies.set("blog__userInfo", JSON.stringify(state.auth.user), {expires: 7, sameSite: 'strict'});
       // Cookies.set("blog__isLoggedIn", true);
       Cookies.set("blog__userInfo", JSON.stringify(state.auth.user));
+      localStorage.setItem("blog__follows", JSON.stringify(state.follow.followers));
+      // checkUserLoggedIn()
 
       // cookie.parse();
       // localStorage.setItem("blog__auth", JSON.stringify(state.auth.user));

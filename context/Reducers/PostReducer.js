@@ -2,12 +2,7 @@ import Cookies from "js-cookie";
 export const postInitialState = {
   post: {},
   posts: [],
-  trends: []
-  // trends: typeof window === "undefined" ? [] : localStorage.getItem("blog__trends") ? JSON.parse(localStorage.getItem("blog__trends")) : []
-  // trends: typeof window === "undefined" ? [] : localStorage.getItem("blog__trends") ? JSON.parse(localStorage.getItem("blog__trends")) : []
-  // trends: typeof window !== "undefined" ? localStorage.getItem("blog__trends") : [] ? JSON.parse(localStorage.getItem("blog__trends")) : []
-  ,
-  // trends: Cookies.get("blog__trends") ? JSON.parse(Cookies.get("blog__trends")) : [],
+  trends: typeof window === "undefined" ? [] : localStorage.getItem("blog__trends") ? JSON.parse(localStorage.getItem("blog__trends")) : [],
   loading: true,
   error: {}
 };
@@ -21,9 +16,9 @@ export const PostReducer = (state = postInitialState, action) => {
         ...state,
         post: {
           posts: payload.posts,
-          trends: payload.trends
+          trends: payload.trends,
+          loading: false
         },
-        loading: false
       };
     case "GET_POST_BY_ID":
       return {
@@ -31,9 +26,9 @@ export const PostReducer = (state = postInitialState, action) => {
         post: {
           post: payload,
           posts: [...state.post.posts],
-          trends: [...state.post.trends]
+          trends: [...state.post.trends],
+          loading: false
         },
-        loading: false
       };
     case "CREATE_POST":
       return {
@@ -45,17 +40,18 @@ export const PostReducer = (state = postInitialState, action) => {
       return {
         ...state,
         post: {
+          // ...state.post,
           postData: payload,
           postComments: [...state.post.postComments],
-          postLikes: [...state.post.postLikes]
+          postLikes: [...state.post.postLikes],
+          loading: false
         },
-        loading: false
       };
     case "CLEAR_POST":
       return {
         ...state,
         post: null,
-        // loading: false
+        loading: false
       };
 
     case "CLEAR_FEED_POSTS":
@@ -67,23 +63,25 @@ export const PostReducer = (state = postInitialState, action) => {
       return {
         ...state,
         post: {
+          ...state.post,
           post: {
             ...state.post.post,
-            likes: [payload]
-          }
+            likes: payload
+          },
+          loading: false
         },
-        loading: false
       };
     case "UNLIKE_POST": 
       return {
         ...state,
         post: {
+          ...state.post,
           post: {
             ...state.post.post,
             likes: payload
           },
+          loading: false
         },
-        loading: false
       };
     // case "LIKE_COMMENT":
     //   let commentId = payload.commentId;
@@ -120,7 +118,10 @@ export const PostReducer = (state = postInitialState, action) => {
 
       return {
         ...state,
-        loading: false
+        post: {
+          ...state.post,
+          loading: false
+        },
       };
       // const index = state.post.post.comments.findIndex(comment => comment._id === payload.commentId);
       // state.post.post.comments[index].likes.unshift({ user: payload.commentLikes });
@@ -136,18 +137,22 @@ export const PostReducer = (state = postInitialState, action) => {
       state.post.post.comments[index].likes = likeRemoved;
       return {
         ...state,
-        loading: false
+        post: {
+          ...state.post,
+          loading: false
+        },
       };
     case "CREATE_COMMENT": 
       return {
         ...state,
         post: {
+          ...state.post,
           post: {
             ...state.post.post,
             comments: [payload, ...state.post.post.comments],
+            loading: false
           }
         },
-        loading: false
       };
     case "UPDATE_COMMENT":
       // state.post.post.comments.map(comment => comment._id === payload.comment._id ? comment = payload.updatedPostComment : comment);
@@ -156,12 +161,13 @@ export const PostReducer = (state = postInitialState, action) => {
       return {
         ...state,
         post: {
+          ...state.post,
           post: {
             ...state.post.post,
             comments: postComments
-          }
+          },
+          loading: false
         },
-        loading: false
       };
 
     case "DELETE_COMMENT":
@@ -171,12 +177,13 @@ export const PostReducer = (state = postInitialState, action) => {
       return {
        ...state,
        post: {
+         ...state.post,
          post: {
            ...state.post.post,
            comments: commentRemoved
-         }
+         },
+          loading: false
        },
-       loading: false
       };
     case "DELETE_FEED_POST":
       return {

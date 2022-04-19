@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import api from "@/utils/api";
 import { useRouter } from "next/router";
@@ -6,7 +6,6 @@ import { useAppContext } from 'context/Store';
 import { toast } from "react-toastify";
 import { FaCaretUp, FaCaretDown, FaRegThumbsUp, FaRegThumbsDown, FaRegWindowClose } from "react-icons/fa";
 import ReplyItem from './reply/ReplyItem';
-import { postComment } from "@/utils/formDataServices";
 import Cookies from 'js-cookie';
 
 const CommentItem = ({ comment, replies }) => {
@@ -24,14 +23,7 @@ const CommentItem = ({ comment, replies }) => {
   const [replyFormData, setReplyFormData] = useState({
     reply: ""
   });
-  
-  // useEffect(() => {
-  //   if (!Cookies.get("blog__userInfo") || !Cookies.get("blog_isLoggedIn")) {
-  //     console.log("commentitem - logging out")
-  //     router.push("/")
-  //   }
-  // }, []);
-  
+
   const { text } = editFormData;
   const { reply } = replyFormData;
 
@@ -65,14 +57,20 @@ const CommentItem = ({ comment, replies }) => {
   const submitEditHandler = async (e) => {
     e.preventDefault();
     try {
+      console.log("comment edit")
       let text = editFormData.text;
-  
       let res = await api.put(`/post/comment/${post.post._id}/update/${comment._id}`, {text});
-  
-      dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment})
-      // setEditFormData({ text: '' });
-      showEditForm(false);
+      
+      if (res) {
+        dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment})
+        // setEditFormData({ text: '' });
+        showEditForm(false);
+      } else {
+        console.log("commnet reply edit redirect")
+        router.push("/")
+      }
     } catch (err) {
+      console.log("comment edit - err");
       console.log(err);
       toast.error("Failure to submit reply edit.")
       if (!Cookies.get("blog__isLoggedIn")) router.push("/")
@@ -83,12 +81,16 @@ const CommentItem = ({ comment, replies }) => {
     e.preventDefault();
     try {
       let text = replyFormData.reply;
-  
       let res = await api.post(`/post/comment/${post.post._id}/reply/${comment._id}`, {text});
-  
-      dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]})
-      setReplyFormData({ reply: '' });
-      showReplyForm(false);
+      
+      if (res) {
+        dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]})
+        setReplyFormData({ reply: '' });
+        showReplyForm(false);
+      } else {
+        console.log("commnet reply redirect")
+        router.push("/")
+      }
     } catch (err) {
       console.log(err);
       toast.error("Failed to submit reply.")
@@ -99,32 +101,35 @@ const CommentItem = ({ comment, replies }) => {
   const likeHandler = async (id) => {
     try {  
       let res = await api.post(`/post/comment/${post.post._id}/like/${id}`);
-      dispatch({type: "LIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes}});
-      
-      toast.success("Post liked!")
+      if (res) {
+        dispatch({type: "LIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes}});
+
+        toast.success("Post liked!")
+      } else {
+        console.log("commnet like")
+        toast.error("Failed to like post.")  
+      }
     } catch (err) {
       console.error(err)
       toast.error("Unable to like post.")
       if (!Cookies.get("blog__isLoggedIn")) router.push("/");
-      // const errors = err.response.data.errors;
-      // if (errors) {
-        //   errors.forEach(error => toast.error(error.msg));
-        // }
-      }
-    };
+    }
+  };
     
-    const unLikeHandler = async (id) => {
-      try {
-        let res = await api.put(`/post/comment/${post.post._id}/unlike/${id}`);
-        dispatch({type: "UNLIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes, userId: auth.user._id}});
+  const unLikeHandler = async (id) => {
+    try {
+      let res = await api.put(`/post/comment/${post.post._id}/unlike/${id}`);
+      if (res) {
+        dispatch({type: "UNLIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes, userId: auth?.user._id}});
+
         toast.success("Post unliked!")
-      } catch (err) {
-        toast.error("Unable to unlike post.")
-        if (!Cookies.get("blog__isLoggedIn")) router.push("/");
-      // const errors = err.response.data.errors;
-      // if (errors) {
-      //   errors.forEach(error => toast.error(error.msg));
-      // }
+      } else {
+        console.log("comment unlike")
+        toast.error("Failed to unlike post.")
+      }
+    } catch (err) {
+      toast.error("Unable to unlike post.")
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/");
     }
   };
   
@@ -193,7 +198,7 @@ const CommentItem = ({ comment, replies }) => {
                 cols="30" rows="5"
                 maxLength={420}
                 aria-required="true" 
-                required="true"
+                required
               ></textarea>
             </div>
           </form>

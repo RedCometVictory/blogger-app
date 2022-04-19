@@ -9,8 +9,8 @@ export default class MyDocument extends Document {
         </Head>
         <body>
           <ThemeScriptTag
-            defaultDarkTheme="dark" 
-            defaultLightTheme="light"
+            defaultDarkTheme="theme-dark" 
+            defaultLightTheme="theme-light"
             themeStorageKey='blog__theme'
           />
           <Main />

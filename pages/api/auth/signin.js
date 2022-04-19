@@ -15,12 +15,12 @@ const handler = nc({onError, onNoMatch});
 handler.post(async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(req.body)
+  // console.log(req.body)
   await db.connectToDB();
-  console.log("user db")
+  // console.log("user db")
   let user = await User.findOne({ email });
   // let user = await User.findOne({ email }).select('-password');
-  console.log(user)
+  // console.log(user)
   // retursn user._id
   if (!user) {
     return res.status(403).json({ errors: [{ msg: "Invalid credentials." }] });
@@ -37,13 +37,13 @@ handler.post(async (req, res) => {
   const cookieOptions = accessTokenCookieOptions();
 
   if (user.password) {
-    console.log(user.password)
+    // console.log(user.password)
     user.password = undefined;
-    console.log("==============")
-    console.log(user.password)
+    // console.log("==============")
+    // console.log(user.password)
   }
-  console.log("user - final check")
-  console.log(user)
+  // console.log("user - final check")
+  // console.log(user)
 
   // res.setHeader(
   //   "Set-Cookie",
@@ -59,22 +59,22 @@ handler.post(async (req, res) => {
 
   /*
   res.setHeader(
-        'Set-Cookie',
-        cookie.serialize('token', data.jwt, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV !== 'development',
-          maxAge: 60 * 60 * 24 * 7, // 1 week
-          sameSite: 'strict',
-          path: '/',
-        })
-      )
+    'Set-Cookie',
+    cookie.serialize('token', data.jwt, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== 'development',
+        maxAge: 60 * 60 * 24 * 7, // 1 week
+        sameSite: 'strict',
+        path: '/',
+    })
+  )
   */
 
-  console.log("cookie made")
-  console.log("jwt access tokwn")
-  console.log(jwtAccessToken)
-  console.log("cookie options")
-  console.log(cookieOptions)
+  // console.log("cookie made")
+  // console.log("jwt access tokwn")
+  // console.log(jwtAccessToken)
+  // console.log("cookie options")
+  // console.log(cookieOptions)
   // console.log("red")
   // console.log(res)
   // res.cookie('token', jwtAccessToken, cookieOptions);

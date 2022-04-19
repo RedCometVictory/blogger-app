@@ -19,12 +19,12 @@ handler.use(verifAuth, authRole);
 // update Post
 // *** insomnia tested - passed
 handler.post(async (req, res) => {
-  console.log("###req.query###")
-  console.log(req.query)
+  // console.log("###req.query###")
+  // console.log(req.query)
   // const { id } = req.user;
   const { post_id } = req.query;
-  console.log("req.user")
-  console.log(req.user)
+  // console.log("req.user")
+  // console.log(req.user)
 
   await db.connectToDB();
   const post = await Post.findById(post_id);
@@ -42,8 +42,8 @@ handler.post(async (req, res) => {
   await post.save();
   await db.disconnect();
 
-  console.log("likes")
-  console.log(post.likes)
+  // console.log("likes")
+  // console.log(post.likes)
 
   res.status(201).json({
     status: "Post liked.",

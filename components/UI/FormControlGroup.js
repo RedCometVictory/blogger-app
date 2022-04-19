@@ -40,7 +40,7 @@ export const ControlGroupTextField = ({type, placeholder, id, className, name, l
 
 export const ControlGroupFileUpload = ({action,icon}) =>{
   return(<>
-    <label className="control-group-upload signin__label" htmlFor="image_url">Avatar: 
+    <label className="control-group-upload signin__label" htmlFor="image_url"><span>Avatar: </span>
       <input
         type="file"
         accept=".jpeg, .jpg, .png, .gif"

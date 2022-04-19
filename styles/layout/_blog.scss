@@ -7,7 +7,7 @@
   }
   &__image {
     width: 100%;
-    height: 260px;
+    max-height: 260px;
     overflow: hidden;
     // ensure image stays within container
     // margin: 1rem 0 1rem 0;
@@ -20,9 +20,11 @@
   &__image-avatar {
     // width: 100%;
     // height: 260px;
+    cursor: pointer;
     overflow: hidden;
     height: 40px;
     width: 40px;
+    min-width: 40px;
     max-height: 40px;
     max-width: 40px;
     background-color: var(--bg-primary);
@@ -62,36 +64,65 @@
     width: 100%;
     background-color: var(--bg-panel);
     color: var(--color-text);
-    padding: 2rem;
+    padding: 0.8rem;
+  }
+  &__header {
+    word-wrap: break-word;
+    .header-bio {
+      margin: 16px 0 0 0;
+      // border: 3px dashed yellowgreen;
+    }
   }
   &__user-info {
     @include flex(row, flex-start, center);
     margin: 0.8rem 0 0.8rem 0;
   }
   // ++++++++++++++++ ASIDE +++++++++++++++
+  &__aside {
+    padding: 0 0 0 12px;
+    display: none;
+    // z-index: 400;
+  }
   // author block on blog page
   &__author-block {
     @include flex(row, flex-start, center);
     max-width: 196px;
     .author-name {
+      color: var(--color-text);
+      cursor: pointer;
       margin: 0 0 0 12px;
     }
   }
   &__follow {
     margin: 16px 0;
+    &.menu {
+      display: initial;
+    }
   }
   // ++++++++++++++++ ASIDE +++++++++++++++
   &__author {
-    padding: 0 0 0 2.4rem;
+    color: var(--color-text);
+    padding: 0 0 0 1.4rem;
     &.blog-block {
       background-color: var(--bg-panel);
       border-radius: 6px;
-      margin: 10px 0 0 10px;
+      margin: 10px 0 0 0;
+      // margin: 10px 0 0 10px;
       padding: 12px;
+    }
+    a {
+      // word-wrap: anywhere;
+      word-break: break-all;
+      text-decoration: none;
+      color: var(--color-text);
     }
   }
   &__options {
     margin: 0.6rem 0;
+  }
+  &__option-btns {
+    @include flex(row, space-between, center);
+    max-width: 8rem;
   }
   &__content {
     margin: 4rem 0 4rem 0;
@@ -99,7 +130,8 @@
   &__text {
     // white-space: break-spaces;
     white-space: pre-wrap;
-    font-size: 1.6rem;
+    // font-size: 1.6rem;
+    font-size: 1rem;
     line-height: 1.5;
     font-weight: 600;
     // **************************
@@ -179,25 +211,43 @@
   &__tags {
     margin: 1rem 0 0 0;
     // @include flex(row, space-around, center);
+    // word-wrap: break-word;
     display: grid;
-    width: 50%;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    // width: 50%;
+    // grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
     row-gap: 10px;
   }
   &__tag-item {
-    font-size: 1.4rem;
+    font-size: 1rem;
+    // font-size: 1.4rem;
     padding: 2px;
     border-radius: 6px;
-    margin: 0 6px 0 6px;
+    // margin: 0 12px 0 0px;
     cursor: pointer;
     transition: ease-in-out 0.5s;
     height: min-content;
     text-align: center;
+    word-break: break-all;
+    width: max-content;
     &:hover {
       color: var(--bg-panel);
       background-color: var(--color-text);
       // transition: ease-in-out 0.5s;
     }
+  }
+  &__delete-modal {
+    border-radius: 12px;
+    color: var(--color-text);
+    position: fixed;
+    top: 50%;
+    left: 0%;
+    right: 0%;
+    margin: 0 auto;
+    max-width: 14rem;
+    background-color: var(--bg-primary);
+    z-index: 220;
+    padding: 1rem;
   }
 }
 // ++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -210,7 +260,209 @@
   &__section {
     width: 100%;
     margin: 3rem 0 0;
-    padding: 0 2rem;
+    // padding: 0 2rem;
     color: var(--color-text);
+  }
+  &__form-header {
+    margin: 0 0 1rem 0;
+  }
+  &__content {
+    p {
+      margin: 1rem 0 1rem 0;
+    }
+  }
+}
+
+@media (min-width: 260px) {
+  .blog {
+    &__container {
+      // padding: 2rem;
+    }
+    &__tags {
+      grid-template-columns: 1fr 1fr;
+    }
+    &__tag-item {
+      margin: 0 12px 0 0;
+    }
+  }
+
+  .blogForm {
+    &__section {
+      padding: 0 2rem;
+    }
+  }
+}
+
+@media (min-width: 360px) {
+  .blog {
+    &__tags {
+      width: 50%;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}
+
+@media (min-width: 560px) {
+  .blog {
+    &__aside {
+      display: initial;
+    }
+    &__text {
+      .code-block {
+        width: auto;
+        max-width: 320px;
+        margin: 2rem auto;
+      }
+    }
+    &__tags {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    &__follow {
+      &.menu {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (min-width: 680px) {
+  .blog {
+    &__text {
+      .code-block {
+        width: 360px;
+        max-width: unset;
+        // margin: 2rem auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 720px) {
+  .blog {
+    &__text {
+      .code-block {
+        width: 380px;
+        max-width: unset;
+        // margin: 2rem auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 760px) {
+  .blog {
+    &__text {
+      .code-block {
+        width: 420px;
+        max-width: unset;
+        // margin: 2rem auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 780px) {
+  .blog {
+    &__text {
+      .code-block {
+        width: 440px;
+        max-width: unset;
+        // margin: 2rem auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 800px) {
+  .blog {
+    &__text {
+      .code-block {
+        width: 460px;
+        max-width: unset;
+        // margin: 2rem auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 820px) {
+  .blog {
+    &__text {
+      .code-block {
+        width: 480px;
+        max-width: unset;
+        // margin: 2rem auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 840px) {
+  .blog {
+    &__text {
+      .code-block {
+        width: 500px;
+        max-width: unset;
+        // margin: 2rem auto;
+      }
+    }
+  }
+}
+
+@media (min-width: 860px) {
+  .blog {
+    .code-block {
+      width: 540px;
+      max-width: unset;
+    }
+    &__aside {
+      display: initial;
+    }
+    &__tags {
+      grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+}
+
+@media (min-width: 880px) {
+  .blog {
+    &__text {
+      .code-block {
+        width:560px;
+      }
+    }
+  }
+}
+
+@media (min-width: 920px) {
+  .blog {
+    &__text {
+      .code-block {
+        width:600px;
+      }
+    }
+  }
+}
+
+@media (min-width: 960px) {
+  .blog {
+    &__text {
+      .code-block {
+        width:640px;
+      }
+    }
+  }
+}
+
+@media (min-width: 1000px) {
+  .blog {
+    &__text {
+      .code-block {
+        width: auto;
+        max-width: unset;
+        // margin: 2rem auto;
+      }
+    }
   }
 }

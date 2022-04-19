@@ -1,33 +1,37 @@
-html {
-  box-sizing: border-box;
-  font-size: 62.5%;
-}
+// html {
+//   box-sizing: border-box;
+//   font-size: 62.5%;
+// }
 
-*,
-*::before,
-*::after {
+// *,
+// *::before,
+// *::after {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   width: 100%;
-  font-size: 1.6em;
-  /* height: 100vh; */
+  // font-size: 1.6em;
+  //   /* height: 100vh; */
   background-color: var(--bg-primary);
   transition: 0.5s
+  a {
+    // color: var(--secondary-typeface);
+    color: var(--primary-color);
+    text-decoration: none;
+  }
 }
-a {
-  // color: var(--secondary-typeface);
-  color: var(--primary-color);
-  text-decoration: none;
+
+.root-container {
+  width: 100%;
 }
 
 .main-layout {
-  width: 100%;
+  // width: 100%;
   display: flex;
   // @include flex(row, center, flex-start);
   // text-align: center;
@@ -36,11 +40,13 @@ a {
 
 .main-container {
   // width: 80vw;
-  // width: 100%;
-  width: 100vw;
+  width: 100%;
+  // width: 100vw;
+  // transition: ease-in 0.45s;
   // padding: 0 72px 0 72px;
   // padding: 0 72px 0 84px;
-  padding: 0 12px 0 84px;
+  // padding: 0 12px 0 84px;
+  padding: 0 12px 0 12px;
   // width: 74%;
 }
 
@@ -61,19 +67,45 @@ a {
   // @include viewport-size(mobile-tablet-large) {
   //   width: 1024px;
   // }
-  @include viewport-size(lg) {
-    width: 60%;
-  }
+  // @include viewport-size(lg) {
+  //   width: 60%;
+  // }
 
   .main-aside {
     display: flex;
     align-items: flex-start;
   }
-  &.feed-container {
+  // &.feed-container {
     // @include flex(column, flex-start, flex-start);
     // @include flex(row, flex-start, flex-start);
-  }
+  // }
   // @include viewport-size(xxl) {
   //   max-width: 60%;
   // }
+}
+
+// @media (min-width: 180px) {
+//   .main-container {
+//     padding: 0 12px 0 12px;
+//   }
+// }
+
+// @media (min-width: 220px) {
+//   .main-container {
+//     // width: initial;
+//     // width: 100vw;
+//     // width: 100vw;
+//     // padding: 0 12px 0 12px;
+//     // transition: ease-in 0.45s;
+//   }
+// }
+
+// @media (min-width: 500px) {
+@media (min-width: 620px) {
+  .main-container {
+//     // width: 100vw;
+//     // width: 100vw;
+    padding: 0 12px 0 84px;
+//     // transition: ease-in 0.45s;
+  }
 }

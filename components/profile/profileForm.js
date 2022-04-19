@@ -128,7 +128,7 @@ const ProfileForm = ({initProfile, setProfileForm}) => {
       let servicedData = await createUpdateProfileForm(profileData);
       // console.log("servicedData - profile update")
       // console.log(servicedData)
-      let res = await api.put(`/user/edit/${auth.user._id}`, servicedData);
+      let res = await api.put(`/user/edit/${auth?.user._id}`, servicedData);
       // console.log("profile update response")
       // console.log(res.data.data)
       dispatch({type: "UPDATE_PROFILE", payload: res.data.data.profile});
@@ -150,10 +150,10 @@ const ProfileForm = ({initProfile, setProfileForm}) => {
   /> */}
 
   return (
-    <section className="">
+    <section className="profile__form-wrapper">
       <div className="">
-        <p>Edit user profile and background image can be added here.</p>
-        <form className="profile" onSubmit={Object.keys(profile?.profileData).length === 0 ? submitProfileInfo : submitProfileUpdate}>
+        <p className="profile__form-text">Edit user profile and background image can be added here.</p>
+        <form className="profile__form" onSubmit={Object.keys(profile?.profileData).length === 0 ? submitProfileInfo : submitProfileUpdate}>
           <div className="profile__set 01">
             <ControlGroup
               name={"bio"}

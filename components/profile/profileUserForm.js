@@ -85,18 +85,22 @@ const ProfileUserForm = ({setUserForm}) => {
       setUploading(false);
       setUserForm(false);
     } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach(error => toast.error(error.msg));
-      }
+      // const errors = err.response.data.errors;
+      // if (errors) {
+      //   errors.forEach(error => toast.error(error.msg));
+      // }
+      console.error(err)
+      toast.error("Failed to submit profile update.")
       setUserForm(false);
+      setUploading(false);
     }
   };
 
   return (
-    <section>
-      <div className="">Edit user information. Avatar image can be added / changed here.
-        <form className="profile" onSubmit={submitUserUpdate}>
+    <section className="profile__form-wrapper">
+      <div className="">
+        <p className="profile__form-text">Edit user information. Avatar image can be added / changed here.</p>
+        <form className="profile__form" onSubmit={submitUserUpdate}>
           <div className="profile__set 01">
             <ControlGroup
               name={"firstName"}

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import Link from "next/link";
 import { useAppContext } from "context/Store";
 import { FaRegThumbsUp, FaRegComments } from "react-icons/fa";
@@ -31,13 +30,13 @@ export const TrendAside = () => {
                     <div className="trending__icon">
                       <FaRegThumbsUp />
                     </div>
-                    {topic.comments.length}
+                    {topic.likes.length}
                   </div>
                   <div className="trending__count">
                     <div className="trending__icon">
                       <FaRegComments />
                     </div>
-                    {topic.likes.length}
+                    {topic.comments.length}
                   </div>
                 </div>
               </div>

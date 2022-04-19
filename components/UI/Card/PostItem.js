@@ -11,53 +11,49 @@ export const PostItem = ({post}) => {
     <article className="post post__card">
       <div className="post__content">
         <div className="post__header">
-          <div className="post__title">
+          <div className="">
             <h2>
-              <Link
-                passHref
-                // href={`/posts/update/${post?._id}`}
-                href={`/posts/${post?._id}`}
-              >
-                <div className="">{post.title}</div>
-              </Link>
+              <div className="post__title-container">
+                <Link
+                  passHref
+                  // className="post__title"
+                  // href={`/posts/update/${post?._id}`}
+                  href={`/posts/${post?._id}`}
+                >
+                  {post.title}
+                </Link>
+              </div>
             </h2>
           </div>
         </div>
         <div className="post__info_section">
-          {/* save css used for image */}
-          {/* {post.coverImage.length > 0 && (
-            <div className="post__image">
-              <Image
-                className="post__img"
-                src={post.coverImage}
-                alt="post"
-                placeholder={blur}
-                // width={800}
-                // height={400}
-                // layout="intrinsic"
-                // layout="fixed"
-                // layout="responsive"
-                layout="fill"
-                // objectFit="cover"
-                // unoptimized={true}
-              />
-            </div>
-          )} */}
           <div className="post__information">
             <div className="post__user-sec">
               <div className="post__user-avatar">
                 {post.avatarImage.length > 0 && (
-                  <Image
-                    className="post__img-avatar"
-                    src={post.avatarImage}
-                    alt="avatar"
-                    placeholder={blur}
-                    layout="fill"
-                  />
+                  <Link
+                    passHref
+                    href={`/profile/${post?.user}`}
+                  >
+                    <Image
+                      className="post__img-avatar"
+                      src={post.avatarImage}
+                      alt="avatar"
+                      placeholder={blur}
+                      layout="fill"
+                    />
+                  </Link>
                 )}
               </div>
               <div className="post__user-name">
-                <h5>{post.username}</h5>
+                <Link
+                  passHref
+                  href={`/profile/${post?.user}`}
+                >
+                  <h5>
+                    {post.username}
+                  </h5>
+                </Link>
               </div>
             </div>
             <div className="post__likes-sec">
@@ -68,16 +64,6 @@ export const PostItem = ({post}) => {
                 <div className="post__thumb">
                   <div className="up">
                     <FaRegThumbsUp />
-                  </div>
-                </div>
-              </div>
-              <div className="post__thumb-sec">
-                {/* <div className="post__count">
-                  {post?.likes?.length || 0}
-                </div> */}
-                <div className="post__thumb">
-                  <div className="down">
-                    <FaRegThumbsDown />
                   </div>
                 </div>
               </div>

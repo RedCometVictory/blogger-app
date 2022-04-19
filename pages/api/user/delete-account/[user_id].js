@@ -8,6 +8,7 @@ import { verifAuth, authRole } from '@/utils/verifAuth';
 import { storage, removeOnErr } from '@/utils/cloudinary';
 import db from '@/utils/database';
 import User from '@/models/User';
+import Follow from '@/models/Follow';
 import Post from '@/models/Post';
 import Profile from '@/models/Profile';
 
@@ -191,19 +192,24 @@ handler.delete(async(req, res) => {
   // delete remaining user data
   await Promise.all([
     Post.deleteMany({ user: user_id }),
+    Follow.deleteMany({ follower_id: user_id }),
     Profile.findOneAndRemove({ user: user_id }),
     User.findOneAndRemove({ _id: user_id })
   ]);
   await db.disconnect();
 
   const { token } = req.cookies;
-  if (!token) {
-    return res.status(403).json({ errors: [{ msg: "Unauthorized. Nothing found!" }] });
-  }
+  console.log("deleting account - toekn")
+  console.log(token)
+  // if (!token) {
+  //   return res.status(403).json({ errors: [{ msg: "Unauthorized. Nothing found!" }] });
+  // }
+  // if (token) {
   res.setHeader(
     "Set-Cookie",
     cookie.serialize("token", '', { expires: new Date(1), path: '/' })
   );
+  // };
 
   res.status(200).json({
     status: "All user profile and data deleted."

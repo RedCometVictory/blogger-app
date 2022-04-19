@@ -1,8 +1,11 @@
 .control-group{
-  margin-bottom:10px;
+  margin-bottom:12px;
   .login-field{
+    width: 100%;
     text-align: left;
-    background-color:#f5d8dd;
+    background-color: var(--bg-primary);
+    // background-color:#f5d8dd;
+    color: var(--color-text);
     border: 1px solid #444;
     border-radius: 3px;
     font-size: 15px;
@@ -28,5 +31,30 @@
   }
   &-upload{
     display:block;
+    margin: 0 0 0.75rem 0;
+    input {
+      max-width: 150px;
+    }
+  }
+}
+
+@media (min-width: 230px) {
+  .control-group {
+    &-upload {
+      input {
+        max-width: 170px;
+        // max-width: 150px;
+      }
+    }
+  }
+}
+
+@media (min-width: 260px) {
+  .control-group {
+    &-upload {
+      input {
+        max-width: 170px;
+      }
+    }
   }
 }

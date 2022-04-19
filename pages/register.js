@@ -1,46 +1,35 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAppContext } from "../context/Store";
 import api from "@/utils/api";
-import Navbar from "../components/NavBar";
 import {
   ControlGroup,
-  ControlGroupGender,
   ControlGroupFileUpload,
 } from "../components/UI/FormControlGroup";
-import { Button } from "../components/UI/Button";
-// import SearchBar from "../components/UI/SearchBar";
+import { createUserForm } from "@/utils/formDataServices";
 import { FaUpload } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const Register = () => {
   const { state, dispatch } = useAppContext();
   const router = useRouter();
-  const [error, setError] = useState("");
   const [fileTypeError, setFileTypeError] = useState(false);
   const [fileSizeError, setFileSizeError] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    image_url: "",
-    password: "",
+    firstName: "", lastName: "",
+    username: "", email: "",
+    image_url: "", password: "",
     password2: "",
   });
 
   const { firstName, lastName, username, email, password, password2 } = formData;
 
   useEffect(() => {
-    console.log("state.auth.isAuthenticated");
-    console.log(state.auth.isAuthenticated);
     if (state.auth.isAuthenticated) router.push('/');
   }, []);
 
   const onChange = (e) => {
-    console.log("onchange - formData")
-    console.log(formData)
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -73,43 +62,34 @@ const Register = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("formData")
-    console.log(formData)
     if (password !== password2) {
       toast.error("Passwords do not match!");
       return;
     }
     try {
-      let res = await api.post('/auth/signup', formData);
-      console.log("res.data.data.user - register")
-      console.log(res.data.data.user)
-      
-      console.log("dispatching")
-      dispatch({ type: "REGISTER_SUCCESS", payload: res.data.data.user});
+      let servicedData = await createUserForm(formData);
+      let res = await api.post('/auth/signup', servicedData);
 
+      dispatch({ type: "REGISTER_SUCCESS", payload: res.data.data.user});
       router.push('/');
     } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach(error => toast.error(error.msg));
-      }
+      console.error(err);
+      toast.error("Failed to register user. Check if email or password are valid.")
     }
   };
 
   return (<>
-    <div className="container">
-    </div>
-    <div className="login-body">
+    <div className="login__body">
       <div id="login-id" className="login">
-        <div className="login-screen">
-          <div className="log-sign">
-            <div id="log-sign-top-id" className="log-sign-top">
+        <div className="login__screen">
+          <div className="login__sign">
+            <div id="login__sign-top-id" className="login__sign-top">
               <Link
                 passHref={true}
                 href="/login"
                 data-attr="login"
                 id="log-head-id"
-                className="log-head"
+                className="login__head"
               >
                 <h3 id="log-head-h3">Login</h3>
               </Link>
@@ -118,20 +98,20 @@ const Register = () => {
                 href="/register"
                 data-attr="signUp"
                 id="sign-head-id"
-                className="sign-up-head"
+                className="login__sign-up-head"
               >
                 <h3 id="sign-up-h3">Sign Up</h3>
               </Link>
             </div>
-            <hr className="log-sign-hr" id="log-sign-hr-id" />
+            <hr className="login__sign-hr register-hr" id="log-sign-hr-id" />
           </div>
-          <div className="app-title register-title" id="reg-title-id">
+          <div className="login__app-title register" id="reg-title-id">
             <h1>Register</h1>
           </div>
           <form
-            // method="POST"
             onSubmit={submitHandler}
-            className="registration"
+            // className="registration"
+            className="login__form"
             id="registration-id"
           >
             <ControlGroup
@@ -164,7 +144,6 @@ const Register = () => {
               value={username}
               required={true}
             />
-            {/* <ControlGroupGender /> */}
             <ControlGroup
               name={"email"}
               type={"email"}
@@ -199,9 +178,18 @@ const Register = () => {
               action={handleImageChange}
               icon={<FaUpload size={"25"} />}
             />
-            <button id="btn-reg" className="btn-primary btn-large btn-block" type="submit">
-              Sign Up
-            </button>
+            {fileTypeError || fileSizeError ? (
+              <div className="form__error">
+                File type or size limit exceeded: jpg, jpeg, png, gif only and size must be less than 3mb.
+              </div>
+            ) : (
+              <button id="btn-reg" className="btn btn-primary btn-secondary btn-large btn-block" type="submit">
+                Sign Up
+              </button>
+            )}
+            <p>
+              Already have an account?{" "}<Link passHref href="/login"><span className="form login__link">Login.</span></Link>
+            </p>
           </form>
         </div>
       </div>

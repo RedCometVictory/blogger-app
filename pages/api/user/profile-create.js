@@ -7,7 +7,6 @@ import { verifAuth, authRole } from '@/utils/verifAuth';
 import { storage, removeOnErr } from '@/utils/cloudinary';
 import db from '@/utils/database';
 import User from '@/models/User';
-import Post from '@/models/Post';
 import Profile from '@/models/Profile';
 
 export const config = {
@@ -35,23 +34,15 @@ handler.use(verifAuth, authRole);
 // *** insomnia tested - passed
 handler.use(upload.single('image_url')).post(async(req, res) => {
   const { id } = req.user;
-  // const { user_id } = req.query;
   let { bio, location, themes, website, youtube, facebook, twitter, linkedin, instagram, reddit, github } = req.body;
   let imageUrl = '';
   let imageFilename = '';
   let themesToArr;
 
   await db.connectToDB();
-  // const user = await User.findById(user_id).select("-password");
   const user = await User.findById(id).select("-password");
 
-  console.log("user")
-  console.log(user)
-  // const profileExists = await Profile.findOne({user: user_id}).select("_id");
   const profileExists = await Profile.findOne({user: id}).select("_id");
-
-  console.log("profileExists")
-  console.log(profileExists)
 
   if (!user) {
     if (req.file) {
@@ -80,9 +71,6 @@ handler.use(upload.single('image_url')).post(async(req, res) => {
     themesToArr = themes.split(',').map(theme => '' + theme.trim());
   };
 
-  console.log("themes to array")
-  console.log(themesToArr)
-  
   // ensure only two or less themes exist:
   let savedThemes = [];
   if (themesToArr && themesToArr.length > 2) {
@@ -94,9 +82,6 @@ handler.use(upload.single('image_url')).post(async(req, res) => {
     savedThemes = themesToArr;
   };
 
-  console.log("themes saved")
-  console.log(savedThemes)
-  
   const socialFields = {
     website, youtube, facebook, twitter, linkedin, instagram, reddit, github
   }
@@ -108,7 +93,6 @@ handler.use(upload.single('image_url')).post(async(req, res) => {
   }
 
   const newProfile = await new Profile({
-    // user: user_id,
     user: id,
     bio,
     location,

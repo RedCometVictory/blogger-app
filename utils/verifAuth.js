@@ -13,31 +13,7 @@ const verifAuth = async (req, res, next) => {
   console.log("token");
   console.log(blog__token);
   if (!blog__token) {
-    // console.log("token is expired");
-    // res.setHeader(
-    //   "Set-Cookie",
-    //   cookie.serialize("blog__isLoggedIn", '', { expires: new Date(1), maxAge: -1, path: '/' })
-    // );
-    // return res.setHeader(
-    //   "Set-Cookie", [
-    //     cookie.serialize("blog__token", '', {
-    //       sameSite: "strict",
-    //       secure: process.env.NODE_ENV !== 'development',
-    //       maxAge: -1,
-    //       path: '/',
-    //       httpOnly: true,
-    //       expires: new Date(0)
-    //     }),
-    //     cookie.serialize("blog__isLoggedIn", '', {
-    //       maxAge: -1,
-    //       path: '/',
-    //       expires: new Date(0)
-    //     })
-    //   ]
-    // )
     console.log("token is expired")
-    // Cookies.remove("blog__userInfo")
-    // return res.status(401).json({ errors: [{ msg: "No token. Authorization denied" }] });
     return res.status(401).json({ error: "No token. Authorization denied" });
   };
 

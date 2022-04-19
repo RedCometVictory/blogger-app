@@ -7,10 +7,10 @@
   // ############################################
   &__form {}
   &__form-options {
-    @include flex(row, space-between, center);
+    @include flex(column, space-between, center);
     margin: 16px 0 0 0;
     button {
-      margin: 0 0 1.2rem;
+      margin: 0 0 0.6rem;
     }
   }
   &__form-group {
@@ -52,6 +52,7 @@
   }
   &__buttons {
     @include flex(row, initial, center);
+    margin: 10px 0 0 0;
     .edit {
       margin: 0 6px 0 0;
     }
@@ -85,39 +86,63 @@
   &__card {
     width: 100%;
     padding: 1rem 1rem 1rem;
-    border: 1px solid white;
+    border: 1px solid var(--bg-primary);
     border-radius: 6px;
     margin: 0 0 1.2rem 0;
   }
   &__header {
-    @include flex(row, space-between, center);
+    @include flex(column, space-between, center);
     &.section-title {
       margin: 0 0 0.8rem 0;
     }
+    &.profile {
+      flex-direction: column-reverse;
+    }
+  }
+  &__header-profile {
+    width: 100%;
+    @include flex(column, center, center);
   }
   &__header-info {
-    @include flex(row, flex-start, center);
+    // @include flex(row, flex-start, center);
+    @include flex(column, flex-start, center);
   }
-  // &__username {}
+  &__username {
+    @include flex(column, flex-start, center);
+    &.profile {
+      margin: 0 0 16px 0;
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+    .post-title {
+      cursor: pointer;
+    }
+  }
   // &__buttons {}
   &__image-avatar {
     // width: 100%;
     // height: 260px;
-    overflow: hidden;
     height: 40px;
     width: 40px;
+    min-width: 40px;
     max-height: 40px;
     max-width: 40px;
     background-color: var(--bg-primary);
     border-radius: 50%;
+    overflow: hidden;
     @include flex(row, center, center);
     
     > span {
       position: unset !important;
     }
     &.avatar {
-      margin: 0 16px 0 0;
+      margin: 0 0 16px 0;
     }
+    // &.profile {
+    //   max-height: 40px;
+    //   max-width: 40px;
+    //   object-fit: initial;
+    // }
   }
   &__img {
     // ***!important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
@@ -129,6 +154,9 @@
     height: unset !important;
     max-width: 800px !important;
     z-index: 50;
+    &.profile {
+      object-fit: initial;
+    }
   }
   &__content {
     margin: 1rem 0 0 0;
@@ -140,10 +168,11 @@
   &__reply-section {
     // border: 1px solid white;
     // border-radius: 6px;
-    padding: 0 0 10px 3.5rem;
+    // padding: 0 0 10px 3.5rem;
+    padding: 0;
   }
   &__reply-item {
-    @include flex(row, flex-start, center);
+    @include flex(column, flex-start, center);
     padding: 6px 0 6px;
     border: 1px solid var(--bg-primary);
     border-radius: 6px;
@@ -153,7 +182,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0 0 0 12px;
+    // padding: 0 0 0 12px;
     .avatar {
       margin: 8px 0 8px 0;
     }
@@ -166,7 +195,7 @@
     flex-direction: column;
     align-items: flex-start;
     width: 100%;
-    padding: 0 10px 0 16px;
+    padding: 0 6px 0 6px;
     .username {
       // padding: 0 0 0 16px;
       font-style: italic;
@@ -181,12 +210,9 @@
   &__reply-options {
     display: flex;
     align-items: center;
-  }
-  &__reply-options {
-    display: flex;
-    align-items: center;
     font-size: 26px;
     cursor: pointer;
+    margin: 10px 0 0 0;
     .reply-edit {
       margin: 0 6px 0 0;
       font-size: 16px;
@@ -216,7 +242,8 @@
     margin: 0 16px 0 0;
     cursor: pointer;
     &.list {
-      width: max-content;
+      // width: max-content;
+      width: auto;
       border: 1px solid white;
       border-radius: 6px;
       padding: 2px 4px 4px;
@@ -237,15 +264,114 @@
   }
 }
 
+@media (min-width: 260px) {
+  .comment {
+    &__reply-btn {
+      &.list {
+        width: max-content;
+      }
+    }
+    &__reply-content {
+      // padding: 0 10px 0 16px;
+      padding: 0 10px 0 6px;
+    }
+  }
+}
+@media (min-width: 300px) {
+  .comment {
+    &__form-options {
+      @include flex(row, space-between, center);
+      button {
+        margin: 0 0 1.2rem;
+      }
+    }
+    &__reply-content {
+      padding: 0 10px 0 6px;
+    }
+  }
+}
 
-// comments: [
-//     {
-//       _Id: {},
-//       user: {},
-//       text: {},
-//       username: {},
-//       avatarImage: {},
-//       parentCommentId: {},
-//       createdAt: {}
+@media (min-width: 348px) {
+  .comment {
+    &__buttons {
+      margin: 0;
+    }
+    &__header {
+      @include flex(row, space-between, center);
+    }
+    // &__header-info {
+    //   @include flex(row, flex-start, center);
+    // }
+    // &__image-avatar {
+    //   &.avatar {
+    //     margin: 0 16px 0 0;
+    //   }
+    // }
+  }
+}
+
+// @media (min-width: 360px) {
+@media (min-width: 420px) {
+  .comment {
+    &__reply-item {
+      @include flex(row, flex-start, center);
+    }
+    &__reply-header {
+      padding: 0 0 0 12px;
+    }
+    &__reply-options {
+      margin: 0;
+    }
+    &__image-avatar {
+      &.avatar {
+        margin: 0 6px 0 0;
+        // margin: 0 16px 0 0;
+      }
+    }
+    // &__reply-content {
+    //   padding: 0 10px 0 16px;
+    // }
+    &__header-profile {
+      @include flex(row, space-between, center);
+    }
+    &__header-info {
+      @include flex(row, flex-start, center);
+    }
+    &__reply-section {
+      padding: 0 0 10px 3.5rem;
+    }
+    &__username {
+      @include flex(row, flex-start, center);
+    }
+    &__reply-content {
+      padding: 0 10px 0 16px;
+      // padding: 0 10px 0 16px;
+    }
+  }
+}
+
+@media (min-width: 560px) {
+  .comment {
+    &__reply-section {
+      padding: 0 0 10px 0;
+      // padding: 0 0 10px 3.5rem;
+    }
+//     &__username {
+//       @include flex(row, flex-start, center);
 //     }
-//   ]
+
+  }
+}
+
+@media (min-width: 720px) {
+  .comment {
+    &__reply-section {
+      // padding: 0 0 10px 0;
+      padding: 0 0 10px 3.5rem;
+    }
+//     &__username {
+//       @include flex(row, flex-start, center);
+//     }
+
+  }
+}

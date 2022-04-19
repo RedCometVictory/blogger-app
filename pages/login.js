@@ -1,33 +1,21 @@
 import {useEffect, useRef, useState} from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import api from "@/utils/api";
 import { useAppContext } from "context/Store";
 import { toast } from "react-toastify";
-// import Navbar from "../components/NavBar";
-import { ControlGroup, ControlGroupGender } from "../components/UI/FormControlGroup";
-import {Button} from "../components/UI/Button";
-import api from "@/utils/api";
-// import SearchBar from "../components/UI/SearchBar";
+import { ControlGroup } from "../components/UI/FormControlGroup";
 
 const Login = () => {
   const { state, dispatch } = useAppContext();
   const router = useRouter();
-  // const dispatch = useDispatch();
-  // const userAuth = useSelector(state => state.auth);
-  // const { isAuthenticated } = userAuth;
-  const [error, setError] = useState('');
   const [formData, setFormData] = useState ({
     email: '', password: ''
   });
   
   useEffect(() => {
-    console.log("state.auth.isAuthenticated");
-    console.log(state.auth.isAuthenticated);
-    if (state.auth.isAuthenticated) router.push('/');
+    if (state?.auth?.isAuthenticated) router.push('/');
   }, []);
-  // if (typeof window !== undefined && isAuthenticated) {
-  //   Router.push("/")
-  // };
 
   const { email, password } = formData;
 
@@ -51,27 +39,25 @@ const Login = () => {
     }
   };
 
-  return(<>  
-    <div className="container">
-    </div>
-    <div className="login-body">
+  return(<>
+    <div className="login__body">
       <div id="login-id" className="login">
-        <div className="login-screen">
-          <div className="log-sign">
-            <div id="log-sign-top-id" className="log-sign-top">
-              <Link passHref={true} href="/login" data-attr="login" id="log-head-id" className="log-head">
+        <div className="login__screen">
+          <div className="log__sign">
+            <div id="login__sign-top-id" className="login__sign-top">
+              <Link passHref={true} href="/login" data-attr="login" id="log-head-id" className="login__head">
               <h3 id="log-head-h3">Login</h3>
             </Link>
-            <Link passHref={true} href="/register" data-attr="signUp" id="sign-head-id" className="sign-up-head">
+            <Link passHref={true} href="/register" data-attr="signUp" id="sign-head-id" className="login__sign-up-head">
               <h3 id="sign-up-h3">Sign Up</h3>
             </Link>
             </div>
-          <hr className="log-sign-hr" id="log-sign-hr-id" />
+          <hr className="login__sign-hr login-hr" id="login__sign-hr-id" />
         </div>
-        <div  className="app-title login-title" id="login-title-id">
+        <div  className="login__app-title login-title" id="login-title-id">
           <h1>Login</h1>
         </div>
-        <form onSubmit={signinHandler} className="login-form" id="login-form-id">
+        <form onSubmit={signinHandler} className="login__form" id="login-form-id">
           <ControlGroup
             name={"email"}
             type={"email"}
@@ -92,9 +78,12 @@ const Login = () => {
             value={password}
             required={true}
           />
-          <button id="btn-reg" className="btn-primary btn-large btn-block" type="submit">
+          <button id="btn-reg" className="btn btn-primary btn-secondary btn-large btn-block" type="submit">
             Sign In
           </button>
+          <p>
+            Don&apos;t have an account?{" "}<Link passHref href="/register"><span className="form login__link">Sign up.</span></Link>
+          </p>
         </form>
       </div>
     </div>

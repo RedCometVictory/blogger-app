@@ -10,6 +10,22 @@ export const postComment = (formData) => {
   return data;
 };
 
+export const createUserForm = (formData) => {
+  console.log("servicing creating user form")
+  console.log(formData)
+  let data = new FormData();
+
+  formData.firstName && data.append("firstName", formData.firstName);
+  formData.lastName && data.append("lastName", formData.lastName);
+  formData.username && data.append("username", formData.username);
+  formData.email && data.append("email", formData.email);
+  formData.image_url && data.append("image_url", formData.image_url);
+  formData.password && data.append("password", formData.password);
+  formData.password2 && data.append("password2", formData.password2);
+
+  return data;
+};
+
 export const updateUserForm = (formData) => {
   // console.log("servicing updating user form")
   // console.log(formData)
