@@ -46,10 +46,10 @@ const CommentItem = ({ comment, replies }) => {
   const deleteCommentHandler = async (id) => {
     try {
       await api.delete(`/post/comment/${post.post._id}/delete/${comment._id}`);
-      dispatch({type: "DELETE_COMMENT", payload: id})
+      dispatch({type: "DELETE_COMMENT", payload: id});
     } catch (err) {
       console.error(err);
-      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/");
       toast.error("Failed to delete comment.");
     }
   };
@@ -57,23 +57,18 @@ const CommentItem = ({ comment, replies }) => {
   const submitEditHandler = async (e) => {
     e.preventDefault();
     try {
-      console.log("comment edit")
       let text = editFormData.text;
       let res = await api.put(`/post/comment/${post.post._id}/update/${comment._id}`, {text});
       
       if (res) {
-        dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment})
-        // setEditFormData({ text: '' });
+        dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment});
         showEditForm(false);
       } else {
-        console.log("commnet reply edit redirect")
-        router.push("/")
+        router.push("/");
       }
     } catch (err) {
-      console.log("comment edit - err");
-      console.log(err);
-      toast.error("Failure to submit reply edit.")
-      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      toast.error("Failure to submit reply edit.");
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/");
     }
   };
 
@@ -84,17 +79,15 @@ const CommentItem = ({ comment, replies }) => {
       let res = await api.post(`/post/comment/${post.post._id}/reply/${comment._id}`, {text});
       
       if (res) {
-        dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]})
+        dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]});
         setReplyFormData({ reply: '' });
         showReplyForm(false);
       } else {
-        console.log("commnet reply redirect")
-        router.push("/")
+        router.push("/");
       }
     } catch (err) {
-      console.log(err);
-      toast.error("Failed to submit reply.")
-      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      toast.error("Failed to submit reply.");
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/");
     }
   };
 
@@ -104,14 +97,13 @@ const CommentItem = ({ comment, replies }) => {
       if (res) {
         dispatch({type: "LIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes}});
 
-        toast.success("Post liked!")
+        toast.success("Post liked!");
       } else {
-        console.log("commnet like")
-        toast.error("Failed to like post.")  
+        toast.error("Failed to like post.");  
       }
     } catch (err) {
-      console.error(err)
-      toast.error("Unable to like post.")
+      console.error(err);
+      toast.error("Unable to like post.");
       if (!Cookies.get("blog__isLoggedIn")) router.push("/");
     }
   };
@@ -122,13 +114,13 @@ const CommentItem = ({ comment, replies }) => {
       if (res) {
         dispatch({type: "UNLIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes, userId: auth?.user._id}});
 
-        toast.success("Post unliked!")
+        toast.success("Post unliked!");
       } else {
-        console.log("comment unlike")
-        toast.error("Failed to unlike post.")
+        toast.error("Failed to unlike post.");
       }
     } catch (err) {
-      toast.error("Unable to unlike post.")
+      console.error(err);
+      toast.error("Unable to unlike post.");
       if (!Cookies.get("blog__isLoggedIn")) router.push("/");
     }
   };
@@ -146,10 +138,7 @@ const CommentItem = ({ comment, replies }) => {
                 <Image
                   className={"comment__img"}
                   src={comment.avatarImage}
-                  fill="layout"
                   alt="user avatar"
-                  // width={500}
-                  // height={250}
                   layout="fill"
                   // image is stretched, apply custom css to fix
                 />
@@ -189,7 +178,6 @@ const CommentItem = ({ comment, replies }) => {
             </div>
             <div className="comment__form-group">
               <textarea
-                // className="form-input"
                 className="form-textarea"
                 name="text"
                 placeholder="Comment here."
@@ -211,7 +199,6 @@ const CommentItem = ({ comment, replies }) => {
               <div
                 className="comment__reply-btn list" 
                 onClick={() => isShowReplies(!showReplies)}>
-                {/* onClick={() => showRepliesHandler(true)}> */}
                 {showReplies ? 'Hide' : 'Show'} Replies ({replies?.length ? replies.length : 0})
                 {" "}
                 {showReplies ? (
@@ -223,9 +210,13 @@ const CommentItem = ({ comment, replies }) => {
             )}
             {replies.length > 0 && showReplies && (
               <div className="comment__reply-section">
-                {replies.map(reply => (<>
-                  <ReplyItem reply={reply}/>
-                </>))}
+                {replies?.map((reply, index) => (
+                  <div key={index}>
+                    <ReplyItem
+                      reply={reply}
+                    />
+                  </div>
+                  ))}
               </div>
             )}
             {replyForm && (
@@ -238,7 +229,6 @@ const CommentItem = ({ comment, replies }) => {
                 </div>
                 <div className="comment__form-group">
                   <textarea
-                    // className="form-input"
                     className="form-textarea"
                     name="reply"
                     placeholder="Reply here."
@@ -265,7 +255,6 @@ const CommentItem = ({ comment, replies }) => {
                 <div className="thumb" onClick={() => unLikeHandler(comment._id)}>
                   <FaRegThumbsDown />
                 </div>
-                {/* <div className="">0</div> */}
               </div>
             </div>
           </div>

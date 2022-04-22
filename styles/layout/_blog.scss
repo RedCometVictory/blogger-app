@@ -1,5 +1,4 @@
 .blog {
-  // @include flex(column, initial, center);
   &__page {
     @include flex(column, initial, center);
     width: 100%;
@@ -9,17 +8,13 @@
     width: 100%;
     max-height: 260px;
     overflow: hidden;
-    // ensure image stays within container
-    // margin: 1rem 0 1rem 0;
-    // > div {
     @include flex(row, center, center);
+    display: block;
     > span {
       position: unset !important;
     }
   }
   &__image-avatar {
-    // width: 100%;
-    // height: 260px;
     cursor: pointer;
     overflow: hidden;
     height: 40px;
@@ -37,9 +32,7 @@
   }
   &__img {
     // ***!important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
-    // width: 800px;
     object-fit: contain;
-    // object-fit: none;
     width: 100% !important;
     position: relative !important;
     height: unset !important;
@@ -48,7 +41,6 @@
   }
   &__img-avatar {
     // ***!important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
-    // width: 800px;
     object-fit: contain;
     width: 100% !important;
     position: relative !important;
@@ -70,7 +62,6 @@
     word-wrap: break-word;
     .header-bio {
       margin: 16px 0 0 0;
-      // border: 3px dashed yellowgreen;
     }
   }
   &__user-info {
@@ -81,7 +72,6 @@
   &__aside {
     padding: 0 0 0 12px;
     display: none;
-    // z-index: 400;
   }
   // author block on blog page
   &__author-block {
@@ -107,11 +97,9 @@
       background-color: var(--bg-panel);
       border-radius: 6px;
       margin: 10px 0 0 0;
-      // margin: 10px 0 0 10px;
       padding: 12px;
     }
     a {
-      // word-wrap: anywhere;
       word-break: break-all;
       text-decoration: none;
       color: var(--color-text);
@@ -128,9 +116,7 @@
     margin: 4rem 0 4rem 0;
   }
   &__text {
-    // white-space: break-spaces;
     white-space: pre-wrap;
-    // font-size: 1.6rem;
     font-size: 1rem;
     line-height: 1.5;
     font-weight: 600;
@@ -141,14 +127,12 @@
       border-radius: 2px;
       border: 2px solid var(--color-text);
       color: var(--color-text);
-      // background-color: var(--bg-panel);
       background-color: var(--bg-primary);
       overflow-y: scroll;
       height: 28rem;
       width: 100%;
       padding: 1rem;
       margin: 2rem 0;
-      // scrollbar-width: none;
       scrollbar-color: var(--bg-panel);
       scrollbar-width: thin;
       &::-webkit-scrollbar {
@@ -183,18 +167,12 @@
     }
     .list {
       margin: 1rem 0 1rem 16px;
-      // li {}
     }
     .text-base {
-      // a {}
       .cdx-marker {
         background-color: rgba(247, 254, 38, 0.75);
       }
       .inline-code {
-        // background-color: var(--bg-primary);
-        // padding: 3px 0 3px 3px;
-        // border-radius: 6px;
-        // margin: 0 4px 0 1px;
         background: rgba(250, 239, 240, 0.78);
         color: #b44437;
         padding: 3px 4px;
@@ -210,20 +188,14 @@
   }
   &__tags {
     margin: 1rem 0 0 0;
-    // @include flex(row, space-around, center);
-    // word-wrap: break-word;
     display: grid;
-    // width: 50%;
-    // grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr;
     row-gap: 10px;
   }
   &__tag-item {
     font-size: 1rem;
-    // font-size: 1.4rem;
     padding: 2px;
     border-radius: 6px;
-    // margin: 0 12px 0 0px;
     cursor: pointer;
     transition: ease-in-out 0.5s;
     height: min-content;
@@ -233,7 +205,6 @@
     &:hover {
       color: var(--bg-panel);
       background-color: var(--color-text);
-      // transition: ease-in-out 0.5s;
     }
   }
   &__delete-modal {
@@ -260,7 +231,6 @@
   &__section {
     width: 100%;
     margin: 3rem 0 0;
-    // padding: 0 2rem;
     color: var(--color-text);
   }
   &__form-header {
@@ -275,9 +245,6 @@
 
 @media (min-width: 260px) {
   .blog {
-    &__container {
-      // padding: 2rem;
-    }
     &__tags {
       grid-template-columns: 1fr 1fr;
     }
@@ -332,7 +299,6 @@
       .code-block {
         width: 360px;
         max-width: unset;
-        // margin: 2rem auto;
       }
     }
   }
@@ -344,7 +310,6 @@
       .code-block {
         width: 380px;
         max-width: unset;
-        // margin: 2rem auto;
       }
     }
   }
@@ -356,7 +321,6 @@
       .code-block {
         width: 420px;
         max-width: unset;
-        // margin: 2rem auto;
       }
     }
   }
@@ -368,7 +332,6 @@
       .code-block {
         width: 440px;
         max-width: unset;
-        // margin: 2rem auto;
       }
     }
   }
@@ -380,7 +343,6 @@
       .code-block {
         width: 460px;
         max-width: unset;
-        // margin: 2rem auto;
       }
     }
   }
@@ -392,7 +354,6 @@
       .code-block {
         width: 480px;
         max-width: unset;
-        // margin: 2rem auto;
       }
     }
   }
@@ -404,7 +365,6 @@
       .code-block {
         width: 500px;
         max-width: unset;
-        // margin: 2rem auto;
       }
     }
   }
@@ -461,7 +421,6 @@
       .code-block {
         width: auto;
         max-width: unset;
-        // margin: 2rem auto;
       }
     }
   }

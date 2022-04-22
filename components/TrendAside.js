@@ -3,8 +3,8 @@ import { useAppContext } from "context/Store";
 import { FaRegThumbsUp, FaRegComments } from "react-icons/fa";
 
 export const TrendAside = () => {
-  const { state, dispatch } = useAppContext();
-  const { auth, post } = state;
+  const { state } = useAppContext();
+  const { post } = state;
 
   return (
     <aside className="trending">

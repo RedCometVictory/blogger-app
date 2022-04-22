@@ -1,20 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
 import { FaUpload } from 'react-icons/fa';
 import { toast } from "react-toastify";
-import Image from "next/image";
 import api from "@/utils/api";
 import { createUpdateProfileForm } from '@/utils/formDataServices';
 import { ControlGroup, ControlGroupFileUpload } from '../UI/FormControlGroup';
 
 const ProfileForm = ({initProfile, setProfileForm}) => {
-  // console.log("Props")
-  // console.log(initProfile)
   const { state, dispatch } = useAppContext();
   const { auth, profile } = state;
-  // console.log("component profile state")
-  // console.log(profile)
   const [fileTypeError, setFileTypeError] = useState(false);
   const [fileSizeError, setFileSizeError] = useState(false);
   const [profileData, setProfileData] = useState({
@@ -31,7 +25,6 @@ const ProfileForm = ({initProfile, setProfileForm}) => {
     reddit: profile?.profileData?.social?.reddit || "",
     github: profile?.profileData?.social?.github || ""
   });
-
   const [uploading, setUploading] = useState(false);
   const [imageData, setImageData] = useState(null);
   const [showImageData, isShowImageData] = useState(false);
@@ -99,19 +92,13 @@ const ProfileForm = ({initProfile, setProfileForm}) => {
     e.preventDefault();
     setUploading(true);
     try {
-      // console.log("submitting profile create")
-      // console.log(profileData)
       let servicedData = await createUpdateProfileForm(profileData);
-      // console.log("servicedData - profile create")
-      // console.log(servicedData)
       let res = await api.post("/user/profile-create", servicedData);
-      // console.log("profile create response")
-      // console.log(res.data.data)
       dispatch({type: "CREATE_PROFILE", payload: res.data.data.profile});
       setUploading(false);
       setProfileForm(false);
     } catch (err) {
-      toast.error(err)
+      toast.error(err);
       setProfileForm(false);
     }
   };
@@ -120,34 +107,17 @@ const ProfileForm = ({initProfile, setProfileForm}) => {
     e.preventDefault();
     setUploading(true);
     try {
-      // console.log("submitting --- profile update")
-      // console.log(profileData)
-      // console.log("user id")
-      // console.log(auth.user._id)
-      // console.log("77777777777777777777777")
       let servicedData = await createUpdateProfileForm(profileData);
-      // console.log("servicedData - profile update")
-      // console.log(servicedData)
       let res = await api.put(`/user/edit/${auth?.user._id}`, servicedData);
-      // console.log("profile update response")
-      // console.log(res.data.data)
       dispatch({type: "UPDATE_PROFILE", payload: res.data.data.profile});
       setUploading(false);
       setProfileForm(false);
     } catch (err) {
-      const errors = err.response.data.errors;
-      if (errors) {
-        errors.forEach(error => toast.error(error.msg));
-      }
+      console.error(err);
+      toast.error("Failed to update profile.");
       setProfileForm(false);
     }
   };
-  {/* <Button
-    // href={'/'}
-    onClick={() => setUpdateForm(true)}
-    className={"btn--contained editProfileContent"}
-    btnText={"Edit"}
-  /> */}
 
   return (
     <section className="profile__form-wrapper">
@@ -176,39 +146,26 @@ const ProfileForm = ({initProfile, setProfileForm}) => {
               required={false}
             />
             <h4>Background Profile Image: </h4>
-            {/* <ControlGroup
-              name={"image_url"}
-              type={"file"}
-              placeholder={"background profile image"}
-              id={"login-name"}
-              className={"fui-user"}
-              onChange={handleImageChange}
-              // value={image_url}
-            /> */}
             <ControlGroupFileUpload
               action={handleImageChange}
               icon={<FaUpload size={"25"} />}
             />
             {imageData && (
-              <div className="admForm__show">
+              <div className="profile__image-show">
                 <div className="btn btn-secondary" onClick={() => isShowImageData(true)}>Show Preview</div>
                 <div className="btn btn-secondary" onClick={() => isShowImageData(false)}>Hide Preview</div>
               </div>
             )}
             {imageData && showImageData && (
-              <div className="admForm__image create-form">
-                <img className="admForm__img create-form" src={imageData} alt="Uploaded Product" />
-              </div>
+              <div className="profile__upload-image">
+                <img
+                  className="profile__upload-img"
+                  src={imageData}
+                  alt="uploaded avatar or background"
+                  // layout="responsive"
+                />
+            </div>
             )}
-            {/* <ControlGroupFileUpload
-              action={handleImageChange}
-              icon={<FaUpload size={"25"} />}
-            /> */}
-            {/* 
-            <div className="profile__group">
-              <label htmlFor="" className="profile__label">Themes</label>
-              <input type="text" className="profile__input" />
-            </div> */}
           </div>
           <div className="profile__set 02">
             <h3>Socials: </h3>

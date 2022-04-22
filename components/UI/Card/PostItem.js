@@ -2,9 +2,6 @@ import React from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import { FaRegThumbsUp, FaRegThumbsDown, FaRegCommentDots } from "react-icons/fa";
-import Blog1 from "../../../img/blog1.jpg";
-
-// const {avatarImage, category, comments[], ccoverImage, coverImageFilename, createdAt, likes[], tags["video", "file", "film"], text, title, updatedAt, user, username } = post
 
 export const PostItem = ({post}) => {
   return (
@@ -16,8 +13,6 @@ export const PostItem = ({post}) => {
               <div className="post__title-container">
                 <Link
                   passHref
-                  // className="post__title"
-                  // href={`/posts/update/${post?._id}`}
                   href={`/posts/${post?._id}`}
                 >
                   {post.title}

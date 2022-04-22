@@ -4,12 +4,10 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { FaPalette, FaChevronLeft } from "react-icons/fa";
-import { GiHamburgerMenu } from "react-icons/gi"
-import { MdClose } from "react-icons/md"
+import { GiHamburgerMenu } from "react-icons/gi";
 import api from "@/utils/api";
 import { ThemeContext } from 'use-theme-switcher';
 import { useAppContext } from '../context/Store';
-import NavItem from "./UI/NavItem";
 import SearchBar from "./UI/SearchBar";
 import ThemePicker from "./ThemePicker";
 
@@ -20,14 +18,9 @@ const Navbar = ({openMenu, setOpenMenu}) => {
   const [showThemes, isShowThemes] = useState(false);
 
   const logoutHandler = async () => {
-    console.log("logging out user")
     try {
-      let res = await api.post("/auth/signout");
-      
-      console.log("logout res")
-      console.log(res.data)
+      await api.post("/auth/signout");
       dispatch({type: "LOGOUT"});
-      // Cookies.remove("token");
       Cookies.remove("blog__isLoggedIn");
       Cookies.remove("blog__userInfo");
       toast.success("Logged out.");
@@ -35,10 +28,6 @@ const Navbar = ({openMenu, setOpenMenu}) => {
     } catch (err) {
       console.error(err);
       toast.error("Failed to logout.");
-      // const errors = err.response.data.errors;
-      // if (errors) {
-      //   errors.forEach(error => toast.error(error.msg));
-      // }
     }
   };
 

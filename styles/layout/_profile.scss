@@ -6,42 +6,18 @@
   padding: 0 8px 8px;
   margin: 1rem 0 0;
   border-radius: 12px;
-  // height: auto;
-  // width: auto;
-  // position: absolute;
-  // top: 8rem;
-  // left: 0;
-  // right: 0;
-  // bottom: 0;
-  // z-index: 0;
   &__center {
-    // height: 100vh;
     width: 100%;
-    // padding: 3rem 0rem 0;
     padding: 1rem 0rem 0;
     @include flex(column, flex-start, center);
   }
   &__container {
     width: 100%;
     position: relative;
-    // background: var(--bg-panel);
-  }
-  &__container-bg {
-    // background: var(--bg-panel);
-    // // height: auto;
-    // height: 100%;
-    // width: auto;
-    // // position: absolute;
-    // top: 8rem;
-    // left: 0;
-    // right: 0;
-    // bottom: 0;
-    // z-index: 0;
   }
   &__center-content {
     z-index: 110;
     position: relative;
-    // padding: 6rem 0 0;
   }
   &__content {
     @include flex(column, initial, flex-start);
@@ -54,29 +30,13 @@
   }
   &__user-avatar {
     position: relative;
-    // top: -100px;
-    // width: 310px;
-    // height: auto;
     margin: 0 auto;
-    // border-radius: 50%;
-    // > span {
-    //   border-radius: 50%;
-    // }
-    // width: 100%;
-    // height: 260px;
     cursor: pointer;
-    // overflow: hidden;
-    // height: 240px;
-    // width: 240px;
     height: auto;
     width: auto;
-    // min-width: 40px;
-    // max-height: 40px;
-    // max-width: 40px;
-    // max-height: 100%;
-    // max-width: 100%;
     max-height: 300px;
     max-width: 300px;
+    overflow: hidden;
     background-color: var(--bg-primary);
     border-radius: 50%;
     @include flex(row, center, center);
@@ -87,13 +47,10 @@
   }
   &__avatar-img {
     object-fit: contain;
-    // object-fit: none;
     width: 100% !important;
     position: relative !important;
     height: unset !important;
-    // max-width: 800px !important;
     min-width: unset !important;
-    // max-width: 50px !important;
     border-radius: 50% !important;
     z-index: 50;
   }
@@ -102,8 +59,38 @@
     align-self: flex-end;
     margin: 0 auto 8px;
   }
+  // ++++++++++++++++++++++++++++++++++++++
+  // PROFILE BACKGRND / AVATAR UPLOAD
+  // ++++++++++++++++++++++++++++++++++++++
+  &__image-show {
+    @include flex(column, initial, center);
+    div {
+      margin: 0 0 0.6rem 0;
+    }
+  }
+  // &__upload-image {
+    // display: block;
+    // position: relative;
+  // }
+  &__upload-img {
+    width: 100%;
+  }
+  // ++++++++++++++++++++++++++++++++++++++
   &__socials-wrapper {
     margin: 1rem 0;
+  }
+  &__field-label {
+    color: var(--color-text);
+  }
+  &__field-value {
+    color: var(--color-text);
+  }
+  &__socials {
+    text-align: center;
+    a {
+      margin: 0 6px 0 0;
+      color: var(--color-text);
+    }
   }
   &__option-btns {
     @include flex(column, initial, center);
@@ -121,62 +108,26 @@
   &__field {
     word-wrap: break-word;
   }
-//   &__socials {}
-//   &__social {
-//     margin: 6px 12px 6px 0;
-//   }
 }
-
-// @media (min-width: 210px) {
-//   .profile {
-//     &__container-bg {
-//       top: 9rem;
-//     }
-//   }
-// }
-
-// @media (min-width: 240px) {
-//   .profile {
-//     &__center {
-//       // padding: 3rem 2rem 0;
-//       padding: 2rem 1rem 0;
-//     }
-//     &__container {
-//       // background: var(--bg-panel);
-//       // padding: 1rem 1rem 0;
-//     }
-//     &__container-bg {
-//       top: 12rem;
-//     }
-//   }
-// }
 
 @media (min-width: 340px) {
   .profile {
-//     &__center {
-//       // padding: 3rem 5rem 0;
-//       padding: 3rem 4rem 0;
-//     }
-//     &__container-bg {
-//       top: 13rem;
-//     }
     &__form-wrapper {
       padding: 2rem;
     }
   }
 }
 
+@media (min-width: 400px) {
+  .profile {
+    &__image-show {
+      @include flex(row, space-evenly, center);
+    }
+  }
+}
+
 @media (min-width: 450px) {
   .profile {
-    // &__center {
-    //   padding: 3rem 5rem 0;
-    // }
-    // &__container-bg {
-    //   top: 15rem;
-    // }
-    // &__editProfileContent {
-    //   margin: initial;
-    // }
     &__option-btns {
       @include flex(row, space-between, center);
     }
@@ -191,38 +142,14 @@
   }
 }
 
-// @media (min-width: 486px) {
-//   .profile {
-//     &__container-bg {
-//       border-radius: 12px;
-//       top: 15rem;
-//       left: 1rem;
-//       right: 1rem;
-//       bottom: 1rem;
-//     }
-//     // &__option-btns {
-//     //   @include flex(row, space-evenly, center);
-//     // }
-//   }
-// }
-
 @media (min-width: 620px) {
   .profile {
     width: initial;
     margin: 14rem 6rem 0;
-    // border-radius: 12px;
-    // &__container-bg {
-    //   left: 5.4rem;
-    // }
-    &__center-container {
-      // padding: 5rem 0 0;
-    }
     &__center-content {
       padding: 6rem 0 0;
     }
     &__user-avatar {
-      // background: var(--bg-panel);
-      // height: auto;
       height: 100%;
       width: auto;
       position: absolute;
@@ -231,6 +158,17 @@
       right: 0;
       bottom: 0;
       z-index: 0;
+    }
+    &__image-show {
+      @include flex(column, space-evenly, center);
+    }
+  }
+}
+
+@media (min-width: 656px) {
+  .profile {
+    &__image-show {
+      @include flex(row, space-evenly, center);
     }
   }
 }

@@ -8,7 +8,7 @@ import Blocks from "editorjs-blocks-react-renderer";
 import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
 import api from "@/utils/api";
-import { FaRegThumbsUp, FaRegThumbsDown, FaUserFriends } from "react-icons/fa";
+import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Comment from '../../components/comments/Comment';
 import CommentForm from '../../components/comments/CommentForm';
@@ -27,7 +27,14 @@ const Blog = ({ blogData, token }) => {
   // const [hasMounted, setHasMounted] = useState(false);
   let isCurrentlyFollowing;
 
-  let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id);
+  console.log("follow list")
+  console.log(follow)
+  let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id && follow.following_id === blogData?.user);
+  console.log("followResult");
+  console.log(followResult);
+  // isCurrentlyFollowing = followResult?.length > 0;
+  
+  // let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id);
   isCurrentlyFollowing = followResult?.length > 0;
   console.log("isCurrentlyFollowing")
   console.log(isCurrentlyFollowing)
@@ -66,6 +73,11 @@ const Blog = ({ blogData, token }) => {
     }
     dispatch({type: "GET_POST_BY_ID", payload: blogData});
   }, []);
+
+  // http://localhost:3000/posts/625a316d8fd7011df6385812
+  // http://localhost:3000/posts/f/update/625a316d8fd7011df6385812
+  // http://localhost:3000/posts/f/create
+
 
   // useEffect(() => {
   //   setHasMounted(true);
@@ -139,9 +151,10 @@ const Blog = ({ blogData, token }) => {
         setShowFollow(!showFollow);
         toast.success("User unfollowed!");
       } else {
-        toast.error("Failed to unfollow user.")
+        toast.error("Failed to unfollow user.");
       };
     } catch (err) {
+      console.error(err);
       toast.error("Failure to follow user.");
     }
   };
@@ -152,12 +165,12 @@ const Blog = ({ blogData, token }) => {
       if (res) {
         dispatch({type: "LIKE_POST", payload: res.data.data.likes});
       
-        toast.success("Post liked!")
+        toast.success("Post liked!");
       } else {
-        console.log("commnet like")
-        toast.error("Failed to like post.")  
+        toast.error("Failed to like post.");
       }
     } catch (err) {
+      console.error(err);
       toast.error("Failure to like blog post.");
     }
   };
@@ -168,11 +181,12 @@ const Blog = ({ blogData, token }) => {
       if (res) {
         dispatch({type: "UNLIKE_POST", payload: res.data.data.likes});
 
-        toast.success("Post unliked!")
+        toast.success("Post unliked!");
       } else {
-        toast.error("Failed to unlike blog post.")
+        toast.error("Failed to unlike blog post.");
       };
     } catch (err) {
+      console.error(err);
       toast.error("Failure to unlike blog post.");
     }
   };
@@ -222,10 +236,7 @@ const Blog = ({ blogData, token }) => {
             <Image
               className={"blog__img"}
               src={blogData.coverImage}
-              fill="layout"
               alt="user avatar"
-              // width={500}
-              // height={250}
               layout="fill"
             />
           </div>
@@ -243,10 +254,7 @@ const Blog = ({ blogData, token }) => {
                     <Image
                       className={"blog__img"}
                       src={blogData.avatarImage}
-                      fill="layout"
                       alt="user avatar"
-                      // width={500}
-                      // height={250}
                       layout="fill"
                       // image is stretched, apply custom css to fix
                     />
@@ -293,23 +301,6 @@ const Blog = ({ blogData, token }) => {
                   </div>
                 )}
               </div>
-              {/* {auth?.user?._id === blogData?.user ? (
-            <>
-            <div className=""></div>
-            </>
-          ) : showFollow ? (
-            <div className="blog__follow">
-              <button className="btn btn-secondary" onClick={() => unFollowHandler()}>
-                Unfollow
-              </button>
-            </div>
-          ) : (
-            <div className="blog__follow">
-              <button className="btn btn-secondary" onClick={() => followHandler()}>
-                Follow
-              </button>
-            </div>
-          )} */}
               <div className="comment__options blog-header">
                 <div className="comment__thumbs">
                   <div className="thumb" onClick={() => likeHandler()}>
@@ -320,7 +311,6 @@ const Blog = ({ blogData, token }) => {
                   <div className="thumb" onClick={() => unLikeHandler()}>
                     <FaRegThumbsDown />
                   </div>
-                  {/* <div className="">{post.post.likes?.length > 0 ? post.post.likes.length : 0}</div> */}
                 </div>
               </div>
             </div>
@@ -414,23 +404,8 @@ export const getServerSideProps = async (context) => {
       initPostInfo = await api.get(`/post/${post_id}`, 
       { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
       );
-      // initPostInfo = await axios({
-      //   method: 'get',
-      //   url: `http://localhost:3000/api/post/${post_id}`,
-      //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
-      // });
     }
     let initBlog = initPostInfo.data.data;
-    // if (!token) {
-    //   console.log("token is expired, emoveing logged in coolie")
-    //   context.res.setHeader(
-    //     "Set-Cookie", [
-    //     // `blog__token=deleted; Max-Age=0`,
-    //     `blog__isLoggedIn=deleted; Max-Age=0`,
-    //     `blog__userInfo=deleted; Max-Age=0`]
-    //   );
-    // };
-
     return {
       props: {
         blogData: initBlog ? initBlog.postData : '',

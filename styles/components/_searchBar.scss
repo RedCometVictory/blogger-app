@@ -19,15 +19,11 @@
   font-size: 1rem;
   border-radius: 25px;
   overflow: hidden;
-  // color: var(--color-text);
-  // transition: width 450ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
   background-color: var(--color-navbar-primary);
   transition: all 0.5s ease-in-out;
   &:focus-within {
     @include flex(row, flex-start, center);
-    // width: 300px;
-    width: 90vw;
-    // max-width: 300px;
+    width: 82vw;
     background-color: var(--bg-primary);
     position: absolute;
     top: 14px;
@@ -42,7 +38,7 @@
       cursor: initial;
     }
     .searchBar__icon {
-      color: var(--color-navbar-active); //*** todo
+      color: var(--color-navbar-active);
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
       &.focused {
         background-color: var(--primary-color);
@@ -57,10 +53,8 @@
     }
   }
   &__search {
-    // background-color: var(--primary-color);
     background-color: var(---color-navbar-primary);
     color: var(---color-navbar-text);
-    // color: var(--color-text);
     @include flex(row, center, center);
     border-radius: 25px;
     min-width: 34px;
@@ -82,41 +76,6 @@
     opacity: 0;
     color: var(--color-text);
     cursor: pointer;
-    // @include viewport-size(mobile-phone-med) {
-    //   width: 50px;
-    //   color: transparent;
-    //   padding-left: 1rem;
-    //   ::placeholder {
-    //     opacity: 0;
-    //   }
-    // }
-
-    // @include viewport-size(mobile-phone-small) {
-    //   width: 50px;
-    //   color: transparent;
-    //   padding-left: 1rem;
-    //   ::placeholder {
-    //     opacity: 0;
-    //   }
-    // }
-    // @include viewport-size(mobile-tablet-med) {
-    //   width: 50px;
-    //   color: transparent;
-    //   padding-left: 1rem;
-    //   ::placeholder {
-    //     opacity: 0;
-    //   }
-    // }
-    // @include viewport-size(mobile-tablet-large) {
-    //   width: 250px;
-    //   padding-left: 3rem;
-    // }
-    // @include viewport-size(med) {
-    //   width: 320px;
-    //   padding-left: 6rem;
-    // }
-    // @include viewport-size(standard) {
-    // }
   }
   &__close {
     width: 100%;
@@ -127,10 +86,7 @@
 @media(min-width: 280px) {
   .searchBar {
     &:focus-within {
-      width: 74vw;
-      // width: 200px;
-      // position: relative;
-      // top: unset;
+      width: 70vw;
       left: 60px;
       right: 10px;
     }
@@ -139,19 +95,12 @@
 @media(min-width: 326px) {
   .searchBar {
     &:focus-within {
-      // width: 76vw;
       width: auto;
       left: 66px;
-      // width: 200px;
-      // position: relative;
-      // top: unset;
-      // left: 60px;
-      // right: 10px;
     }
   }
 }
-// @media(min-width: 396px) {
-// @media(min-width: 420px) {
+
 @media(min-width: 640px) {
   .searchBar {
     &:focus-within {
@@ -166,138 +115,10 @@
   }
 }
 
-// ORIGINAL VERSION ::after
-// #searchBarMagnifier {
-//   cursor: pointer;
-//   margin: 0 3px 1px 0;
-// }
-
-// #searchBarClose {
-//   cursor: pointer;
-//   transform: rotate(45deg);
-//   margin: 0 12px 0 0;
-//   border-radius: 20px;
-//   background-color: var(--color-navbar-primary);
-//   height: 22px;
-//   width: 22px;
-// }
-
-// .searchBar {
-//   position: relative;
-//   @include flex(row, flex-start, center);
-//   width: 40px;
-//   height: 40px;
-//   font-size: 1rem;
-//   border-radius: 25px;
-//   overflow: hidden;
-//   // color: var(--color-text);
-//   // transition: width 450ms cubic-bezier(0.18, 0.89, 0.32, 1.28);
-//   background-color: var(--color-navbar-primary);
-//   transition: all 0.5s ease-in-out;
-
-//   &:focus-within {
-//     @include flex(row, flex-start, center);
-//     width: 300px;
-//     max-width: 300px;
-//     background-color: var(--bg-primary);
-
-//     .searchBar__search {
-//       background-color: var(--color-navbar-primary);
-//     }
-
-//     .searchBar__text-input {
-//       opacity: 1;
-//       z-index: initial;
-//       cursor: initial;
-//     }
-
-//     .searchBar__icon {
-//       color: var(--color-navbar-active); //*** todo
-//       box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-
-//       &.focused {
-//         background-color: var(--primary-color);
-//       }
-
-//       &:hover,
-//       &:focus {
-//         outline: 0;
-//         box-shadow: 0 0 10px rgba(0, 0, 0, 0.75)
-//       }
-//     }
-
-//     .searchBar__close {
-//       @include flex(row, flex-end, center);
-//     }
-//   }
-
-//   &__search {
-//     // background-color: var(--primary-color);
-//     background-color: var(---color-navbar-primary);
-//     color: var(---color-navbar-text);
-//     // color: var(--color-text);
-//     @include flex(row, center, center);
-//     border-radius: 25px;
-//     min-width: 34px;
-//     min-height: 34px;
-//     margin: 0 0 0 3px;
-//   }
-
-//   &__icon {
-//     transition: all 0.5s ease-in-out;
-//     border: none;
-//   }
-
-//   &__text-input {
-//     border: 0;
-//     padding: .25em 4em;
-//     outline: 0;
-//     z-index: 2;
-//     position: absolute;
-//     width: 100%;
-//     background: transparent;
-//     opacity: 0;
-//     color: var(--color-text);
-//     cursor: pointer;
-//     // @include viewport-size(mobile-phone-med) {
-//     //   width: 50px;
-//     //   color: transparent;
-//     //   padding-left: 1rem;
-//     //   ::placeholder {
-//     //     opacity: 0;
-//     //   }
-//     // }
-
-//     // @include viewport-size(mobile-phone-small) {
-//     //   width: 50px;
-//     //   color: transparent;
-//     //   padding-left: 1rem;
-//     //   ::placeholder {
-//     //     opacity: 0;
-//     //   }
-//     // }
-//     // @include viewport-size(mobile-tablet-med) {
-//     //   width: 50px;
-//     //   color: transparent;
-//     //   padding-left: 1rem;
-//     //   ::placeholder {
-//     //     opacity: 0;
-//     //   }
-//     // }
-//     // @include viewport-size(mobile-tablet-large) {
-//     //   width: 250px;
-//     //   padding-left: 3rem;
-//     // }
-//     // @include viewport-size(med) {
-//     //   width: 320px;
-//     //   padding-left: 6rem;
-//     // }
-//     // @include viewport-size(standard) {
-//     // }
-//   }
-
-//   &__close {
-//     width: 100%;
-//     display: none;
-//   }
-// }
+@media(min-width: 724px) {
+  .searchBar {
+    &:focus-within {
+      width: 300px;
+    }
+  }
+}

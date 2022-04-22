@@ -1,6 +1,4 @@
-import Cookies from "js-cookie";
 export const followInitialState = {
-  // following: [],
   followers: typeof window === "undefined" ? null : localStorage.getItem("blog__follows") ? JSON.parse(localStorage.getItem("blog__follows")) : null,
   loading: true
 };
@@ -11,7 +9,6 @@ export const FollowReducer = (state = followInitialState, action) => {
       return {
         ...state,
         follow: {
-          // following: payload.following,
           followers: payload
         }
       }
@@ -19,9 +16,7 @@ export const FollowReducer = (state = followInitialState, action) => {
       return {
         ...state,
         follow: {
-          // ...state.follow,
           followers: [...state.follow.followers, payload],
-          // following: [...state.follow.following]
         },
         loading: false
       }

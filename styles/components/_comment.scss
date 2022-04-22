@@ -5,7 +5,6 @@
     }
   }
   // ############################################
-  &__form {}
   &__form-options {
     @include flex(column, space-between, center);
     margin: 16px 0 0 0;
@@ -21,19 +20,9 @@
       resize: none;
       width: 100%;
       outline: none;
-      // .code-block {
-      // display: flex;
-      // border-radius: 2px;
-      // border: 2px solid var(--color-text);
       color: var(--color-text);
-      // background-color: var(--bg-panel);
-      // background-color: var(--bg-primary);
       overflow-y: scroll;
-      // height: 28rem;
-      // width: 100%;
       padding: 1.2rem;
-      // margin: 2rem 0;
-      // scrollbar-width: none;
       scrollbar-color: var(--bg-panel);
       scrollbar-width: thin;
       &::-webkit-scrollbar {
@@ -77,11 +66,6 @@
       margin: 6px 0 0 0;
     }
   }
-  // &__delete {
-  //   &.del {
-  //     padding: 2px 6px;
-  //   }
-  // }
   // ############################################
   &__card {
     width: 100%;
@@ -97,6 +81,7 @@
     }
     &.profile {
       flex-direction: column-reverse;
+      margin: initial;
     }
   }
   &__header-profile {
@@ -104,8 +89,10 @@
     @include flex(column, center, center);
   }
   &__header-info {
-    // @include flex(row, flex-start, center);
     @include flex(column, flex-start, center);
+  }
+  &__add-comment {
+    cursor: pointer;
   }
   &__username {
     @include flex(column, flex-start, center);
@@ -118,10 +105,7 @@
       cursor: pointer;
     }
   }
-  // &__buttons {}
   &__image-avatar {
-    // width: 100%;
-    // height: 260px;
     height: 40px;
     width: 40px;
     min-width: 40px;
@@ -131,24 +115,16 @@
     border-radius: 50%;
     overflow: hidden;
     @include flex(row, center, center);
-    
     > span {
       position: unset !important;
     }
     &.avatar {
       margin: 0 0 16px 0;
     }
-    // &.profile {
-    //   max-height: 40px;
-    //   max-width: 40px;
-    //   object-fit: initial;
-    // }
   }
   &__img {
-    // ***!important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
-    // width: 800px;
+    //*** !important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
     object-fit: contain;
-    // object-fit: none;
     width: 100% !important;
     position: relative !important;
     height: unset !important;
@@ -162,13 +138,9 @@
     margin: 1rem 0 0 0;
   }
   &__text {
-    // word-wrap: pre;
     white-space: pre-line;
   }
   &__reply-section {
-    // border: 1px solid white;
-    // border-radius: 6px;
-    // padding: 0 0 10px 3.5rem;
     padding: 0;
   }
   &__reply-item {
@@ -182,7 +154,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    // padding: 0 0 0 12px;
     .avatar {
       margin: 8px 0 8px 0;
     }
@@ -197,7 +168,6 @@
     width: 100%;
     padding: 0 6px 0 6px;
     .username {
-      // padding: 0 0 0 16px;
       font-style: italic;
       display: flex;
       width: 100%;
@@ -225,7 +195,6 @@
     }
   }
   &__reply {
-    // padding: 0 0 0 16px;
     width: 100%;
     white-space: pre-line;
     margin: 1.6rem 0;
@@ -233,7 +202,6 @@
   &__options {
     @include flex(row, flex-start, center);
     margin: 6px 0 0 0;
-    // padding: 0 0 0 16px;
     &.blog-header {
       margin: 16px 0 0 0;
     }
@@ -242,7 +210,6 @@
     margin: 0 16px 0 0;
     cursor: pointer;
     &.list {
-      // width: max-content;
       width: auto;
       border: 1px solid white;
       border-radius: 6px;
@@ -272,11 +239,11 @@
       }
     }
     &__reply-content {
-      // padding: 0 10px 0 16px;
       padding: 0 10px 0 6px;
     }
   }
 }
+
 @media (min-width: 300px) {
   .comment {
     &__form-options {
@@ -299,18 +266,9 @@
     &__header {
       @include flex(row, space-between, center);
     }
-    // &__header-info {
-    //   @include flex(row, flex-start, center);
-    // }
-    // &__image-avatar {
-    //   &.avatar {
-    //     margin: 0 16px 0 0;
-    //   }
-    // }
   }
 }
 
-// @media (min-width: 360px) {
 @media (min-width: 420px) {
   .comment {
     &__reply-item {
@@ -325,12 +283,8 @@
     &__image-avatar {
       &.avatar {
         margin: 0 6px 0 0;
-        // margin: 0 16px 0 0;
       }
     }
-    // &__reply-content {
-    //   padding: 0 10px 0 16px;
-    // }
     &__header-profile {
       @include flex(row, space-between, center);
     }
@@ -345,7 +299,6 @@
     }
     &__reply-content {
       padding: 0 10px 0 16px;
-      // padding: 0 10px 0 16px;
     }
   }
 }
@@ -354,24 +307,14 @@
   .comment {
     &__reply-section {
       padding: 0 0 10px 0;
-      // padding: 0 0 10px 3.5rem;
     }
-//     &__username {
-//       @include flex(row, flex-start, center);
-//     }
-
   }
 }
 
 @media (min-width: 720px) {
   .comment {
     &__reply-section {
-      // padding: 0 0 10px 0;
       padding: 0 0 10px 3.5rem;
     }
-//     &__username {
-//       @include flex(row, flex-start, center);
-//     }
-
   }
 }

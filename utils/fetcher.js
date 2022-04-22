@@ -1,4 +1,3 @@
-// TODO: consider deleting (used with swr)
 export const fetcher = async (url, ...args) => {
   return fetch(...args).then(async (res) => {
     let payload;

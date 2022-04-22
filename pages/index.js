@@ -14,7 +14,6 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 // import Navbar from "../components/NavBar";
 import { ControlGroup } from "../components/UI/FormControlGroup";
 import { buildUrl } from 'cloudinary-build-url';
-import { Button } from "../components/UI/Button";
 import SearchBar from "../components/UI/SearchBar";
 import GridMain from "../components/GridMain";
 import GridItem from "../components/UI/GridItem";
@@ -24,22 +23,6 @@ import TrendAside from "../components/TrendAside";
 // import Footer from "../components/Footer";
 import HeroGraphic from "../img/hero.svg";
 import Blog1 from "../img/blog1.jpg";
-import Blog2 from "../img/blog2.jpg";
-import Blog3 from "../img/blog3.jpg";
-import Blog4 from "../img/blog4.jpg";
-import Blog5 from "../img/blog5.png";
-import Blog6 from "../img/blog6.jpg";
-import theme_Osaka from "../img/themes-osaka.jpg"
-import theme_sacramento from "../img/themes-sacramento.jpg"
-import theme_florida from "../img/themes-florida.jpg"
-import theme_illinois from "../img/themes-illinois.jpg"
-import theme_texas from "../img/themes-texas.jpeg"
-import theme_toronto from "../img/themes-toronto.jpg"
-import theme_toronto2 from "../img/themes-toronto-2.jpg"
-import theme_tokyo from "../img/themes-tokyo.jpg"
-import image_localization from "../img/globe.png";
-import image_money from "../img/money.png";
-import image_creditCards from "../img/credit-cards.png";
 
 // const url = buildUrl('[Your Cloudinary Image ID]', {
 //     cloud: {
@@ -65,8 +48,10 @@ import image_creditCards from "../img/credit-cards.png";
 // });
 
 const Home = ({initGeneral, initTrend, initFollow, token}) => {
-  // console.log("initGzeneral - beginning of page")
+  console.log("initGzeneral - beginning of page")
   // console.log(initGeneral)
+  console.log("FE: token")
+  console.log(token)
   const { state, dispatch } = useAppContext();
   const { auth, follow } = state;
   const router = useRouter();
@@ -148,13 +133,6 @@ const Home = ({initGeneral, initTrend, initFollow, token}) => {
                 onChange={e => setEmailList(e.target.value)}
                 value={emailList}
               />
-              {/* <Button
-                id={"heroMainSignUpButton"}
-                className={"hero__sign-up"}
-                btnText={"Sign Up"}
-                icon={<AiOutlineArrowRight className={"innerIcon"} size={"25"}/>}
-                type={"submit"}
-              /> */}
               <button
                 id="heroMainSignUpButton"
                 className="hero__sign-up"

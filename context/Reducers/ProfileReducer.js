@@ -33,16 +33,6 @@ export const ProfileReducer = (state = profileInitialState, action) => {
           profileData: payload,
           loading: false
         }
-        // profileData: payload.myUserData, // data.myUserData
-        // profileStats: {
-        //   profileDetails: payload.myProfileInfo, // data.myProfileInfo
-        //   profileSocials: payload.mySocialsInfo, // data.mySocialsInfo
-        //   followers: payload.profileFollowers,
-        //   following: payload.profileFollowing
-        // },
-        // profilePosts: payload.profilePosts,
-        // followingList: null,
-        // followersList: null,
       }
     case "UPDATE_PROFILE":
       return {

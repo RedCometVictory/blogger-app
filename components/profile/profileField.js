@@ -6,5 +6,4 @@ const ProfileField = ({ label, value }) => {
     </div>
   );
 };
-
 export default ProfileField;

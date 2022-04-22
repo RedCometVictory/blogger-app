@@ -13,6 +13,8 @@ import ProfileForm from "components/profile/profileForm"
 import Spinner from "components/Spinner";
 
 const Profile = ({initProfile, token}) => {
+  console.log("FE: token")
+  console.log(token);
   const router = useRouter();
   const { state, dispatch } = useAppContext();
   const { auth, profile } = state;
@@ -21,7 +23,7 @@ const Profile = ({initProfile, token}) => {
   let [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    if (!token) {
+    if (!token || !Cookies.get("blog__isLoggedIn")) {
       console.log("++++++++++++++++++++++")
       console.log("++++++++++++++++++++++")
       console.log("logging out")
@@ -67,7 +69,6 @@ const Profile = ({initProfile, token}) => {
                 <Image
                   className="profile__avatar-img"
                   src={auth?.user?.avatarImage}
-                  fill="layout"
                   alt="user avatar"
                   layout="fill"
                 />
@@ -85,15 +86,11 @@ const Profile = ({initProfile, token}) => {
               ) : Object.keys(state.profile.profileData).length === 0 && Object.keys(initProfile).length === 0 ? (
                 <button className="btn btn-secondary profile__editProfileContent" onClick={profileHandler}>Create Profile</button>
               ) : (
-                <button className="btn btn-secondary profile__editProfileContent" onClick={profileHandler}>Edit</button>
+                <button className="btn btn-secondary profile__editProfileContent" onClick={profileHandler}>Update Profile</button>
               )}
             </div>
             {!profileForm && !userForm && (<>
               <ProfileField label={"Username"} value={auth?.user?.username} />
-              {/* <ProfileField
-                label={"Hobbies"}
-                value={"Some Hobby text that discribes the user's hobbies"}
-              /> */}
               <ProfileField
                 label={"Location"}
                 value={profile?.profileData.location || "Optional"}

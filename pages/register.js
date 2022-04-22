@@ -110,7 +110,6 @@ const Register = () => {
           </div>
           <form
             onSubmit={submitHandler}
-            // className="registration"
             className="login__form"
             id="registration-id"
           >

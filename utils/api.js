@@ -33,7 +33,6 @@ api.interceptors.response.use(
     if (response?.status === 401 && !originalRequest._retry) {
       try {
         originalRequest._retry = true;
-        console.log("AXIOS: 401 attempting to remove cookie")
         toast.error("Error: Token expired. Authorization denied.")
         Cookies.remove("blog__isLoggedIn")
         Cookies.remove("blog__userInfo")
@@ -41,8 +40,8 @@ api.interceptors.response.use(
       } catch (err) {
         return Promise.reject(err);
       }
-      return Promise.reject(err);
     };
+    return Promise.reject(err);
   }
 );
 export default api;

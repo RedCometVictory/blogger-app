@@ -5,13 +5,13 @@ import { toast } from "react-toastify";
 import { useAppContext } from 'context/Store';
 import api from "@/utils/api";
 
-const initialState = { text: '' }
+const initialState = { text: '' };
 
-const CommentForm = ({prodId}) => {
+const CommentForm = () => {
   const { state, dispatch } = useAppContext();
   const { auth, post } = state;
   const router = useRouter();
-  const { isAuthenticated, user } = auth;
+  const { isAuthenticated } = auth;
   const [commentForm, setCommentForm] = useState(false);
   const [commentFormData, setCommentFormData] = useState(initialState);
 
@@ -28,18 +28,17 @@ const CommentForm = ({prodId}) => {
       
       let res = await api.post(`/post/comment/${post.post._id}`, {text});
       if (res) {
-        dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]})
+        dispatch({type: "CREATE_COMMENT", payload: res.data.data.comment[0]});
 
         setCommentFormData({ text: '' });
         setCommentForm(false);
       } else {
-        console.log("new post comment failure")
-        router.push("/")
+        router.push("/");
       }
     } catch (err) {
-      console.log(err);
-      toast.error("Failed to create comment.")
-      if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      console.error(err);
+      toast.error("Failed to create comment.");
+      if (!Cookies.get("blog__isLoggedIn")) router.push("/");
     }
   };
 
@@ -57,7 +56,7 @@ const CommentForm = ({prodId}) => {
             </div>
           ) : !commentForm ? (
             <div className="comment__form-collapse" onClick={() => setCommentForm(true)}>
-              <div className="">Add Comment</div>
+              <div className="comment__add-comment">Add Comment</div>
             </div>
           ) : (
             <></>

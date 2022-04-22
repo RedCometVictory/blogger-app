@@ -126,7 +126,7 @@ const Feed = ({feedPost}) => {
             </div>
             <div className="feed__posts">
               <div>
-                No posts found. Follow profiles in order to start seeing posts in your personal feed or visit <Link href="/"><a>general feed</a></ Link>. Or clear all search constraints.
+                No posts found. Follow profiles in order to start seeing posts in your personal feed or visit <Link href="/"><a>general feed</a></Link>. Or clear all search constraints.
               </div>
             </div>
           </div>

@@ -1,7 +1,6 @@
 require('dotenv').config();
 import jwt from 'jsonwebtoken';
-import { hash, compare } from 'bcryptjs';
-import crypto from 'crypto';
+import { compare } from 'bcryptjs';
 
 let DOMAIN = process.env.DOMAIN
 let DOMAIN_LOCAL = process.env.DOMAIN_LOCAL
@@ -13,8 +12,6 @@ const NODE_ENV = process.env.NODE_ENV;
 function validateAccessTokenCookie(token) {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    // becuz payload stored value in a obj
-    // return decoded.tokenId;
     return decoded;
   } catch (err) {
     console.error('something went wrong with validating the refresh token!');
@@ -42,8 +39,6 @@ function accessTokenCookieOptions() {
 };
 
 function accessTokenGenerator (user_id, role) {
-  // role = admin (access admin only routes)
-  console.log("creating access token")
   const payload = {
     user: {
       id: user_id,

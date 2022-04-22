@@ -26,26 +26,18 @@ const ReplyItem = ({reply}) => {
   const submitReplyEditHandler = async (e) => {
     e.preventDefault();
     try {
-      console.log("UPDATING REPLY")
       let text = replyEditFormData.text;
-  
       let res = await api.put(`/post/comment/${post.post._id}/update/${reply._id}`, {text});
   
       if (res) {
-        dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment})
-
+        dispatch({type: "UPDATE_COMMENT", payload: res.data.data.comment});
         showReplyForm(false);
       } else {
-        console.log("reply redirect")
-        // if (!Cookies.isLoggedIn) {
-          router.push("/")
-        // }
+        router.push("/");
       }
-      // setEditFormData({ text: '' });
     } catch (err) {
       console.log(err);
-      toast.error("Failed to submit reply edit.")
-      // if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      toast.error("Failed to submit reply edit.");
     }
   };
   
@@ -56,29 +48,23 @@ const ReplyItem = ({reply}) => {
   const deleteReplyHandler = async (id) => {
     try {
       await api.delete(`/post/comment/${post.post._id}/delete/${id}`);
-      dispatch({type: "DELETE_COMMENT", payload: id})
+      dispatch({type: "DELETE_COMMENT", payload: id});
     } catch (err) {
       console.log(err);
-      toast.error("Failed to delete reply.")
-      // if (!Cookies.get("blog__isLoggedIn")) router.push("/")
+      toast.error("Failed to delete reply.");
     }
   };
   
   const likeHandler = async (id) => {
     try {
-      // console.log("id")
-      // console.log(id)
       let parentCommentId = reply.parentCommentId;
       let res = await api.post(`/post/comment/${post.post._id}/like/${id}?parentCommentId=${parentCommentId}`);
-      // console.log(" response ")
-      // console.log(res.data.data)
+
       if (res) {
         dispatch({type: "LIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes}});
-
-        toast.success("Post reply liked!")
+        toast.success("Post reply liked!");
       } else {
-        console.log("commnet like")
-        toast.error("Failed to like reply.")  
+        toast.error("Failed to like reply.");
       }
     } catch (err) {
       toast.error("Failed to like post reply.")
@@ -92,13 +78,12 @@ const ReplyItem = ({reply}) => {
       if (res) {
         dispatch({type: "UNLIKE_COMMENT", payload: {commentId: res.data.data.commentId, commentLikes: res.data.data.commentLikes, userId: auth?.user?._id}});
 
-        toast.success("Post reply unliked!")
+        toast.success("Post reply unliked!");
       } else {
-        console.log("reply unliked")
         toast.error("Failed to unlike reply.");  
       }
     } catch (err) {
-      toast.error("Failed to unlike post reply.")
+      toast.error("Failed to unlike post reply.");
       if (!Cookies.get("blog__isLoggedIn")) router.push("/");
     }
   };
@@ -114,12 +99,9 @@ const ReplyItem = ({reply}) => {
             <Image
               className={"comment__img"}
               src={reply.avatarImage}
-              fill="layout"
               alt="user avatar"
-              // width={500}
-              // height={250}
               layout="fill"
-              // image is stretched, apply custom css to fix
+              // image stretched, apply custom css to fix
             />
           </div>
         )}
@@ -159,7 +141,6 @@ const ReplyItem = ({reply}) => {
             </div>
             <div className="comment__form-group">
               <textarea
-                // className="form-input"
                 className="form-textarea"
                 name="text"
                 placeholder="Edit reply here."
@@ -186,7 +167,6 @@ const ReplyItem = ({reply}) => {
               <div className="thumb" onClick={() => unLikeHandler(reply._id)}>
                 <FaRegThumbsDown />
               </div>
-              {/* <div className="">0</div> */}
             </div>
           </div>
         </>)}

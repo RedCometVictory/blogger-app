@@ -38,8 +38,9 @@ export const StoreProvider = ({ reducer, initialState, children }) => {
     console.log(authUser)
     
     // if (authUser && token) {
-    if (authUser) {
+    if (authUser && Cookies.get('blog__isLoggedIn')) {
       // Cookies.set("blog__isLoggedIn", true);
+      console.log("INIT STORE - Loading User")
       dispatch({
         type: "USER_LOADED",
         payload: authUser
@@ -59,6 +60,9 @@ export const StoreProvider = ({ reducer, initialState, children }) => {
       // Cookies.set("blog__isLoggedIn", true);
       Cookies.set("blog__userInfo", JSON.stringify(state.auth.user));
       localStorage.setItem("blog__follows", JSON.stringify(state.follow.followers));
+      console.log("State Store Change")
+      console.log("STATE:")
+      console.log(state);
       // checkUserLoggedIn()
 
       // cookie.parse();

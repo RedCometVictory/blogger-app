@@ -27,15 +27,10 @@ const Login = () => {
     try {
       let res = await api.post('/auth/signin', formData);
       dispatch({ type: "LOGIN_SUCCESS", payload: res.data.data.user });
-      console.log("loggin intyo acct")
-      console.log(res.data)
       router.push('/');
     } catch (err) {
-      toast.error('Invalid password or email. Try again.')
-      // const errors = err.response.data.errors;
-      // if (errors) {
-      //   errors.forEach(error => toast.error(error.msg));
-      // }
+      console.error(err);
+      toast.error('Invalid password or email. Try again.');
     }
   };
 

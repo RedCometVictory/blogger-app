@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
-import { useAppContext } from 'context/Store';
 import CommentItem from "./CommentItem";
 
 const Comment = ({comments}) => {
-  const { state, dispatch } = useAppContext();
-  const { auth, post } = state;
   const rootComments = comments?.filter(comment => comment.parentCommentId == null);
 
   const getReplies = (commentId) => {

@@ -1,14 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
-import { FaUserCircle, FaTv, FaGlobe, FaLaptopCode, FaLaptop, FaYoutube, FaTwitter, FaFacebook, FaLinkedinIn, FaLinkedin, FaInstagram, FaReddit, FaGithub } from 'react-icons/fa';
-import { toast } from "react-toastify";
-import Image from "next/image";
-import api from "@/utils/api";
-import axios from 'axios';
-import { updateUserForm, createUpdateProfileForm } from '@/utils/formDataServices';
-import { ControlGroup, ControlGroupFileUpload } from '../UI/FormControlGroup';
-import ProfileField from './profileField';
+import { FaLaptopCode, FaYoutube, FaTwitter, FaFacebook, FaLinkedin, FaInstagram, FaReddit, FaGithub } from 'react-icons/fa';
 
 const ProfileHeader = () => {
   const { state, dispatch } = useAppContext();

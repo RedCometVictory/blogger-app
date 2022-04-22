@@ -1,17 +1,11 @@
 .aside {
-  // max-width: 300px;
   max-width: 180px;
   background: var(--bg-panel);
-  // min-width: 72px;
-  // width: 72px;
   width: 0px;
   transition: ease 0.45s;
-  // transition: ease-in 0.45s;
-  // transition: ease-in-out 0.45s;
   overflow: hidden;
   overflow-y: scroll;
   scrollbar-width: none;
-  // padding: 0 1.2rem 0;
   top: 0;
   bottom: 0;
   left: 0;
@@ -22,16 +16,10 @@
   &.active {
     overflow-y: scroll;
     padding: 0 1.2rem 0;
-    // width: 20vw;
     width: 210px;
   }
-  // &:hover {
-  //   // width: 20vw;
-  //   width: 210px;
-  // }
   &:hover .aside__item-text {
     display: flex;
-    // color: var(--primary-color);
     transition: 0.5s;
     opacity: 1;
   }
@@ -52,10 +40,8 @@
     &:hover > .aside__item-text {
       color: var(--primary-color);
       transition: ease 0.5s;
-      // opacity: 1;
     }
     &.active > .aside__item-text {
-      // color: var(--primary-color);
       transition: all 0.5s ease-in-out;
       opacity: 1;
     }
@@ -64,18 +50,12 @@
     cursor: pointer;
     color: var(--color-icon);
     margin: 0 12px 0 0;
-    // color: var(--primary-color);
   }
   &__item-text {
     cursor: pointer;
     transition: ease-in 0.5s;
-    // transition: ease-in 0.55s;
     color: var(--color-text);
     opacity: 0;
-    // &:hover {
-    //   color: var(--primary-color);
-    //   transition: 0.5s;
-    // }
   }
 }
 
@@ -83,95 +63,15 @@
   .aside {
     max-width: 180px;
     &.active {
-      // width: 20vw;
       width: 210px;
     }
   }
 }
 
-
-// @media (min-width: 500px) {
 @media (min-width: 620px) {
   .aside {
-    width: 72px;  // ---
-    // min-width: 72px;
-    // max-width: 180px;
+    width: 72px;
     padding: 0 12px 0 12px;
-    // padding: 0 1.2rem 0;
-    // overflow-y: scroll;
-    // scrollbar-width: none;
-    // scrollbar-color: var(--bg-panel);
-    // scrollbar-width: thin;
-    // &::-webkit-scrollbar {
-    //   // width of scrollbar
-    //   width: 12px;
-    // }
-    // &::-webkit-scrollbar-track {
-    //   background-color: rgba(88, 88, 86, 0.5);
-    // }
-    // &::-webkit-scrollbar-thumb {
-    //   // draggable area chrome
-    //   background-color: rgb(82, 82, 85);
-    //   border-radius: 20px;
-    // }
     transition: ease 0.45s;
-    &.active {
-      // padding: initial;
-    }
   }
 }
-
-// --------------------------------------------------
-// ORIGINAL VERSION
-// .aside {
-//   // max-width: 300px;
-//   max-width: 180px;
-//   background: var(--bg-panel);
-//   min-width: 72px;
-//   width: 72px;
-//   transition: ease-in 0.45s;
-//   overflow: hidden;
-//   padding: 0 1.2rem 0;
-//   // position: fixed;
-//   // top: 10% // only wih intersection observer
-//   &.active {
-//     // width: 20vw;
-//     width: 210px;
-//   }
-//   &:hover {
-//     // width: 20vw;
-//     width: 210px;
-//   }
-//   // &:hover .aside__item-text {
-//     // display: flex;
-//     // opacity: 1;
-//   // }
-//   &__menu-item {
-//     margin: 1.2rem 0 1.2rem;
-//     @include flex(row, space-between, center);
-//     &:hover > .aside__item-logo {
-//       color: var(--primary-color);
-//       transition: 0.5s;
-//     }
-//     &:hover > .aside__item-text {
-//       color: var(--primary-color);
-//       transition: 0.5s;
-//     }
-//   }
-//   &__item-logo {
-//     cursor: pointer;
-//     color: var(--color-icon);
-//     margin: 0 12px 0 0;
-//     // color: var(--primary-color);
-//   }
-//   &__item-text {
-//     cursor: pointer;
-//     transition: ease-in 0.55s;
-//     color: var(--color-text);
-//     // opacity: 0;
-//     // &:hover {
-//     //   color: var(--primary-color);
-//     //   transition: 0.5s;
-//     // }
-//   }
-// }

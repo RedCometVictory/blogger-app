@@ -34,9 +34,6 @@ const PostSchema = new mongoose.Schema({
   tags: {
     type: [String]
   },
-  // themes: {
-  //   type: [String]
-  // },
   likes: [
     {
       user: {
@@ -82,16 +79,5 @@ const PostSchema = new mongoose.Schema({
     }
   ],
 }, {timestamps: true});
-
 const Post = mongoose.models.Post || mongoose.model('Post', PostSchema);
 export default Post;
-// module.exports = mongoose.model('Post', PostSchema);
-
-// updatedAt: {
-//   type: String, 
-//   default: Date.now()
-// },
-// createdAt: {
-//   type: String, 
-//   default: new Date().toISOString()
-// }

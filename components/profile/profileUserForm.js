@@ -1,18 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useRouter } from "next/router";
+import { useState } from 'react';
 import { useAppContext } from 'context/Store';
 import { FaUpload } from 'react-icons/fa';
 import { toast } from "react-toastify";
-import Image from "next/image";
 import api from "@/utils/api";
-import axios from 'axios';
-import { updateUserForm, createUpdateProfileForm } from '@/utils/formDataServices';
+import { updateUserForm } from '@/utils/formDataServices';
 import { ControlGroup, ControlGroupFileUpload } from '../UI/FormControlGroup';
-import ProfileField from './profileField';
 
 const ProfileUserForm = ({setUserForm}) => {
   const { state, dispatch } = useAppContext();
-  const { auth, profile } = state;
+  const { auth } = state;
   const [fileTypeError, setFileTypeError] = useState(false);
   const [fileSizeError, setFileSizeError] = useState(false);
   const [userData, setUserData] = useState({
@@ -72,25 +68,14 @@ const ProfileUserForm = ({setUserForm}) => {
     e.preventDefault();
     setUploading(true);
     try {
-      console.log("submitting - userData")
-      console.log(userData)
-      // userData = JSON.stringify(userData);s
       let servicedData = await updateUserForm(userData);
-      console.log("servicedData -user update")
-      console.log(servicedData)
       let res = await api.put("/user/edit", servicedData);
-      console.log("user submit response")
-      console.log(res.data.data)
       dispatch({ type: "UPDATE_USER_INFO", payload: res.data.data.updateUserInfo });
       setUploading(false);
       setUserForm(false);
     } catch (err) {
-      // const errors = err.response.data.errors;
-      // if (errors) {
-      //   errors.forEach(error => toast.error(error.msg));
-      // }
-      console.error(err)
-      toast.error("Failed to submit profile update.")
+      console.error(err);
+      toast.error("Failed to submit profile update.");
       setUserForm(false);
       setUploading(false);
     }
@@ -145,32 +130,27 @@ const ProfileUserForm = ({setUserForm}) => {
           </div>
           <div className="profile__set 02">
             <h4>Avatar: </h4>
-            {/* <ControlGroup
-              name={"image_url"}
-              type={"file"}
-              placeholder={"avatar image"}
-              id={"login-name"}
-              className={"fui-user"}
-              onChange={handleAvatarChange}
-              // value={image_url}
-            /> */}
             <ControlGroupFileUpload
               action={handleAvatarChange}
               icon={<FaUpload size={"25"} />}
             />
           </div>
           {imageData && (
-            <div className="admForm__show">
+            <div className="profile__image-show">
               <div className="btn btn-secondary" onClick={() => isShowImageData(true)}>Show Preview</div>
               <div className="btn btn-secondary" onClick={() => isShowImageData(false)}>Hide Preview</div>
             </div>
           )}
           {imageData && showImageData && (
-            <div className="admForm__image create-form">
-              <img className="admForm__img create-form" src={imageData} alt="Uploaded Product" />
+            <div className="profile__upload-image">
+              <img
+                className="profile__upload-img"
+                src={imageData}
+                alt="uploaded avatar or background"
+                // layout="responsive"
+              />
             </div>
           )}
-          
           <div className="confirmForm__section">
             {fileTypeError || fileSizeError ? (
               <div className="confirmForm__error">

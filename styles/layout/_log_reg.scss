@@ -2,22 +2,16 @@
   @include flex(row, center, center);
   margin-top:5rem;
   &__body {
-    background-image:url("./../../img/blogging2.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
     height: 100vh;
-    // width: 100vw;
     overflow: hidden;
   }
   &__screen {
-    // background-color:#f5d8dd;
     background-color: var(--bg-panel);
     color: var(--color-text);
     padding:30px;
     border-radius: 5px;
-    box-shadow: 0 0 50px #ccc;
+    box-shadow: 6px 7px 10px 1px rgba(38, 38, 38, 0.35);
   }
-  // &__sign {}
   &__sign-top {
     @include flex(row, space-around, center);
   }

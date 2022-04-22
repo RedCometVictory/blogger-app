@@ -12,39 +12,7 @@
   &__btns-container {
     @include flex(row, space-between, center);
   }
-  // &__toolbar {
-  //   background-color: yellowgreen;
-  // }
-  // &__wrapper {
-  //   background-color: red;
-  // }
-  // &__editor {
-  //   background-color: white;
-  // }
-  // &__preview {
-  //   padding: 1rem;
-  //   color: var(--color-text);
-  //   p {}
-  //   ol, ul {
-  //     // font-style: italic;
-  //     padding: 0 0 0 3rem;
-  //   }
-  // }
-  // &__code {
-  //   background: #000;
-  //   color: #fff;
-  //   padding: 20px;
-  //   display: block;
-  // }
 }
-// .codex-editor {
-//   &__redactor {
-//     padding: 0 0 160px 0;
-//   }
-// }
-// .codex-editor__redactor {
-//   padding: 0 0 160px 0 !important;
-// }
 .codex-editor {
   &__redactor {
     padding: 0 0 160px 0 !important;
@@ -57,9 +25,6 @@
     }
     .cdx-list {
       margin: 0 0 0 16px;
-    }
-    .ce-header{
-      
     }
     .ce-paragraph {
       padding: 0 0 8px 0;
@@ -107,7 +72,6 @@
   }
   &__actions-buttons {
     color: var(--color-text);
-    // margin: 0 5px;
     width: 26px;
   }
   &__settings-btn {
@@ -137,9 +101,5 @@
   background-color: var(--bg-panel);
 }
 .ce-conversion-toolbar {
-  // opacity: 1;
   background-color: var(--bg-panel);
-  // background-color: darkgreen;
-
-  // visibility: visible;
 }

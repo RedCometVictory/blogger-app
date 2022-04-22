@@ -11,16 +11,4 @@ const combineReducers = reducers => {
     )
   }
 }
-// export { initialState, combineReducers };
 export default combineReducers;
-
-// export function combineReducers(slices) {
-//   return function (prevState, action) {
-//     return Object.keys(slices).reduce((nextState, nextProp) => {
-//       return {
-//         ...nextState,
-//         [nextProp]: slices[nextProp](prevState[nextProp], action),
-//       };
-//     }, prevState);
-//   };
-// }

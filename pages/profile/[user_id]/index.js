@@ -14,8 +14,8 @@ import ProfileForm from "../../../components/profile/profileForm";
 import Spinner from "../../../components/Spinner";
 
 const PublicProfile = ({publicProfile, token}) => {
-  // console.log("publicProfile")
-  // console.log(publicProfile)
+  console.log("publicProfile")
+  console.log(publicProfile)
   const router = useRouter();
   const { state, dispatch } = useAppContext();
   const { auth, profile, follow } = state;
@@ -28,7 +28,11 @@ const PublicProfile = ({publicProfile, token}) => {
 
   let isCurrentlyFollowing;
   // let followResult = follow.follower_id?.filter(follow => follow.follower_id);
-  let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id);
+  console.log("follow list")
+  console.log(follow)
+  let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id && follow.following_id === publicProfile?.user?._id);
+  console.log("followResult");
+  console.log(followResult);
   isCurrentlyFollowing = followResult?.length > 0;
   console.log("isCurrentlyFollowing")
   console.log(isCurrentlyFollowing)
@@ -164,7 +168,6 @@ const PublicProfile = ({publicProfile, token}) => {
             <Image
               className={"blog__img"}
               src={profileData.profile.backgroundImage}
-              fill="layout"
               alt="user avatar"
               layout="fill"
             />
@@ -179,7 +182,6 @@ const PublicProfile = ({publicProfile, token}) => {
                   <Image
                     className={"blog__img"}
                     src={profileData.user.avatarImage}
-                    fill="layout"
                     alt="user avatar"
                     layout="fill"
                   />
@@ -221,7 +223,7 @@ const PublicProfile = ({publicProfile, token}) => {
                         <div className="comment__header-profile">
                           <div className="comment__header-info">
                             {post.avatarImage && (
-                              <div className="comment__image-avatar avatar profile">
+                              <div className="comment__image-avatar avatar">
                                 <Image
                                   className={"comment__img profile"}
                                   src={post.avatarImage}
@@ -295,14 +297,14 @@ const PublicProfile = ({publicProfile, token}) => {
                 </Link>
               </div>
             )}
-          <Link
-            passHref
-            href={`/profile`}
-          >
-            <div className="author-name">
-              {profileData.user.username}
-            </div>
-          </Link>
+            <Link
+              passHref
+              href={`/profile`}
+            >
+              <div className="author-name">
+                {profileData.user.username}
+              </div>
+            </Link>
           </div>
           {/* {auth?.user?._id !== profileData?.user?._id && (
             <div className="blog__follow">
@@ -311,7 +313,7 @@ const PublicProfile = ({publicProfile, token}) => {
               </button>
             </div>
           )} */}
-          {auth?.user?._id === profileData?.user ? (
+          {auth?.user?._id === profileData?.user?._id ? (
             <>
             <div className=""></div>
             </>

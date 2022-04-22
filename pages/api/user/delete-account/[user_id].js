@@ -18,16 +18,16 @@ export const config = {
   },
 };
 
-const upload = multer({
-  storage,
-  limits: { fieldSize: 3 * 1024 * 1024 },
-  fileFilter(req,file, cb) {
-    if (!file.originalname.match(/\.(gif|jpe?g|png)$/i)) {
-      return cb(new Error("file must be an image"));
-    }
-    return cb(null, true);
-  }
-}); //3MB
+// const upload = multer({
+//   storage,
+//   limits: { fieldSize: 3 * 1024 * 1024 },
+//   fileFilter(req,file, cb) {
+//     if (!file.originalname.match(/\.(gif|jpe?g|png)$/i)) {
+//       return cb(new Error("file must be an image"));
+//     }
+//     return cb(null, true);
+//   }
+// }); //3MB
 
 // *** create user profile, update, & delete account
 const handler = nc({onError, onNoMatch});
@@ -151,51 +151,63 @@ handler.use(verifAuth, authRole);
 // *** insomnia tested - passed
 // *** delete profile, posts + all user data
 handler.delete(async(req, res) => {
-  const { user_id } = req.query;
+  console.log("req.user")
+  console.log(req.user)
+  console.log("req.query")
+  console.log(req.query)
+  const { id } = req.user;
+  // const { user_id } = req.query;
   await db.connectToDB();
 
-  console.log(user_id)
+  // console.log(user_id)
 
-  const user = await User.findById({_id: user_id});
+  // const user = await User.findById({_id: user_id});
+  const user = await User.findById({_id: id});
   console.log("user")
   console.log(user)
 
   // todo: turn into findone
-  const profile = await Profile.findOne({user: user_id});
+  // const profile = await Profile.findOne({user: user_id});
+  const profile = await Profile.findOne({user: id});
   console.log("profile")
   console.log(profile)
 
-  if (user.avatarImageFilename) {
-    await cloudinary.uploader.destroy(user.avatarImageFilename);
-  }
+  // if (user.avatarImageFilename) {
+  //   await cloudinary.uploader.destroy(user.avatarImageFilename);
+  // }
 
-  if (profile.backgroundImageFilename) {
-    await cloudinary.uploader.destroy(profile.backgroundImageFilename);
-  }
+  // if (profile.backgroundImageFilename) {
+  //   await cloudinary.uploader.destroy(profile.backgroundImageFilename);
+  // }
 
   console.log("post find testing")
   // only return specified field, exclude _id which is usually included by default
-  let postImages = await Post.find({user: user_id}).select('coverImageFilename -_id');
-  console.log("post test 02")
+  // let postImages = await Post.find({user: user_id}).select('coverImageFilename -_id');
+  let postImages = await Post.find({user: id}).select('coverImageFilename -_id');
+  console.log("post images")
   console.log(postImages)
 
   if (postImages.length > 0) {
     let promises = [];
     for (let i = 0; i < postImages.length; i++) {
       if (postImages[i].coverImageFilename !== '') {
-        promises.push(cloudinary.uploader.destroy(postImages[i].coverImageFilename));
+        // promises.push(cloudinary.uploader.destroy(postImages[i].coverImageFilename));
+        promises.push(postImages[i].coverImageFilename);
       }
     }
     await Promise.all(promises);
   };
 
+  console.log("promises")
+  console.log(promises)
+
   // delete remaining user data
-  await Promise.all([
-    Post.deleteMany({ user: user_id }),
-    Follow.deleteMany({ follower_id: user_id }),
-    Profile.findOneAndRemove({ user: user_id }),
-    User.findOneAndRemove({ _id: user_id })
-  ]);
+  // await Promise.all([
+  //   Post.deleteMany({ user: user_id }),
+  //   Follow.deleteMany({ following_id: user_id, follower_id: user_id }),
+  //   Profile.findOneAndRemove({ user: user_id }),
+  //   User.findOneAndRemove({ _id: user_id })
+  // ]);
   await db.disconnect();
 
   const { token } = req.cookies;
@@ -205,9 +217,22 @@ handler.delete(async(req, res) => {
   //   return res.status(403).json({ errors: [{ msg: "Unauthorized. Nothing found!" }] });
   // }
   // if (token) {
+  // res.setHeader(
+  //   "Set-Cookie",
+  //   cookie.serialize("token", '', { expires: new Date(1), path: '/' })
+  // );
+
   res.setHeader(
     "Set-Cookie",
-    cookie.serialize("token", '', { expires: new Date(1), path: '/' })
+    // cookie.serialize("blog__token", null, { expires: new Date(1), maxAge: 0, path: '/', httpOnly: false })
+    cookie.serialize("blog__token", '', {
+      // sameSite: "strict",
+      secure: process.env.NODE_ENV !== 'development',
+      maxAge: -1,
+      path: '/',
+      // httpOnly: true,
+      expires: new Date(0)
+    })
   );
   // };
 

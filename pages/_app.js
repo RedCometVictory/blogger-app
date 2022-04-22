@@ -1,7 +1,6 @@
 import combineReducers from '../context/Reducers/index';
 import { StoreProvider } from '../context/Store';
 import { ThemeProvider } from "use-theme-switcher";
-// import { alertInitialState, AlertReducer } from '../context/Reducers/AlertReducer';
 import { authInitialState, AuthReducer } from '../context/Reducers/AuthReducer';
 import { postInitialState, PostReducer } from '../context/Reducers/PostReducer';
 import { profileInitialState, ProfileReducer } from '../context/Reducers/ProfileReducer';
@@ -12,7 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import '../styles/main.scss';
 
 const combinedInitialState = {
-  // alert: alertInitialState,
   auth: authInitialState,
   follow: followInitialState,
   post: postInitialState,
@@ -20,7 +18,6 @@ const combinedInitialState = {
 };
 
 const rootReducer = combineReducers({
-  // alert: AlertReducer,
   auth: AuthReducer,
   follow: FollowReducer,
   post: PostReducer,
