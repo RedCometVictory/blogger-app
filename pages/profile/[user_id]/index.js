@@ -27,15 +27,8 @@ const PublicProfile = ({publicProfile, token}) => {
   let [isLoading, setIsLoading] = useState(true);
 
   let isCurrentlyFollowing;
-  // let followResult = follow.follower_id?.filter(follow => follow.follower_id);
-  console.log("follow list")
-  console.log(follow)
   let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id && follow.following_id === publicProfile?.user?._id);
-  console.log("followResult");
-  console.log(followResult);
   isCurrentlyFollowing = followResult?.length > 0;
-  console.log("isCurrentlyFollowing")
-  console.log(isCurrentlyFollowing)
 
   let [showFollow, setShowFollow] = useState(isCurrentlyFollowing);
 

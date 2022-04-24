@@ -52,6 +52,9 @@
       @include flex(row, flex-end, center);
     }
   }
+  // &__form {
+  //   pointer-events: none;
+  // }
   &__search {
     background-color: var(---color-navbar-primary);
     color: var(---color-navbar-text);

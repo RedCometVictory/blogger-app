@@ -57,11 +57,21 @@ const Home = ({initGeneral, initTrend, initFollow, token}) => {
   const router = useRouter();
   const [trendList, setTrendList] = useState(initTrend);
   const [emailList, setEmailList] = useState('');
+  // const [hasMounted, setHasMounted] = useState(false);
+  // let [currentPage, setCurrentPage] = useState(page || 1);
+  let [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [category, setCategory] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   console.log("trendList")
   console.log(trendList)
   console.log("initFollow")
   console.log(initFollow)
+  console.log("router.query");
+  console.log(router.query);
+  
+  let {keyword} = router.query;
   // useEffect(() => {
   //   if (!auth.isAuthenticated && auth.user.role !== 'user') {
   //     setstate
@@ -76,7 +86,30 @@ const Home = ({initGeneral, initTrend, initFollow, token}) => {
       Cookies.remove("blog__userInfo");
       router.push("/");
     }
-    dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+    // TODO: confirm no query exists before initial dis[atch], thus via searchbar, upon submit, commence search in backend api on search bar comp, dispatch finding results, and then redirect, thus if a qquery should exists 9and it should) the init dispatch does not take place
+    // dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+    
+    if (!router.query.keyword) {
+      dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+      console.log("router.query in useeffect");
+      console.log(router.query);
+      // let {keyword} = router.query;
+      // console.log("keyword")
+      // console.log(keyword)
+      // let res = api.get(`/posts?keyword=${keyword}&category=${category ? category : ''}&tag=${keyword}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
+      // console.log("res")
+      // console.log(res)
+    };
+
+
+
+
+
+
+    // if (router.query.length === 0) {
+    //   console.log("no query exists")
+    //   dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+    // };
     console.log("HOME: GET_FOLLOW_STATUS")
     console.log("initFollow")
     console.log(initFollow)
@@ -85,7 +118,24 @@ const Home = ({initGeneral, initTrend, initFollow, token}) => {
     localStorage.setItem("blog__follows", JSON.stringify(initFollow));
     // Cookies.set("blog__trends", JSON.stringify(initTrend));
   }, []);
-
+  
+  // useEffect(() => {
+    // if (router.query.keyword) {
+    //   console.log("router.query in useeffect");
+    //   console.log(router.query);
+    //   let {keyword} = router.query;
+    //   console.log("keyword")
+    //   console.log(keyword)
+    //   let res = api.get(`/posts?keyword=${keyword}&category=${category ? category : ''}&tag=${keyword}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
+    //   console.log("res")
+    //   console.log(res.data)
+      // await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
+      // await api.get('/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
+      // {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+      // );
+      // dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+    // };
+  // }, [keyword]);
   // const onChange = (e) => {
   //   setEmailList({ ...emailList, [e.target.name]: e.target.value })
   // }
@@ -100,6 +150,48 @@ const Home = ({initGeneral, initTrend, initFollow, token}) => {
       return toast.error("Please provide a email.");
     }
   };
+
+  const categoryChange = (e) => {
+    setIsLoading(true);
+    setCurrentPage(1);
+    setCategory(e.target.value); // 12 or 20, dropdown
+  };
+
+  const itemCountChange = (e) => {
+    setIsLoading(true);
+    if (e.target.value > itemsPerPage) {
+      setCurrentPage(currentPage = currentPage - 1);
+    }
+    setItemsPerPage(Number(e.target.value)); // 12 or 20, dropdown
+  };
+
+  const pageChange = (chosenPage) => {
+    setCurrentPage(chosenPage);
+    window.scrollTo({ behavior: "smooth", top: 0 });
+  };
+
+  /*
+    const dispatch = useDispatch();
+  const { keyword } = useParams();
+  const allProducts = useSelector(state => state.product);
+  const { loading, categories, products, page, pages } = allProducts;
+  
+  
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(listAllCategories());
+    dispatch(listAllProducts(keyword, category !== 'All' ? category : '', currentPage, itemsPerPage));
+  }, [dispatch, keyword, category, currentPage, itemsPerPage]);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
+  */
 
   return auth.isAuthenticated && Cookies.get("blog__isLoggedIn") ? (
     <section className="feed__layout">
@@ -236,6 +328,7 @@ export const getServerSideProps = async (context) => {
     // console.log(">>>>> cookies <<<<<")
     let token = context.req.cookies.blog__token;
     let userInfo = context.req.cookies.blog__userInfo;
+
     // console.log("token")
     // console.log(token)
     // console.log("userinfo")
@@ -322,25 +415,51 @@ export const getServerSideProps = async (context) => {
 
 
 
+
     let inHeaderToken;
     inHeaderToken = cookie.parse(context.req.headers.cookie.blog__token ? context.req.headers.cookie.blog__token || '?' : "");
     // console.log("inHeaderToken")
     // console.log(inHeaderToken)
     // cookie.parse(req ? req.headers.cookie || '' : '')
-        
+    
+
+    // if (context.query.slug[0] !== 'create') {
+    //   post_id = context.query.slug[1];
+    //   initPostInfo = await api.get(`/post/${post_id}`,
+    //   { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    //   );
+    // }
+
+    console.log("context.query")
+    console.log(context.query)
+    // let initGeneralFeed;
+    // if (context.query && context.query.slug[0] !== 'keyword') {
+    //   initGeneralFeed = await api.get('/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
+    //   {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    //   );
+    // };
+
+
+
+
+
+
+    // ORIGINAL
+    const initGeneralFeed = await api.get('/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
+    {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    );
+    // ORIGINAL END
+
     // const initGeneralFeed = await axios({
     //   method: 'get',
     //   url: 'http://localhost:3000/api/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
     //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
     // });
-    const initGeneralFeed = await api.get('/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
-    {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-    );
-    // console.log("initGeneralFeed.data.data")
+    console.log("initGeneralFeed.data.data")
     // console.log("+++++++++++++++++++++++++")
     // console.log("+++++++++++++++++++++++++")
     // console.log("+++++++++++++++++++++++++")
-    // console.log(initGeneralFeed.data.data)
+    console.log(initGeneralFeed.data.data)
     // let initGeneral = initGeneralFeed.data.data;
     const initTrendingFeed = await api.get('/posts/trending', 
     { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}

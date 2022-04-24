@@ -13,6 +13,8 @@ const handler = nc({onError, onNoMatch});
 
 handler.get(async (req, res) => {
   console.log("BACKEND")
+  console.log("req.params");
+  console.log(req.params);
   const {
     // user_id,
     // username, // used with id, user page

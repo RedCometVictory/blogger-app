@@ -30,14 +30,7 @@ const Blog = ({ blogData, token }) => {
   console.log("follow list")
   console.log(follow)
   let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id && follow.following_id === blogData?.user);
-  console.log("followResult");
-  console.log(followResult);
-  // isCurrentlyFollowing = followResult?.length > 0;
-  
-  // let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id);
   isCurrentlyFollowing = followResult?.length > 0;
-  console.log("isCurrentlyFollowing")
-  console.log(isCurrentlyFollowing)
 
   let [showFollow, setShowFollow] = useState(isCurrentlyFollowing);
 
@@ -128,14 +121,12 @@ const Blog = ({ blogData, token }) => {
       let res = await api.post(`/user/follow/${blogData.user}`);
       if (res) {
         dispatch({type: "FOLLOW_USER", payload: res.data.data.followUser});
-        // localStorage.setItem("blog__follows", JSON.stringify(follow.followers));
-        console.log("^^^^^ FOLLOW_USER ^^^^^")
-        console.log(res.data.data.followUser);
+
         // set to false
         setShowFollow(!showFollow);
         toast.success("User followed.");
       } else {
-        toast.error("Failed to follow user.")  
+        toast.error("Failed to follow user.");
       }
     } catch (err) {
       toast.error("Failure to follow user.");
@@ -147,7 +138,6 @@ const Blog = ({ blogData, token }) => {
       let res = await api.put(`/user/follow/unfollow?user_id=${blogData.user}`);
       if (res) {
         dispatch({type: "UNFOLLOW_USER", payload: res.data.data.followers});
-        // localStorage.setItem("blog__follows", JSON.stringify(follow.followers));
         setShowFollow(!showFollow);
         toast.success("User unfollowed!");
       } else {
@@ -192,17 +182,14 @@ const Blog = ({ blogData, token }) => {
   };
   
   const onDeleteHandler = async (id) => {
-    console.log("deleting blog... please wait...");
     try {
       setIsLoading(true);
-      // dispatch({type: "", payload})
-      await api.delete(`/post/${blogData._id}`)
-      toast.success("Deleted post!")
-      router.push("/")
-      console.log("deleted post...");
+      await api.delete(`/post/${blogData._id}`);
+      toast.success("Deleted post!");
+      router.push("/");
     } catch (err) {
       console.error(err);
-      toast.error("Failed to delete post.")
+      toast.error("Failed to delete post.");
       setIsLoading(false);
     }
   };
@@ -213,9 +200,9 @@ const Blog = ({ blogData, token }) => {
         <div className="comment__btns">
           <div className="comment__delete-confirm">
             <div>Delete post? Are you sure?</div>
-              <div className="comment__delete-btns">
-                <button className="btns del-primary" onClick={e => onDeleteHandler(blogData._id)}>Yes</button>
-                <button className="btns del-secondary" onClick={() => isSetConfirmDelete(false)}>No</button>
+            <div className="comment__delete-btns">
+              <button className="btns del-primary" onClick={e => onDeleteHandler(blogData._id)}>Yes</button>
+              <button className="btns del-secondary" onClick={() => isSetConfirmDelete(false)}>No</button>
             </div>
           </div>
         </div>

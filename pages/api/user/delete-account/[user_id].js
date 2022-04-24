@@ -172,13 +172,13 @@ handler.delete(async(req, res) => {
   console.log("profile")
   console.log(profile)
 
-  // if (user.avatarImageFilename) {
-  //   await cloudinary.uploader.destroy(user.avatarImageFilename);
-  // }
+  if (user.avatarImageFilename) {
+    await cloudinary.uploader.destroy(user.avatarImageFilename);
+  }
 
-  // if (profile.backgroundImageFilename) {
-  //   await cloudinary.uploader.destroy(profile.backgroundImageFilename);
-  // }
+  if (profile.backgroundImageFilename) {
+    await cloudinary.uploader.destroy(profile.backgroundImageFilename);
+  }
 
   console.log("post find testing")
   // only return specified field, exclude _id which is usually included by default
@@ -187,27 +187,142 @@ handler.delete(async(req, res) => {
   console.log("post images")
   console.log(postImages)
 
+  let promises = [];
   if (postImages.length > 0) {
-    let promises = [];
     for (let i = 0; i < postImages.length; i++) {
       if (postImages[i].coverImageFilename !== '') {
         // promises.push(cloudinary.uploader.destroy(postImages[i].coverImageFilename));
-        promises.push(postImages[i].coverImageFilename);
+        await cloudinary.uploader.destroy(postImages[i].coverImageFilename);
+        // promises.push(postImages[i].coverImageFilename);
       }
     }
-    await Promise.all(promises);
+    // await Promise.all(promises);
   };
+
+  /*EXAMPLES
+    if (getCommentImagesForPost.rows.length > 0) {
+      let promises = [];
+      for (let i = 0; i < getCommentImagesForPost.rows.length; i++) {
+        if (getCommentImagesForPost.rows[i].image_url_filename !== '') {
+          promises.push(cloudinary.uploader.destroy(getCommentImagesForPost.rows[i].image_url_filename));
+        }
+      }
+      await Promise.all(promises);
+    };
+
+      if (deleteCommentImages.rows.length > 0) {
+      let promises = [];
+      for (let i = 0; i < deleteCommentImages.rows.length; i++) {
+        if (deleteCommentImages.rows[i].image_url_filename !== '') {
+          promises.push(cloudinary.uploader.destroy(deleteCommentImages.rows[i].image_url_filename));
+        }
+      }
+      await Promise.all(promises);
+    };
+
+
+
+    async postUpdate(req, res, next) {
+		// destructure post from res.locals
+		const { post } = res.locals;
+		// check if there's any images for deletion
+		if(req.body.deleteImages && req.body.deleteImages.length) {			
+			// assign deleteImages from req.body to its own variable
+			let deleteImages = req.body.deleteImages;
+			// loop over deleteImages
+			// for(const public_id of deleteImages) {
+			for(const filename of deleteImages) {
+				// delete images from cloudinary
+				// await cloudinary.v2.uploader.destroy(public_id); // old
+				await cloudinary.uploader.destroy(filename);
+				// delete image from post.images
+				for(const image of post.images) {
+					// if(image.public_id === public_id) {
+					if(image.filename === filename) {
+						let index = post.images.indexOf(image);
+						post.images.splice(index, 1);
+					}
+				}
+			}
+		}
+
+
+
+    async postDestroy(req, res, next) {
+		const { post } = res.locals;
+		for(const image of post.images) {
+			// await cloudinary.v2.uploader.destroy(image.public_id); // old
+			await cloudinary.uploader.destroy(image.filename);
+		}
+		await post.remove();
+		req.session.success = 'Post deleted successfully!';
+		res.redirect('/posts');
+	}
+
+
+
+
+
+  	async postDestroy(req, res, next) {
+		const { post } = res.locals;
+		for(const image of post.images) {
+			await cloudinary.v2.uploader.destroy(image.public_id);
+		}
+		await post.remove();
+
+
+
+    	async postUpdate(req, res, next) {
+		// destructure post from res.locals
+		const { post } = res.locals;
+		// check if there's any images for deletion
+		if(req.body.deleteImages && req.body.deleteImages.length) {			
+			// assign deleteImages from req.body to its own variable
+			let deleteImages = req.body.deleteImages;
+			// loop over deleteImages
+			for(const public_id of deleteImages) {
+				// delete images from cloudinary
+				await cloudinary.v2.uploader.destroy(public_id);
+				// delete image from post.images
+				for(const image of post.images) {
+					if(image.public_id === public_id) {
+						let index = post.images.indexOf(image);
+						post.images.splice(index, 1);
+					}
+				}
+			}
+		}
+    await post.save();
+
+
+
+
+    const product = await Product.findById(req.params.id);
+
+    if (!product) {
+        return next(new ErrorHandler('Product not found', 404));
+    }
+
+    // Deleting images associated with the product
+    for (let i = 0; i < product.images.length; i++) {
+        const result = await cloudinary.v2.uploader.destroy(product.images[i].public_id)
+    }
+
+
+  */
 
   console.log("promises")
   console.log(promises)
 
   // delete remaining user data
-  // await Promise.all([
-  //   Post.deleteMany({ user: user_id }),
-  //   Follow.deleteMany({ following_id: user_id, follower_id: user_id }),
-  //   Profile.findOneAndRemove({ user: user_id }),
-  //   User.findOneAndRemove({ _id: user_id })
-  // ]);
+  await Promise.all([
+    Post.deleteMany({ user: id }),
+    // Follow.deleteMany({ following_id: id, follower_id: id }),
+    // Follow.deleteMany({ follower_id: id }),
+    Follow.deleteMany({$or:[{"following_id": id},{"follower_id": id}]}),
+    Profile.findOneAndRemove({ user: id }),
+    User.findOneAndRemove({ _id: id })
+  ]);
   await db.disconnect();
 
   const { token } = req.cookies;
@@ -221,6 +336,7 @@ handler.delete(async(req, res) => {
   //   "Set-Cookie",
   //   cookie.serialize("token", '', { expires: new Date(1), path: '/' })
   // );
+  // };
 
   res.setHeader(
     "Set-Cookie",
@@ -234,7 +350,6 @@ handler.delete(async(req, res) => {
       expires: new Date(0)
     })
   );
-  // };
 
   res.status(200).json({
     status: "All user profile and data deleted."

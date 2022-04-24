@@ -20,6 +20,7 @@ const Profile = ({initProfile, token}) => {
   const { auth, profile } = state;
   const [userForm, setUserForm] = useState(false);
   const [profileForm, setProfileForm] = useState(false);
+  const [setConfirmDelete, isSetConfirmDelete] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -55,10 +56,42 @@ const Profile = ({initProfile, token}) => {
     setProfileForm(false);
     setUserForm(false);
   };
-  
+
+  const onDeleteHandler = async (id) => {
+    try {
+      setIsLoading(true);
+      await api.delete(`/user/delete-account/${auth?.user?._id}`);
+      toast.success("Deleted post!");
+      router.push("/");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete post.");
+      setIsLoading(false);
+    }
+  };
+
+  const DeleteModal = () => {
+    return (
+      <div className="blog__delete-modal">
+        <div className="comment__btns">
+          <div className="comment__delete-confirm">
+            <div>Delete post? Are you sure?</div>
+            <div className="comment__delete-btns">
+              <button className="btns del-primary" onClick={e => onDeleteHandler(auth?.user?._id)}>Yes</button>
+              <button className="btns del-secondary" onClick={() => isSetConfirmDelete(false)}>No</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return isLoading ? (
     <Spinner />
-  ) : (
+  ) : (<>
+    {setConfirmDelete && (
+      <DeleteModal />
+    )}
     <div className="profile">
       <div className="profile__center">
         <div className="profile__container">
@@ -100,6 +133,11 @@ const Profile = ({initProfile, token}) => {
                 value={profile?.profileData.bio || "No bio available."}
               />
             </>)}
+            {auth?.isAuthenticated && auth?.user?._id === profile?.profileData?.user && (
+              <div className="profile__delete">
+                <button className="btn btn-secondary" onClick={() => isSetConfirmDelete(true)}>Delete Account</button>
+              </div>
+            )}
             {userForm && (
               <ProfileUserFrom setUserForm={setUserForm} />
             )}
@@ -110,7 +148,7 @@ const Profile = ({initProfile, token}) => {
         </div>
       </div>
     </div>
-  );
+  </>);
 };
 export default Profile;
 export const getServerSideProps = async (context) => {
