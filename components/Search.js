@@ -14,7 +14,8 @@ const Search = () => {
   // TODO --- figure out a way to clear search bar upon submission
   const searchHandler = (e) => {
     e.preventDefault();
-    if (keyword.trim()) {
+    // if (keyword.trim()) {
+    if (keyword) {
       // history.push(`/search/${keyword}`);
       history.push(`/posts/search/${keyword}`);
     } else {

@@ -1,4 +1,8 @@
 const Spinner = () => {
-  return <div>Loading...</div>;
+  return (
+    <div className='loadingSpinnerContainer'>
+      <div className='loadingSpinner'></div>
+    </div>
+  );
 };
 export default Spinner;

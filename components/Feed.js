@@ -10,33 +10,123 @@ import PostItem from "./UI/Card/PostItem";
 // import AsideNav from './UI/Aside';
 
 // const Feed = ({initGeneral}) => {
+
+
 const Feed = ({feedPost}) => {
+  const router = useRouter();
   const { state, dispatch } = useAppContext();
   const { auth, profile, post } = state;
   const [feedPosts, setFeedPosts] = useState(post.posts || []);
-  const [currentPage, setCurrentPage] = useState(1)
+  // const [currentPage, setCurrentPage] = useState(1)
   // total count of posts
-  const [pageNumber, setPageNumber] = useState(12);
+  const [pageNumber, setPageNumber] = useState(1);
+  // const [hasMounted, setHasMounted] = useState(false);
+  // let [currentPage, setCurrentPage] = useState(page || 1);
+  const [itemsPerPage, setItemsPerPage] = useState(12);
+  const [category, setCategory] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!auth.isAuthenticated && auth.user.role !== 'user') return router.push("/");
   }, [state.post]);
 
-  // useEffect(() => {
-  //   if (Object.keys(post.posts).length === 0) {
-  //     dispatch({type: "GET_ALL_POSTS", payload: initGeneral})
-  //   }
-  // }, []);
-
+  
   useEffect(() => {
     if (!feedPosts) setFeedPosts(post.posts); 
   }, []);
+
+  useEffect(() => {
+    router.push({
+      pathname: '/',
+      query: {
+        category: category
+      }
+    })
+  //   // dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+  //   // if (!feedPosts) setFeedPosts(post.posts); 
+  }, [category]);
+  
+  
+  // useEffect(() => {
+    //   if (Object.keys(post.posts).length === 0) {
+    //     dispatch({type: "GET_ALL_POSTS", payload: initGeneral})
+    //   }
+
+    // if (router.query.keyword) {
+    //   console.log("router.query in useeffect");
+    //   console.log(router.query);
+    //   let {keyword} = router.query;
+    //   console.log("keyword")
+    //   console.log(keyword)
+    //   let res = api.get(`/posts?keyword=${keyword}&category=${category ? category : ''}&tag=${keyword}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
+    //   console.log("res")
+    //   console.log(res.data)
+      // await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
+      // await api.get('/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
+      // {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+      // );
+      // dispatch({type: "GET_ALL_POSTS", payload: {posts: post.posts, trends: post.trends}});
+    // };
+  // }, [feedPosts]);
+  // }, [feedPosts, post.posts]);
+  // }, [post.posts]);
+  // }, [keyword]);
   // console.log("**********feedPosts***********")
   // console.log(feedPosts)
   // console.log("**********state posts***********")
   // console.log(post.posts)
 
-  // <div className='feed profileCenter'>
+  
+  const categoryChange = (e) => {
+    setIsLoading(true);
+    setCurrentPage(1);
+    setCategory(e.target.value); // 12 or 20, dropdown
+  };
+
+  const itemCountChange = (e) => {
+    setIsLoading(true);
+    if (e.target.value > itemsPerPage) {
+      setCurrentPage(currentPage = currentPage - 1);
+    }
+    setItemsPerPage(Number(e.target.value)); // 12 or 20, dropdown
+  };
+
+  const pageChange = (chosenPage) => {
+    setCurrentPage(chosenPage);
+    window.scrollTo({ behavior: "smooth", top: 0 });
+  };
+
+  const changeCategoryHandler = (e) => {
+    console.log("changing category")
+    console.log(e.target.value)
+
+    setCategory(category = e.target.value);
+    console.log(" state - category")
+    console.log(category)
+  };
+
+  /*
+    const dispatch = useDispatch();
+  const { keyword } = useParams();
+  const allProducts = useSelector(state => state.product);
+  const { loading, categories, products, page, pages } = allProducts;
+  
+  
+  useEffect(() => {
+    setIsLoading(true);
+    dispatch(listAllCategories());
+    dispatch(listAllProducts(keyword, category !== 'All' ? category : '', currentPage, itemsPerPage));
+  }, [dispatch, keyword, category, currentPage, itemsPerPage]);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+  */
+
   return (
     <section className="feed__container">
       <div className="feed__header">
@@ -75,7 +165,7 @@ const Feed = ({feedPost}) => {
                   <option value={category.category} key={index}>{category.category}</option>
                 ))}
               </select> */}
-              <select name="category" className="feed__category-select">
+              <select name="category" className="feed__category-select" onChange={(e) => changeCategoryHandler(e)}>
                 <option value="All">Category</option>
                 <option value="Entertainment">Entertainment</option>
                 <option value="Sports">Sports</option>
