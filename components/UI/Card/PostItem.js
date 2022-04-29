@@ -1,9 +1,22 @@
 import React from 'react';
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
 import { FaRegThumbsUp, FaRegThumbsDown, FaRegCommentDots } from "react-icons/fa";
 
-export const PostItem = ({post}) => {
+const PostItem = ({post}) => {
+  let router = useRouter();
+  const searchTagHandler = (value) => {
+    if (value.startsWith("#")) {
+      value = value.substring(1);
+    }
+    router.push({
+      pathname: '/',
+      query: {
+        tag: value
+      }
+    })
+  };
   return (
     <article className="post post__card">
       <div className="post__content">
@@ -75,7 +88,7 @@ export const PostItem = ({post}) => {
           </div>
           <div className="post__tags">
             {post?.tags.map((tag, index) => (
-              <div className="post__tag-item" key={index}>
+              <div className="post__tag-item" key={index} onClick={(e) => searchTagHandler(tag)}>
                 {tag.startsWith("#") ? tag : `#${tag}`}
               </div>
             ))}

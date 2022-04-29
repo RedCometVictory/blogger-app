@@ -96,6 +96,9 @@
     column-gap: 10px;
     row-gap: 10px;
   }
+  &__tag-item {
+    cursor: pointer;
+  }
 }
 
 @media (min-width: 182px) {

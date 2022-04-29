@@ -46,6 +46,8 @@ const Feed = ({feedPost}) => {
   //   // if (!feedPosts) setFeedPosts(post.posts); 
   }, [category]);
   
+
+
   
   // useEffect(() => {
     //   if (Object.keys(post.posts).length === 0) {
@@ -225,5 +227,4 @@ const Feed = ({feedPost}) => {
     </section>
   )
 };
-// </div>
 export default Feed;

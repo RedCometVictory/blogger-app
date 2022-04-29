@@ -322,25 +322,11 @@ export const getServerSideProps = async (context) => {
     //   }
     // };
 
-    let inHeaderToken;
-    inHeaderToken = cookie.parse(context.req.headers.cookie.blog__token ? context.req.headers.cookie.blog__token || '?' : "");
-    // console.log("inHeaderToken")
-    // console.log(inHeaderToken)
-    // cookie.parse(req ? req.headers.cookie || '' : '')
-    
-
-    // if (context.query.slug[0] !== 'create') {
-    //   post_id = context.query.slug[1];
-    //   initPostInfo = await api.get(`/post/${post_id}`,
-    //   { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-    //   );
-    // }
-
     console.log("context.query")
     console.log(context.query)
     let keyword = context.query.keyword || '';
     let category = context.query.category || '';
-    // let tag = context.query.tag || '';
+    let tag = context.query.tag || '';
     let pageNumber = context.query.pageNumber || 1;
     let offsetItems = context.query.itemsPerPage || 12;
     let initGeneralFeed;
@@ -356,7 +342,7 @@ export const getServerSideProps = async (context) => {
     // initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}&offsetItems=${offsetItems}`,
     // {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
     // );
-    initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`,
+    initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&pageNumber=${pageNumber}`,
     {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
     );
     // ORIGINAL END
