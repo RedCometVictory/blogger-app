@@ -25,9 +25,9 @@ const api = Axios.create({
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    //extracting response and config objects
+    // extracting response and config objects
     const { response, config } = error;
-    //checking if error is Aunothorized error
+    // checking if error is unauthorized error
     let originalRequest = config;
 
     if (response?.status === 401 && !originalRequest._retry) {

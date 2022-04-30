@@ -1,0 +1,32 @@
+.about {
+  padding: 3.2rem 0 0 0;
+  color: var(--color-text);
+  &__intro {
+    padding: 0 0 2.6rem 0;
+    text-align: center;
+  }
+  &__container {
+    width: 82%;
+    margin: 0 auto;
+    @include flex(column, center, center);
+  }
+  &__card {
+    width: 100%;
+    margin: 0 0 1.3rem 0;
+  }
+  &__header {
+    margin: 0 0 0.72rem 0;
+  }
+  &__name {
+    a {
+      color: var(--color-text);
+      text-decoration: none;
+      cursor: pointer;
+      word-break: break-word;
+    }
+    text-align: start;
+  }
+  &__text {
+    word-break: break-word;
+  }
+}

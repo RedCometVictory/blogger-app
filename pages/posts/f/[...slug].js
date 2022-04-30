@@ -247,10 +247,11 @@ export const getServerSideProps = async (context) => {
     }
   } catch (err) {
     return {
-      props: {
-        blogData: '',
-        token: ''
-      }
-    }
+      redirect: {
+        destination: `/404`,
+        permanent: false,
+      },
+      props: {},
+    };
   }
 };

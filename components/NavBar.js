@@ -63,9 +63,11 @@ const Navbar = ({openMenu, setOpenMenu}) => {
               <FaPalette />
             </div>
           </div>
-          <div className="nav__content left">
-            <SearchBar />
-          </div>
+          {state?.auth?.isAuthenticated && (
+            <div className="nav__content left">
+              <SearchBar />
+            </div>
+          )}
         </div>
       <div className="nav__sub-container right">
         {state?.auth?.isAuthenticated ? (

@@ -356,10 +356,11 @@ export const getServerSideProps = async (context) => {
     }
   } catch (err) {
     return {
-      props: {
-        publicProfile: {},
-        token: ""
-      }
-    }
+      redirect: {
+        destination: `/404`,
+        permanent: false,
+      },
+      props: {},
+    };
   }
 };

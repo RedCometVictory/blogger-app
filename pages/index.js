@@ -39,23 +39,32 @@ const Home = ({initGeneral, initTrend, initFollow, token}) => {
   const router = useRouter();
   const [trendList, setTrendList] = useState(initTrend);
   const [emailList, setEmailList] = useState('');
+// BACKEND
+// req.qquery
+// { keyword: '', category: '', tag: '', pageNumber: '1' }
+// failed to disconnect
+// blogs - BE  FINAL RES
 
-  console.log("trendList")
-  console.log(trendList)
-  console.log("initFollow")
-  console.log(initFollow)
-  console.log("router.query");
-  console.log(router.query);
+
+
+  // console.log("trendList")
+  // console.log(trendList)
+  // console.log("initFollow")
+  // console.log(initFollow)
+  // console.log("router.query");
+  // console.log(router.query);
   // let {keyword} = router.query;
 
   useEffect(() => {
-    if (!token) {
-      console.log("useeffect, logging out")
-      dispatch({type: "LOGOUT"});
-      Cookies.remove("blog__isLoggedIn");
-      Cookies.remove("blog__userInfo");
-      router.push("/");
-    }
+    // if (!token) {
+    // // if (!token || !Cookies.get("blog__isLoggedIn")) {
+    //   console.log("useeffect, logging out")
+    //   dispatch({type: "LOGOUT"});
+    //   Cookies.remove("blog__isLoggedIn");
+    //   Cookies.remove("blog__userInfo");
+    //   // TODO: seems to repeat logout, when already logged out.
+    //   router.push("/");
+    // }
     
     // if (!router.query.keyword) {
       console.log("GET_ALL_POSTS")
@@ -75,8 +84,8 @@ const Home = ({initGeneral, initTrend, initFollow, token}) => {
     //   dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
     // };
     console.log("HOME: GET_FOLLOW_STATUS")
-    console.log("initFollow")
-    console.log(initFollow)
+    // console.log("initFollow")
+    // console.log(initFollow)
     dispatch({type: "GET_FOLLOW_STATUS", payload: initFollow});
     localStorage.setItem("blog__trends", JSON.stringify(initTrend));
     localStorage.setItem("blog__follows", JSON.stringify(initFollow));
@@ -322,8 +331,8 @@ export const getServerSideProps = async (context) => {
     //   }
     // };
 
-    console.log("context.query")
-    console.log(context.query)
+    // console.log("context.query")
+    // console.log(context.query)
     let keyword = context.query.keyword || '';
     let category = context.query.category || '';
     let tag = context.query.tag || '';
@@ -342,9 +351,6 @@ export const getServerSideProps = async (context) => {
     // initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}&offsetItems=${offsetItems}`,
     // {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
     // );
-    initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&pageNumber=${pageNumber}`,
-    {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-    );
     // ORIGINAL END
     // ORIGINAL
     // initGeneralFeed = await api.get('/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
@@ -357,44 +363,58 @@ export const getServerSideProps = async (context) => {
     //   url: 'http://localhost:3000/api/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
     //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
     // });
-    console.log("initGeneralFeed.data.data")
+    // console.log("initGeneralFeed.data.data")
     // console.log("+++++++++++++++++++++++++")
     // console.log("+++++++++++++++++++++++++")
     // console.log("+++++++++++++++++++++++++")
-    console.log(initGeneralFeed.data.data)
+    // console.log(initGeneralFeed.data.data)
     // console.log(initGeneralFeed)
     // let initGeneral = initGeneralFeed.data.data;
-    const initTrendingFeed = await api.get('/posts/trending', 
-    { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-    );
-
-    const initFollow = await api.get('/user/follow/status', 
-    { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-    );
     // const initTrendingFeed = await axios({
-    //   method: 'get',
-    //   url: 'http://localhost:3000/api/posts/trending',
-    //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
-    // });
-    // console.log("initTrendingFeed")
-    // console.log(initTrendingFeed.data.data)
-    // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
-    // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
+      //   method: 'get',
+      //   url: 'http://localhost:3000/api/posts/trending',
+      //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
+      // });
+      // console.log("initTrendingFeed")
+      // console.log(initTrendingFeed.data.data)
+      // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
+      // console.log(" ^^^^^^^^^^^^^^^ initTrendingFeed - END ^^^^^^^^^^^^^^^")
+      
+      // const initLikeFeed = await axios({
+        //   method: 'get',
+        //   url: 'http://localhost:3000/api/',
+        //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
+        // });
+        
+        // console.log(initLikeFeed.data.data)
+        // initGeneral: {posts: [{}, ...], page: #, pages: 12 || 20}
+    if (token) {
 
-    // const initLikeFeed = await axios({
-    //   method: 'get',
-    //   url: 'http://localhost:3000/api/',
-    //   headers: context.req ? { cookie: context.req.headers.cookie } : undefined
-    // });
-
-    // console.log(initLikeFeed.data.data)
-    // initGeneral: {posts: [{}, ...], page: #, pages: 12 || 20}
+      initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&pageNumber=${pageNumber}`,
+      {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+      );
+      const initTrendingFeed = await api.get('/posts/trending', 
+      { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+      );
+  
+      const initFollow = await api.get('/user/follow/status', 
+      { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+      );
+      return {
+        props: {
+          initGeneral: initGeneralFeed.data.data,
+          initTrend: initTrendingFeed.data.data.defaultTrends,
+          initFollow: initFollow.data.data.followers,
+          token: token
+        }
+      }
+    }
     return {
       props: {
-        initGeneral: initGeneralFeed.data.data,
-        initTrend: initTrendingFeed.data.data.defaultTrends,
-        initFollow: initFollow.data.data.followers,
-        token: token
+        initGeneral: [],
+        initTrend: [],
+        initFollow: [],
+        token: ""
       }
     }
   } catch (err) {

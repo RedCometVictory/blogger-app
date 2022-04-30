@@ -116,6 +116,18 @@ body {
   }
 }
 
+.not-found {
+  height: 100vh;
+  &__inner {
+    padding: 4rem 0 0 0;
+    width: 80%;
+    margin: 0 auto;
+    .text {
+      padding: 3rem 0 0 0;
+    }
+  }
+}
+
 // @media (min-width: 180px) {
 //   .main-container {
 //     padding: 0 12px 0 12px;

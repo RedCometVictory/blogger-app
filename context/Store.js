@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, useMemo } from "react";
-import { useHistory } from "next/router";
+// import { useHistory } from "next/router";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import cookie from "cookie";
@@ -91,7 +91,7 @@ export const StoreProvider = ({ reducer, initialState, children }) => {
         Cookies.remove("blog__isLoggedIn")
         Cookies.remove("blog__userInfo")
         dispatch({type: "LOGOUT"});
-        history.push("/");
+        router.push("/");
       }
     } catch (err) {
       console.error(err)
