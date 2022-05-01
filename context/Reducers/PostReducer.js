@@ -20,6 +20,19 @@ export const PostReducer = (state = postInitialState, action) => {
           loading: false
         },
       };
+    case "ADD_ADDITIONAL_POSTS": // main feed
+    let newPosts = payload.posts;
+    let updatedFeed = state.post.posts.concat(newPosts);
+      return {
+        ...state,
+        post: {
+          ...state.post,
+          posts: updatedFeed,
+          // posts: payload.posts,
+          // trends: payload.trends,
+          loading: false
+        },
+      };
     case "GET_POST_BY_ID":
       return {
         ...state,

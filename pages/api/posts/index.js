@@ -29,6 +29,7 @@ handler.get(async (req, res) => {
   } = req.query;
   let page = Number(pageNumber);
   if (page < 1) page = 1;
+  // let limit = Number(offsetItems) || 6;
   let limit = Number(offsetItems) || 12;
   let offset = (page - 1) * limit;
   let count;
@@ -38,6 +39,15 @@ handler.get(async (req, res) => {
   await db.connectToDB();
   const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
 
+  console.log("BACKEND BEGIN")
+  console.log("page")
+  console.log(page)
+  console.log("limit")
+  console.log(limit)
+  console.log("offset")
+  console.log(offset)
+  console.log("pageNumber")
+  console.log(pageNumber)
 
   if (tag) {
     console.log("tag")
@@ -72,7 +82,25 @@ handler.get(async (req, res) => {
       }
     });
   };
-
+  
+  // if (!category && !keyword) {
+  if (category === "All" || category === "all") {
+    console.log("BACKEND _ CATEGORY ALL SEARCH")
+    totalBlogs = await Post.countDocuments({});
+    // init post fetch
+    blogs = await Post.find().skip(offset).limit(limit).sort({createdAt: -1}).lean();
+    await db.disconnect();
+    count = totalBlogs;
+    return res.status(200).json({
+      status: "Product data retrieved.",
+      data: {
+        posts: blogs,
+        page: page,
+        pages: count // total count of posts
+      }
+    });
+  }
+  
   if (category) {
     console.log("category")
     console.log(category)
@@ -119,9 +147,10 @@ handler.get(async (req, res) => {
     });
   };
 
-
-
-
+  console.log("&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("category")
+    console.log(category)
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&")
   if (keyword && !category) {
     let keywordTrim = keyword.trim().split(/[, ]+/);
     let keywordRGX;
@@ -157,13 +186,14 @@ handler.get(async (req, res) => {
         }
       )
       .sort({createdAt: -1}).lean();
-      //.skip(offset).limit(limit).sort({createdAt: -1}).lean();
+      // .skip(offset).limit(limit).sort({createdAt: -1}).lean();
       let blogTags = await Post.find(
         {
           ...tagFilter,
         }
       )
       .sort({createdAt: -1}).lean();
+      // .skip(offset).limit(limit).sort({createdAt: -1}).lean();
       
       // *** Concat arrs and remove duplicate objs by id
       // blogConcat = blogKeyword.concat(blogTags); // ---
@@ -201,6 +231,7 @@ handler.get(async (req, res) => {
     totalBlogs = blogs.length;
     console.log("----RGX END---")
   } else {
+    console.log("BACKEND _ GENERAL FEED SEARCH")
     totalBlogs = await Post.countDocuments({});
     // init post fetch
     blogs = await Post.find().skip(offset).limit(limit).sort({createdAt: -1}).lean();
@@ -209,7 +240,7 @@ handler.get(async (req, res) => {
   await db.disconnect();
   count = totalBlogs;
 
-  console.log("blogs - BE  FINAL RES")
+  console.log("blogs - FINAL RES")
   console.log(blogs)
   return res.status(200).json({
       status: "Product data retrieved.",

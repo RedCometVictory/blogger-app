@@ -29,9 +29,10 @@ import Blog1 from "../img/blog1.jpg";
           
           // dispatch({type: "GET_ALL_POSTS", payload: {posts: res.data.data.posts, trends: post.posts.trends } });
           // let res = api.get(`/posts?keyword=${keyword}&category=${category ? category : ''}&tag=${keyword}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
-const Home = ({initGeneral, initTrend, initFollow, token}) => {
+const Home = ({initGeneral, initTrend, initFollow, token, feedBtn}) => {
   console.log("initGzeneral - beginning of page")
   // console.log(initGeneral)
+  console.log(feedBtn)
   console.log("FE: token")
   console.log(token)
   const { state, dispatch } = useAppContext();
@@ -115,7 +116,7 @@ const Home = ({initGeneral, initTrend, initFollow, token}) => {
   return auth.isAuthenticated && Cookies.get("blog__isLoggedIn") ? (
     <section className="feed__layout">
       <div className="container feed-container">
-          <Feed />
+          <Feed feedBtn={feedBtn}/>
           <TrendAside />
       </div>
     </section>
@@ -245,6 +246,7 @@ export const getServerSideProps = async (context) => {
     // console.log(">>>>> cookies <<<<<")
     // console.log(cookies)
     // console.log(">>>>> cookies <<<<<")
+    let loadFeedBtn = false;
     let token = context.req.cookies.blog__token;
     let userInfo = context.req.cookies.blog__userInfo;
 
@@ -336,9 +338,37 @@ export const getServerSideProps = async (context) => {
     let keyword = context.query.keyword || '';
     let category = context.query.category || '';
     let tag = context.query.tag || '';
+    let page = context.query.page || 1;
     let pageNumber = context.query.pageNumber || 1;
     let offsetItems = context.query.itemsPerPage || 12;
     let initGeneralFeed;
+
+    // if (category === "All" || category === "all") category = false;
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("category")
+    console.log(category)
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log("loadFeedBtn - init")
+    console.log(loadFeedBtn)
+    // if (keyword || tag || (category && category != "All")) {
+    //   console.log("loadFeedBtn - cond check")
+    //   loadFeedBtn = true;
+    //   console.log(loadFeedBtn)
+    // };
+    if (keyword || tag || category) {
+      console.log("loadFeedBtn - cond check")
+      loadFeedBtn = true;
+      console.log(loadFeedBtn)
+    };
+    if (category === "All") {
+      category = "";
+      loadFeedBtn = false;
+    };
+    if (category === "") {
+      // return loadFeedBtn = false;
+      console.log("category set to all detacted")
+      console.log(loadFeedBtn)
+    };
     // if (!context.query) {
     // // if (!context.query && context.query.slug[0] !== 'keyword') {
     //   console.log("Searching base inti info")
@@ -390,7 +420,7 @@ export const getServerSideProps = async (context) => {
         // initGeneral: {posts: [{}, ...], page: #, pages: 12 || 20}
     if (token) {
 
-      initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&pageNumber=${pageNumber}`,
+      initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&page=${page}&pageNumber=${pageNumber}`,
       {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
       );
       const initTrendingFeed = await api.get('/posts/trending', 
@@ -405,7 +435,8 @@ export const getServerSideProps = async (context) => {
           initGeneral: initGeneralFeed.data.data,
           initTrend: initTrendingFeed.data.data.defaultTrends,
           initFollow: initFollow.data.data.followers,
-          token: token
+          token: token,
+          feedBtn: loadFeedBtn
         }
       }
     }
@@ -414,7 +445,8 @@ export const getServerSideProps = async (context) => {
         initGeneral: [],
         initTrend: [],
         initFollow: [],
-        token: ""
+        token: "",
+        feedBtn: ""
       }
     }
   } catch (err) {

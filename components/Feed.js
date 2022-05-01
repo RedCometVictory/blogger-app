@@ -1,18 +1,13 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
-import { FaPen, FaPencilAlt, FaUpload, FaSearch } from 'react-icons/fa';
-import { MdOutlineClose } from 'react-icons/md';
 import Link from 'next/link';
 import api from '@/utils/api';
-import axios from 'axios';
 import PostItem from "./UI/Card/PostItem";
-// import AsideNav from './UI/Aside';
 
-// const Feed = ({initGeneral}) => {
-
-
-const Feed = ({feedPost}) => {
+const Feed = ({feedBtn}) => {
+  console.log("feedBtn - FEED comp")
+  console.log(feedBtn)
   const router = useRouter();
   const { state, dispatch } = useAppContext();
   const { auth, profile, post } = state;
@@ -25,9 +20,15 @@ const Feed = ({feedPost}) => {
   const [itemsPerPage, setItemsPerPage] = useState(12);
   const [category, setCategory] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
+  const [addingPosts, setAddingPosts] = useState(false);
+  // const [allPosts, setAllPosts] = useState(allPosts = feedBtn || false);
+  // const [allPosts, setAllPosts] = useState(allPosts = feedBtn || false);
+  const [allPosts, setAllPosts] = useState(false);
+  console.log("^^^^^^ Feed Comp - vbegging  page number ^^^^^^")
+  console.log(pageNumber)
   useEffect(() => {
     if (!auth.isAuthenticated && auth.user.role !== 'user') return router.push("/");
+    setAllPosts(false);
   }, [state.post]);
 
   
@@ -42,11 +43,46 @@ const Feed = ({feedPost}) => {
         category: category
       }
     })
-  //   // dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
+  // dispatch({type: "GET_ALL_POSTS", payload: {posts: initGeneral.posts, trends: initTrend}});
   //   // if (!feedPosts) setFeedPosts(post.posts); 
   }, [category]);
   
 
+const getAdditionalPosts = async () => {
+  setAddingPosts(true);
+  console.log("+++++ pageNumber - start +++++")
+  console.log(pageNumber)
+  setPageNumber(pageNumber = pageNumber + 1);
+  // dispatch({type: "INCREMENT_POST_PAGE", payload: {page: }});
+  // let res = api.get(`/posts?keyword=${keyword}&category=${category ? category : ''}&tag=${keyword}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
+  let res = await api.get(`/posts?pageNumber=${pageNumber}`);
+  // router.push({
+    //     pathname: '/',
+    //     query: {
+      //       // category: category
+      //       page: pageNumber
+      //     }
+      // })
+      console.log("res")
+      // console.log(res.data.data.posts)
+  if (res.data.data.posts.length > 0) {
+    console.log("+++++ pageNumber - added +++++")
+    console.log(pageNumber)
+    console.log("more posts found, appending to client state")
+    // console.log("searching for posts")
+    setAddingPosts(false);
+    dispatch({type: "ADD_ADDITIONAL_POSTS", payload: {posts: res.data.data.posts}});
+  };
+  
+  if (res.data.data.posts.length === 0) {
+    console.log("no posts found")
+    setAddingPosts(false);
+    setAllPosts(true);
+    setPageNumber(pageNumber = 1);
+    console.log("+++++ pageNumber - reset +++++")
+    console.log(pageNumber)
+  };
+};
 
   
   // useEffect(() => {
@@ -60,9 +96,8 @@ const Feed = ({feedPost}) => {
     //   let {keyword} = router.query;
     //   console.log("keyword")
     //   console.log(keyword)
-    //   let res = api.get(`/posts?keyword=${keyword}&category=${category ? category : ''}&tag=${keyword}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
-    //   console.log("res")
-    //   console.log(res.data)
+    //   ;
+    //   
       // await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&pageNumber=${currentPage}&offsetItems=${itemsPerPage}`);
       // await api.get('/posts?keyword=&category=&tag=&pageNumber=1&offsetItems=12',
       // {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
@@ -128,6 +163,8 @@ const Feed = ({feedPost}) => {
     return null;
   }
   */
+ console.log("allPosts")
+ console.log(allPosts)
 
   return (
     <section className="feed__container">
@@ -146,27 +183,6 @@ const Feed = ({feedPost}) => {
         <div className="feed__selection">
           <div className="feed__sub-selection one">
             <div className="feed__group">
-              {/* <label htmlFor="tag">Tags: </label>
-              <input 
-                name="tag"
-                type="text"
-                placeholder="seperate, tags,by,comma"
-                onChange={(e) => setTag(e.target.value)}
-              /> */}
-            </div>
-            <div className="feed__group">
-              {/* <label htmlFor="tag">Category: </label> */}
-              {/* <input 
-                name="tag"
-                type="text"
-                placeholder="seperate, tags,by,comma"
-                onChange={(e) => setTag(e.target.value)}
-              /> */}
-              {/* <select name="category" value={category} onChange={e => categoryChange(e)}>
-                {categories.map((category, index) => (
-                  <option value={category.category} key={index}>{category.category}</option>
-                ))}
-              </select> */}
               <select name="category" className="feed__category-select" onChange={(e) => changeCategoryHandler(e)}>
                 <option value="All">Category</option>
                 <option value="Entertainment">Entertainment</option>
@@ -197,28 +213,28 @@ const Feed = ({feedPost}) => {
         </div>
       </div>
       <div>
-        {/* <form onSubmit={formSubmit}> */}
-          {/* <button type="submit">Search</button> */}
-        {/* </form> */}
-        {/* <PostItem /> */}
-        {/* {feedPosts && feedPosts.length > 0 ? ( */}
         {post.posts && post.posts.length > 0 ? (
           <div className="feed__wrapper">
             <div className="feed__wrapper-inner-">
-              {/* <p>Create new post. Must be logged in.</p> */}
             </div>
             <div className="feed__posts">
               {post.posts.map((post, i) => <PostItem post={post} key={i} />)}
             </div>
+            <div className="feed__load-posts">
+              {feedBtn || allPosts ? (
+                <></>
+              ) : !addingPosts && !allPosts ? (
+                <button className="feed__load-btn btn btn-secondary" onClick={(e) => getAdditionalPosts(e)}>Load More</button>
+              ) : (
+                <button className="feed__load-btn btn btn-secondary">Loading...</button>
+              )}
+            </div>
           </div>
         ) : (
           <div className="feed__wrapper">
-            <div className="feed__wrapper-inner">
-              <p>Please <Link href="/login"><a>login</a></Link>.</p>
-            </div>
             <div className="feed__posts">
               <div>
-                No posts found. Follow profiles in order to start seeing posts in your personal feed or visit <Link href="/"><a>general feed</a></Link>. Or clear all search constraints.
+                No posts found. Try clearing all search constraints and queries.
               </div>
             </div>
           </div>
