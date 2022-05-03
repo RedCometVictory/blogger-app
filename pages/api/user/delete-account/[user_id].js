@@ -1,11 +1,8 @@
 import nc from 'next-connect';
-import multer from 'multer';
-import normalize from 'normalize-url';
 import cookie from 'cookie';
 import { v2 as cloudinary } from 'cloudinary';
 import { onError, onNoMatch } from '@/utils/ncOptions';
 import { verifAuth, authRole } from '@/utils/verifAuth';
-import { storage, removeOnErr } from '@/utils/cloudinary';
 import db from '@/utils/database';
 import User from '@/models/User';
 import Follow from '@/models/Follow';
@@ -18,159 +15,17 @@ export const config = {
   },
 };
 
-// const upload = multer({
-//   storage,
-//   limits: { fieldSize: 3 * 1024 * 1024 },
-//   fileFilter(req,file, cb) {
-//     if (!file.originalname.match(/\.(gif|jpe?g|png)$/i)) {
-//       return cb(new Error("file must be an image"));
-//     }
-//     return cb(null, true);
-//   }
-// }); //3MB
-
-// *** create user profile, update, & delete account
 const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRole);
-
-// TODO: use to prefill form when making profile edit. Perhaps modify to user with admin role to access (not user role).
-// retrieve user profile
-// *** insomnia tested - passed
-// handler.get(async (req, res) => {
-//   const { user_id } = req.query;
-//   await db.connectToDB();
-//   const profile = await Profile.findOne({user: user_id});
-
-//   if (Array.isArray(profile.themes)) {
-//     profile.themes = profile.themes.join(', ');
-//   }
-//   await db.disconnect();
-
-//   res.status(201).json({
-//     status: "Profile found.",
-//     data: {
-//       profile
-//     }
-//   })
-// });
-
-// // create user profile
-// // *** insomnia tested - passed
-// handler.use(upload.single('image_url')).post(async(req, res) => {
-//   const { user_id } = req.query;
-//   let { bio, location, themes, website, youtube, twitter, linkedin, instagram, reddit, github } = req.body;
-//   let imageUrl = '';
-//   let imageFilename = '';
-//   let themesToArr;
-
-//   await db.connectToDB();
-//   const user = await User.findById(user_id).select("-password");
-
-//   console.log("user")
-//   console.log(user)
-//   const profileExists = await Profile.findOne({user: user_id}).select("_id");
-
-//   console.log("profileExists")
-//   console.log(profileExists)
-
-//   if (!user) {
-//     if (req.file) {
-//       await removeOnErr(req.file.filename);
-//     }
-//     return res.status(403).json({ errors: [{ msg: "User not found. Sign in."}] });
-//   };
-  
-//   if (profileExists) {
-//     if (req.file) {
-//       await removeOnErr(req.file.filename);
-//     }
-//     return res.status(403).json({ errors: [{ msg: "User profile already exists."}] });
-//   }
-
-//   if (req.file && req.file.path) {
-//     imageUrl = req.file.path;
-//     imageFilename = req.file.filename;
-//   }
-//   if (imageUrl.startsWith('public\\')) {
-//     let editImgUrl = imageUrl.slice(6);
-//     imageUrl = editImgUrl;
-//   }
-
-//   if (typeof themes === "string") {
-//     themesToArr = themes.split(',').map(theme => '' + theme.trim());
-//   };
-
-//   console.log("themes to array")
-//   console.log(themesToArr)
-  
-//   // ensure only two or less themes exist:
-//   let savedThemes = [];
-//   if (themesToArr.length > 2) {
-//     for (let i = 0; i < 2; i++) {
-//       let theme = themesToArr[i];
-//       savedThemes.push(theme);
-//     };
-//   } else {
-//     savedThemes = themesToArr;
-//   };
-
-//   console.log("themes saved")
-//   console.log(savedThemes)
-  
-//   const socialFields = {
-//     website, youtube, twitter, linkedin, instagram, reddit, github
-//   }
-
-//   // *** normalize urls
-//   for (const [key, value] of Object.entries(socialFields)) {
-//     if (value && value.length > 0)
-//       socialFields[key] = normalize(value, { forceHttps: true });
-//   }
-
-//   const newProfile = await new Profile({
-//     user: user_id,
-//     bio,
-//     location,
-//     themes: savedThemes,
-//     backgroundImage: imageUrl,
-//     backgroundImageFilename: imageFilename,
-//     social: socialFields
-//   });
-
-//   const profile = await newProfile.save();
-//   await db.disconnect();
-
-//   res.status(201).json({
-//     status: "Profile created.",
-//     data: {
-//       profile
-//     }
-//   })
-// });
 
 // *** insomnia tested - passed
 // *** delete profile, posts + all user data
 handler.delete(async(req, res) => {
-  console.log("req.user")
-  console.log(req.user)
-  console.log("req.query")
-  console.log(req.query)
   const { id } = req.user;
-  // const { user_id } = req.query;
   await db.connectToDB();
 
-  // console.log(user_id)
-
-  // const user = await User.findById({_id: user_id});
   const user = await User.findById({_id: id});
-  console.log("user")
-  console.log(user)
-
-  // todo: turn into findone
-  // const profile = await Profile.findOne({user: user_id});
   const profile = await Profile.findOne({user: id});
-  console.log("profile")
-  console.log(profile)
 
   if (user.avatarImageFilename) {
     await cloudinary.uploader.destroy(user.avatarImageFilename);
@@ -180,154 +35,26 @@ handler.delete(async(req, res) => {
     await cloudinary.uploader.destroy(profile.backgroundImageFilename);
   }
 
-  console.log("post find testing")
-  // only return specified field, exclude _id which is usually included by default
-  // let postImages = await Post.find({user: user_id}).select('coverImageFilename -_id');
   let postImages = await Post.find({user: id}).select('coverImageFilename -_id');
-  console.log("post images")
-  console.log(postImages)
 
-  let promises = [];
   if (postImages.length > 0) {
     for (let i = 0; i < postImages.length; i++) {
       if (postImages[i].coverImageFilename !== '') {
-        // promises.push(cloudinary.uploader.destroy(postImages[i].coverImageFilename));
         await cloudinary.uploader.destroy(postImages[i].coverImageFilename);
-        // promises.push(postImages[i].coverImageFilename);
       }
     }
-    // await Promise.all(promises);
   };
-
-  /*EXAMPLES
-    if (getCommentImagesForPost.rows.length > 0) {
-      let promises = [];
-      for (let i = 0; i < getCommentImagesForPost.rows.length; i++) {
-        if (getCommentImagesForPost.rows[i].image_url_filename !== '') {
-          promises.push(cloudinary.uploader.destroy(getCommentImagesForPost.rows[i].image_url_filename));
-        }
-      }
-      await Promise.all(promises);
-    };
-
-      if (deleteCommentImages.rows.length > 0) {
-      let promises = [];
-      for (let i = 0; i < deleteCommentImages.rows.length; i++) {
-        if (deleteCommentImages.rows[i].image_url_filename !== '') {
-          promises.push(cloudinary.uploader.destroy(deleteCommentImages.rows[i].image_url_filename));
-        }
-      }
-      await Promise.all(promises);
-    };
-
-
-
-    async postUpdate(req, res, next) {
-		// destructure post from res.locals
-		const { post } = res.locals;
-		// check if there's any images for deletion
-		if(req.body.deleteImages && req.body.deleteImages.length) {			
-			// assign deleteImages from req.body to its own variable
-			let deleteImages = req.body.deleteImages;
-			// loop over deleteImages
-			// for(const public_id of deleteImages) {
-			for(const filename of deleteImages) {
-				// delete images from cloudinary
-				// await cloudinary.v2.uploader.destroy(public_id); // old
-				await cloudinary.uploader.destroy(filename);
-				// delete image from post.images
-				for(const image of post.images) {
-					// if(image.public_id === public_id) {
-					if(image.filename === filename) {
-						let index = post.images.indexOf(image);
-						post.images.splice(index, 1);
-					}
-				}
-			}
-		}
-
-
-
-    async postDestroy(req, res, next) {
-		const { post } = res.locals;
-		for(const image of post.images) {
-			// await cloudinary.v2.uploader.destroy(image.public_id); // old
-			await cloudinary.uploader.destroy(image.filename);
-		}
-		await post.remove();
-		req.session.success = 'Post deleted successfully!';
-		res.redirect('/posts');
-	}
-
-
-
-
-
-  	async postDestroy(req, res, next) {
-		const { post } = res.locals;
-		for(const image of post.images) {
-			await cloudinary.v2.uploader.destroy(image.public_id);
-		}
-		await post.remove();
-
-
-
-    	async postUpdate(req, res, next) {
-		// destructure post from res.locals
-		const { post } = res.locals;
-		// check if there's any images for deletion
-		if(req.body.deleteImages && req.body.deleteImages.length) {			
-			// assign deleteImages from req.body to its own variable
-			let deleteImages = req.body.deleteImages;
-			// loop over deleteImages
-			for(const public_id of deleteImages) {
-				// delete images from cloudinary
-				await cloudinary.v2.uploader.destroy(public_id);
-				// delete image from post.images
-				for(const image of post.images) {
-					if(image.public_id === public_id) {
-						let index = post.images.indexOf(image);
-						post.images.splice(index, 1);
-					}
-				}
-			}
-		}
-    await post.save();
-
-
-
-
-    const product = await Product.findById(req.params.id);
-
-    if (!product) {
-        return next(new ErrorHandler('Product not found', 404));
-    }
-
-    // Deleting images associated with the product
-    for (let i = 0; i < product.images.length; i++) {
-        const result = await cloudinary.v2.uploader.destroy(product.images[i].public_id)
-    }
-
-
-  */
-
-  console.log("promises")
-  console.log(promises)
 
   // delete remaining user data
   await Promise.all([
     Post.deleteMany({ user: id }),
-    // Follow.deleteMany({ following_id: id, follower_id: id }),
-    // Follow.deleteMany({ follower_id: id }),
     Follow.deleteMany({$or:[{"following_id": id},{"follower_id": id}]}),
     Profile.findOneAndRemove({ user: id }),
     User.findOneAndRemove({ _id: id })
   ]);
   await db.disconnect();
 
-  const { token } = req.cookies;
-  console.log("deleting account - toekn")
-  console.log(token)
+  // const { token } = req.cookies;
   // if (!token) {
   //   return res.status(403).json({ errors: [{ msg: "Unauthorized. Nothing found!" }] });
   // }

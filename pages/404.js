@@ -7,6 +7,7 @@ const NotFound = () => {
         <h2>404 | Page Not Found</h2>
         <div className="text">
           <p>We cannot find what you are looking for.</p>
+          <p>You may not be logged in.</p>
           <div>
             <p>
               Go back <Link href="/"><a>Home</a></Link>

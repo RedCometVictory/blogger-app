@@ -38,51 +38,20 @@ handler.get(async (req, res) => {
     }
   ];
 
-  /*
-  blogs = await Post.find(
-    {
-      ...keywordFilter,
-      ...categoryFilter,
-      ...tagFilter,
-    }
-  ).skip(offset).limit(limit).sort({createdAt: -1}).lean();
-    for (let i = 0; i < cartItemProdIds.length; i++) {
-      const productFromCart = 'SELECT id, price, name, count_in_stock FROM products WHERE id = $1;';
-
-      const productConfirm = await queryPromise(productFromCart, cartItemProdIds[i]);
-      prodItems = productConfirm.rows[0];
-      serverProdPayItems[i] = {...serverProdPayItems[i], ...prodItems};
-    };
-  */
-
   await db.connectToDB();
   const trendData = [];
-  // const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
 
-  // let tagTrim = tag.trim();
-  // let tagRGX = rgx(tagTrim);
-
-  //   const tagFilter = tagRGX && tagRGX !== 'null' ? {
-  //   tags: {$in: tagRGX}
-  // } : {};
   for(let i = 0; i < defaultTrends.length; i++) {
     let topicName = defaultTrends[i].name;
     let topic = await Post.find({tags: {$in: topicName}}).select('_id username title likes comments').limit(5).sort({createdAt: -1});
-    // .lean();
-    // trendData[i] = {...trendData[i], ...topic};
-    // trendData[i] = {...trendData[i], ...topic};
     trendData[i] = topic;
-    // trendData[i] = {...trendData[i], ...topic};
     defaultTrends[i].list = trendData[i];
-    // defaultTrends[i].list = [...defaultTrends[i].list, ...trendData[i]]
-    // defaultTrends[i].list = trendData;
   };
   await db.disconnect();
 
   res.status(200).json({
     status: "Trending topics found.",
     data: {
-      // trendData,
       defaultTrends
     }
   });

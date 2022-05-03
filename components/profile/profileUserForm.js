@@ -158,11 +158,13 @@ const ProfileUserForm = ({setUserForm}) => {
               </div>
             ) : uploading ? (
               <div className="confirmForm__submit-update">
-                <input className="btn-full-width admForm__submit" value="Submitting Info..." readOnly/>
+                <button className="btn btn-secondary btn-full-width admForm__submit">
+                  Submitting Info...
+                </button>
               </div>
             ) : (
               <div className="confirmForm__submit-update">
-                <input type="submit" className="btn btn-primary btn-full-width" value="Submit" />
+                <input type="submit" className="btn btn-secondary btn-full-width" value="Submit" />
               </div>
             )}
           </div>

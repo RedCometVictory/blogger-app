@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Image from "next/image";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import { useAppContext } from 'context/Store';
+import { logoutUser, useAppContext } from 'context/Store';
 import { toast } from "react-toastify";
 import { ControlGroup, ControlGroupFileUpload } from "../../../components/UI/FormControlGroup";
 import { createUpdatePostForm } from "@/utils/formDataServices";
@@ -12,11 +12,7 @@ import api from "@/utils/api";
 import { FaUpload } from 'react-icons/fa';
 
 const BlogForm = ({ blogData, token }) => {
-  if (blogData) {
-    let parsed = JSON.parse(blogData.text)
-  }
   const { state, dispatch } = useAppContext();
-  const { auth, post } = state;
   const router = useRouter();
   const [fileTypeError, setFileTypeError] = useState(false);
   const [fileSizeError, setFileSizeError] = useState(false);
@@ -35,10 +31,9 @@ const BlogForm = ({ blogData, token }) => {
   const {title, text, category, tags} = formData;
 
   useEffect(() => {
-    if (!token) {
+    if (!token || !Cookies.get("blog__isLoggedIn")) {
       dispatch({type: "LOGOUT"});
-      Cookies.remove("blog__isLoggedIn");
-      Cookies.remove("blog__userInfo");
+      logoutUser();
       return router.push("/");
     }
     setIsLoading(false);
@@ -94,7 +89,6 @@ const BlogForm = ({ blogData, token }) => {
     formData.text = JSON.stringify(formText);
     setIsLoading(true);
     if (formData.text?.blocks?.length === 0 || Object.keys(formData.text).length === 0) {
-      let textObj = Object.keys(formData.text).length;
       setIsLoading(false);
       return;
     };
@@ -102,23 +96,21 @@ const BlogForm = ({ blogData, token }) => {
       try {
         let servicedData = await createUpdatePostForm(formData);
         let res = await api.put(`/post/${blogData._id}`, servicedData);
-        if (res) toast.success("Submission successful.")
-        // setIsLoading(false);
+        if (res) toast.success("Submission successful.");
         router.push("/");
       } catch (err) {
         console.error(err);
-        toast.error("Error: Auth token expired.");
+        toast.error("Error: Could not update post.");
         setIsLoading(false);
       }
     } else {
       try {
         let servicedData = await createUpdatePostForm(formData);
         await api.post("/post/create", servicedData);
-        // setIsLoading(false);
         router.push("/");
       } catch (err) {
         console.error(err);
-        toast.error("Error: Auth token expired.");
+        toast.error("Error: Could not create post.");
         setIsLoading(false);
       }
     };
@@ -129,7 +121,7 @@ const BlogForm = ({ blogData, token }) => {
     if (formData.text) submitBlogHandler(e)
   };
   const deleteModalHandler = () => {
-    console.log("opening delete modal")
+    console.log("opening delete modal"); // keep for editor
   };
 
   return isLoading ? (
@@ -232,6 +224,16 @@ export const getServerSideProps = async (context) => {
     let initPostInfo = '';
     let token = context.req.cookies.blog__token;
 
+    token ? token : null;
+    if (!token) {
+      return {
+        redirect: {
+          destination: `/404`,
+          permanent: false,
+        },
+        props: {},
+      };
+    };
     if (context.query.slug[0] !== 'create') {
       post_id = context.query.slug[1];
 
@@ -244,8 +246,9 @@ export const getServerSideProps = async (context) => {
         blogData: initPostInfo ? initPostInfo.data.data.postData : '',
         token: token
       }
-    }
+    };
   } catch (err) {
+    console.error(err);
     return {
       redirect: {
         destination: `/404`,

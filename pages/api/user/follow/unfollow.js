@@ -10,7 +10,6 @@ export const config = {
 
 const handler = nc({onError, onNoMatch});
 
-// unfollow user
 // *** insomnia tested - passed
 handler.use(verifAuth, authRole).put(async (req, res) => {
   const { id } = req.user;

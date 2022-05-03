@@ -1,29 +1,21 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useAppContext } from "context/Store";
+import { useAppContext, logoutUser } from "context/Store";
 import api from "@/utils/api";
 import Cookies from "js-cookie";
 import Image from "next/image";
-import { FaUpload, FaRegThumbsUp, FaRegThumbsDown, FaRegCommentDots } from "react-icons/fa";
+import { FaRegThumbsUp, FaRegCommentDots } from "react-icons/fa";
 import { toast } from "react-toastify";
 import TrendAside from "../../../components/TrendAside";
-import { FaUserCircle, FaTv, FaGlobe, FaLaptopCode, FaLaptop, FaYoutube, FaTwitter, FaFacebook, FaLinkedinIn, FaLinkedin, FaInstagram, FaReddit, FaGithub } from 'react-icons/fa';
-import ProfileUserFrom from "../../../components/profile/profileUserForm";
-import ProfileForm from "../../../components/profile/profileForm";
+import { FaLaptopCode, FaYoutube, FaTwitter, FaFacebook, FaLinkedin, FaInstagram, FaReddit, FaGithub } from 'react-icons/fa';
 import Spinner from "../../../components/Spinner";
 
 const PublicProfile = ({publicProfile, token}) => {
-  console.log("publicProfile")
-  console.log(publicProfile)
   const router = useRouter();
   const { state, dispatch } = useAppContext();
   const { auth, profile, follow } = state;
   let { profileData } = profile;
-  console.log("profileData")
-  console.log(profileData)
-  const [userForm, setUserForm] = useState(false);
-  const [profileForm, setProfileForm] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
 
   let isCurrentlyFollowing;
@@ -34,23 +26,18 @@ const PublicProfile = ({publicProfile, token}) => {
 
   useEffect(() => {
     if (!token) {
-      console.log("useeffect, logging out")
       dispatch({type: "LOGOUT"});
-      Cookies.remove("blog__isLoggedIn");
-      Cookies.remove("blog__userInfo");
+      logoutUser();
       return router.push("/");
     }
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    // if (Object.keys(publicProfile.profile)) {
     if (publicProfile) {
       dispatch({type: "GET_PROFILE", payload: publicProfile})
     } else {
       try {
-        // let res = await api.post(`/post/like/${blogData._id}`);
-        console.log("useeffect getting user pblic profile")
         let publicProfile = api.get('/user/public-profile');
         if (publicProfile) {
           dispatch({type: "GET_PROFILE", payload: publicProfile.data.data});
@@ -60,6 +47,7 @@ const PublicProfile = ({publicProfile, token}) => {
           toast.error("Failed to get user profile.")  
         }
       } catch (err) {
+        console.error(err);
         toast.error("Profile does not exist.");
       }
     }
@@ -70,16 +58,14 @@ const PublicProfile = ({publicProfile, token}) => {
       let res = await api.post(`/user/follow/${profileData?.user?._id}`);
       if (res) {
         dispatch({type: "FOLLOW_USER", payload: res.data.data.followUser});
-        // localStorage.setItem("blog__follows", JSON.stringify(follow.followers));
-        console.log("^^^^^ FOLLOW_USER ^^^^^")
-        console.log(res.data.data.followUser);
         // set to false
         setShowFollow(!showFollow);
         toast.success("User followed.");
       } else {
-        toast.error("Failed to follow user.")  
+        toast.error("Failed to follow user.");
       }
     } catch (err) {
+      console.error(err);
       toast.error("Failure to follow user.");
     }
   };
@@ -89,13 +75,13 @@ const PublicProfile = ({publicProfile, token}) => {
       let res = await api.put(`/user/follow/unfollow?user_id=${profileData?.user._id}`);
       if (res) {
         dispatch({type: "UNFOLLOW_USER", payload: res.data.data.followers});
-        // localStorage.setItem("blog__follows", JSON.stringify(follow.followers));
         setShowFollow(!showFollow);
         toast.success("User unfollowed!");
       } else {
-        toast.error("Failed to unfollow user.")
+        toast.error("Failed to unfollow user.");
       };
     } catch (err) {
+      console.error(err);
       toast.error("Failure to follow user.");
     }
   };
@@ -299,13 +285,6 @@ const PublicProfile = ({publicProfile, token}) => {
               </div>
             </Link>
           </div>
-          {/* {auth?.user?._id !== profileData?.user?._id && (
-            <div className="blog__follow">
-              <button className="btn btn-secondary">
-                Follow
-              </button>
-            </div>
-          )} */}
           {auth?.user?._id === profileData?.user?._id ? (
             <>
             <div className=""></div>
@@ -334,20 +313,10 @@ export default PublicProfile;
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.blog__token;
-    let userInfo = context.req.cookies.blog__userInfo;
-
-    console.log("context.query");
-    console.log(context.query);
-    console.log("context.query.user_id");
-    console.log(context.query.user_id);
-    console.log("Token")
-    console.log(token)
+    // let userInfo = context.req.cookies.blog__userInfo;
     const publicProfile = await api.get(`/user/public-profile?user_id=${context.query.user_id}`,
     { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
     );
-    publicProfile
-    console.log("publicProfile")
-    console.log(publicProfile.data.data)
     return {
       props: {
         publicProfile: publicProfile.data.data,

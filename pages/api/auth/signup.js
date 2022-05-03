@@ -9,7 +9,7 @@ import { storage, removeOnErr } from '@/utils/cloudinary';
 import { accessTokenGenerator, accessTokenCookieOptions } from '@/utils/jwtGenerator';
 import User from '@/models/User';
 
-// needed to decrypt req.body (so seet to true), unless using serviced data then leave value as false
+// needed to decrypt req.body (set to true), unless using serviced data then leave value as false
 export const config = {
   api: { bodyParser: false },
 };
@@ -56,7 +56,6 @@ handler.use(upload.single('image_url')).post(async (req, res) => {
   firstName = slug(firstName, {replacement: ' ', lower: false});
   lastName = slug(lastName, {replacement: ' ', lower: false});
 
-  console.log("checking passwords")
   if (password !== password2) {
     if (req.file) {
       await removeOnErr(req.file.filename);
@@ -64,16 +63,13 @@ handler.use(upload.single('image_url')).post(async (req, res) => {
     return res.status(400).send([{ errors: [{ msg: "Passwords do not match." }] }]);
   };
 
-  console.log("checking email")
   if (!email || !email.includes('@')) {
     if (req.file) {
       await removeOnErr(req.file.filename);
     }
-    // console.log(email)
     return res.status(400).send({ errors: [{ msg: "Invalid credentials." }] });
   }
 
-  // console.log("checking username")
   if (!username) {
     if (req.file) {
       await removeOnErr(req.file.filename);
@@ -105,16 +101,10 @@ handler.use(upload.single('image_url')).post(async (req, res) => {
     }
     return res.status(403).json({ errors: [{ msg: "Username already exists!"}] });
   };
-  
-  console.log("avatarImage - check 01: before req.file")
-  console.log(avatarImage)
+
   if (req.file && req.file.path) {
-    // if (req.file.path) {
-      console.log("req.file")
-      console.log(req.file)
-      avatarImage = req.file.path;
-      avatarImageFilename = req.file.filename;
-    // }
+    avatarImage = req.file.path;
+    avatarImageFilename = req.file.filename;
   }
   // if storing with diskstorage setup for multer
   if (avatarImage.startsWith('public\\')) {
@@ -124,17 +114,11 @@ handler.use(upload.single('image_url')).post(async (req, res) => {
   
   let salt = await bcrypt.genSalt(11);
   let encryptedPassword = await bcrypt.hash(password, salt);
-  
-  console.log("avatarImage - check 02: after req.file")
-  console.log(avatarImage)
+
   let user = await new User({ firstName, lastName, username, email, avatarImage, avatarImageFilename, password: encryptedPassword, role });
-  
-  // console.log("user generated")
-  // console.log(user)
-  // ?? breaks here
+
   let jwtAccessToken = accessTokenGenerator(user._id, user.role);
-  
-  // console.log("cookie options")
+
   let cookieOptions = accessTokenCookieOptions();
 
   // res.setHeader(
@@ -147,19 +131,13 @@ handler.use(upload.single('image_url')).post(async (req, res) => {
       cookie.serialize("blog__isLoggedIn", true, {path: "/"})
     ]
   );
-  // res.cookie('token', jwtAccessToken, cookieOptions);
-  // console.log("cookie made")
   await user.save();
   await db.disconnect();
 
   if (user.password) {
-    // console.log(user.password)
     user.password = undefined;
-    // console.log("==============")
-    // console.log(user.password)
   }
-  // console.log("user - final check")
-  // console.log(user)
+
   return res.status(201).json({
     status: "User registered!",
     data: { user }

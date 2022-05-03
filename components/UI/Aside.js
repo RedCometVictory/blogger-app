@@ -5,7 +5,7 @@ import { FaHome } from "react-icons/fa";
 import { MdInfo, MdPerson, MdExitToApp } from "react-icons/md";
 import api from "@/utils/api";
 import { toast } from "react-toastify";
-import { useAppContext } from "../../context/Store";
+import { useAppContext, logoutUser } from "../../context/Store";
 
 const AsideNav = ({openMenu}) => {
   const { state, dispatch } = useAppContext();
@@ -15,8 +15,7 @@ const AsideNav = ({openMenu}) => {
     try {
       await api.post("/auth/signout");
       dispatch({type: "LOGOUT"});
-      Cookies.remove("blog__isLoggedIn");
-      Cookies.remove("blog__userInfo");
+      logoutUser();
       toast.success("Logged out.");
       router.push("/");
     } catch (err) {

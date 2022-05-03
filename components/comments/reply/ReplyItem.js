@@ -36,7 +36,7 @@ const ReplyItem = ({reply}) => {
         router.push("/");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Failed to submit reply edit.");
     }
   };
@@ -50,7 +50,7 @@ const ReplyItem = ({reply}) => {
       await api.delete(`/post/comment/${post.post._id}/delete/${id}`);
       dispatch({type: "DELETE_COMMENT", payload: id});
     } catch (err) {
-      console.log(err);
+      console.error(err);
       toast.error("Failed to delete reply.");
     }
   };

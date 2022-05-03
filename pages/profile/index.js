@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useAppContext } from "context/Store";
+import { useAppContext, logoutUser } from "context/Store";
 import api from "@/utils/api";
 import Cookies from "js-cookie";
 import ProfileField from "components/profile/profileField";
 import Image from "next/image";
-import { FaUpload } from "react-icons/fa";
 import { toast } from "react-toastify";
 import ProfileHeader from "components/profile/profileHeader";
 import ProfileUserFrom from "components/profile/profileUserForm";
@@ -13,8 +12,6 @@ import ProfileForm from "components/profile/profileForm"
 import Spinner from "components/Spinner";
 
 const Profile = ({initProfile, token}) => {
-  console.log("FE: token")
-  console.log(token);
   const router = useRouter();
   const { state, dispatch } = useAppContext();
   const { auth, profile } = state;
@@ -25,14 +22,8 @@ const Profile = ({initProfile, token}) => {
 
   useEffect(() => {
     if (!token || !Cookies.get("blog__isLoggedIn")) {
-      console.log("++++++++++++++++++++++")
-      console.log("++++++++++++++++++++++")
-      console.log("logging out")
-      console.log("++++++++++++++++++++++")
-      console.log("++++++++++++++++++++++")
       dispatch({type: "LOGOUT"});
-      Cookies.remove("blog__isLoggedIn");
-      Cookies.remove("blog__userInfo");
+      logoutUser();
       return router.push("/");
     }
     setIsLoading(false);
@@ -61,8 +52,10 @@ const Profile = ({initProfile, token}) => {
     try {
       setIsLoading(true);
       await api.delete(`/user/delete-account/${auth?.user?._id}`);
-      toast.success("Deleted post!");
-      router.push("/");
+      toast.success("Deleted account!");
+      dispatch({type: "LOGOUT"});
+      logoutUser();
+      return router.push("/");
     } catch (err) {
       console.error(err);
       toast.error("Failed to delete post.");
@@ -166,7 +159,14 @@ export const getServerSideProps = async (context) => {
     }
   } catch (err) {
     return {
-      props: { initProfile: [], token: "" }
-    }
+      redirect: {
+        destination: `/404`,
+        permanent: false,
+      },
+      props: {},
+    };
+    // return {
+    //   props: { initProfile: [], token: "" }
+    // }
   }
 };

@@ -26,10 +26,6 @@ const upload = multer({
 }); //3MB
 
 // /api/[username]/blog/post/[post_id].js
-// show an indiv post in detail
-// should be made available to the public
-// handler.use(isAuth).get(async (req, res) => {
-
 const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRole);
 
@@ -45,12 +41,6 @@ handler.get(async (req, res) => {
     return res.status(403).json({ errors: [{ msg: "Failed to find post."}] });
   }
 
-  // *** alternative could be putting this code client side
-  // *** convert string array to string
-  // if (Array.isArray(postData.tags)) {
-  //   postData.tags = postData.tags.join(', ');
-  // }
-  
   res.status(200).json({
     status: "Post retrieved.",
     data: {
@@ -59,21 +49,14 @@ handler.get(async (req, res) => {
   });
 });
 
-// --------------------------------------------------
-
 // update Post
 // *** insomnia tested - passed
 handler.use(upload.single('image_url')).put(async (req, res) => {
-  console.log("###req.query###")
-  console.log(req.query)
   const { post_id } = req.query;
   const { id } = req.user;
-  // console.log("req.user")
-  // console.log(req.user)
   const { title, text, category, tags } = req.body;
   let imageUrl = '';
   let imageFilename = '';
-  // let categoryToArr;
   let tagsToArr;
   let postDataCheck;
   let postFields;
@@ -94,17 +77,9 @@ handler.use(upload.single('image_url')).put(async (req, res) => {
   await db.connectToDB();
   const user = await User.findById(req.user.id).select('-password');
   const ownedPost = await Post.findById(post_id, 'user');
-  
-  console.log("id")
-  console.log(id)
-  console.log("ownedPost")
-  console.log(ownedPost)
-  
+
   ownedPost.user = ownedPost.user.toString();
-  console.log("ownedPost.user")
-  console.log(ownedPost.user = ownedPost.user.toString())
   let postId = ownedPost.user.toString();
-  // if (id !== ownedPost.user) {
   if (id !== postId) {
     if (req.file) {
       await removeOnErr(req.file.filename);
@@ -146,7 +121,7 @@ handler.use(upload.single('image_url')).put(async (req, res) => {
     imageFilename = req.file.filename;
   }
 
-  // if storeing with diskstorage setup for multer
+  // if storing with diskstorage setup for multer
   if (imageUrl.startsWith('public\\')) {
     let editImgUrl = coverImage.slice(6);
     coverImage = editImgUrl;
@@ -163,9 +138,8 @@ handler.use(upload.single('image_url')).put(async (req, res) => {
         await cloudinary.uploader.destroy(currentPostImageFilename.coverImageFilename);
       }
 
-      // ready postFields wwith new information / image
+      // ready postFields with new information / image
       postFields = {
-        // user: mongoose.Types.ObjectId(req.user._id),
         username: user.username,
         avatarImage: user.avatarImage,
         coverImage: imageUrl,
@@ -181,11 +155,8 @@ handler.use(upload.single('image_url')).put(async (req, res) => {
   // updating post, no new image
   if (imageUrl === '') {
     postFields = {
-      // user: mongoose.Types.ObjectId(req.user._id),
       username: user.username,
       avatarImage: user.avatarImage,
-      // coverImage: imageUrl,
-      // coverImageFilename: imageFilename,
       title: title,
       text: text,
       category,
@@ -194,7 +165,6 @@ handler.use(upload.single('image_url')).put(async (req, res) => {
   }
   
   const updatePost = await Post.findOneAndUpdate(
-    // {user: req.user.id},
     {_id: post_id},
     {$set: postFields},
     { new: true, upsert: true, setDefaultsOnInsert: true }

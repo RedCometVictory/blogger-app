@@ -63,10 +63,8 @@ const ThemePicker = ({ theme, setTheme }) => {
         <div
           className={`palette__circle ${item.id}`}
           aria-label={`Theme ${item.name}`}
-          // onClick={() => setTheme(nextTheme)}
           onClick={() => setTheme(`theme-${item.id}`)}
         >
-          
         </div>
       </div>
     ))}

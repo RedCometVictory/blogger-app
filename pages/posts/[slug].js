@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 const Output = dynamic(() => import("editorjs-react-renderer"), { ssr: false });
 import Blocks from "editorjs-blocks-react-renderer";
 import { useRouter } from "next/router";
-import { useAppContext } from 'context/Store';
+import { useAppContext, logoutUser } from 'context/Store';
 import api from "@/utils/api";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -16,19 +16,14 @@ import TrendAside from "../../components/TrendAside";
 import Spinner from "../../components/Spinner";
 
 const Blog = ({ blogData, token }) => {
-  console.log("blogData")
-  console.log(blogData)
   const { state, dispatch } = useAppContext();
   const { auth, post, follow } = state;
   const router = useRouter();
   let [parsedBlocks, setParsedBlocks] = useState();
   const [setConfirmDelete, isSetConfirmDelete] = useState(false);
   let [isLoading, setIsLoading] = useState(true);
-  // const [hasMounted, setHasMounted] = useState(false);
   let isCurrentlyFollowing;
 
-  console.log("follow list")
-  console.log(follow)
   let followResult = follow?.followers?.filter(follow => follow.follower_id === auth?.user?._id && follow.following_id === blogData?.user);
   isCurrentlyFollowing = followResult?.length > 0;
 
@@ -46,37 +41,16 @@ const Blog = ({ blogData, token }) => {
   useEffect(() => {
     if (!token) {
       dispatch({type: "LOGOUT"});
-      Cookies.remove("blog__isLoggedIn");
-      Cookies.remove("blog__userInfo");
+      logoutUser();
       return router.push("/");
     }
     setIsLoading(false);
-    // TODO: if no posts -- then keep status to isloading
-    // if (!Cookies.get("blog__isLoggedIn")) {
-    //   console.log("cannot find loggin toekn")
-    //   return router.push("/")
-    // };
-    // if (!auth.isAuthenticated || auth?.user?.role !== 'user') {
-    //   console.log("redirecting user to home page")
-    //   return router.push("/");
-    // };
     let validJson = isValidJSONString(blogData.text);
     if (validJson) {
       setParsedBlocks(JSON.parse(blogData.text));
     }
     dispatch({type: "GET_POST_BY_ID", payload: blogData});
   }, []);
-
-  // http://localhost:3000/posts/625a316d8fd7011df6385812
-  // http://localhost:3000/posts/f/update/625a316d8fd7011df6385812
-  // http://localhost:3000/posts/f/create
-
-
-  // useEffect(() => {
-  //   setHasMounted(true);
-  // }, []);
-  
-  // if (!hasMounted) return null;
   // parent class is blog__text
   const blocksConfig={
     code: {
@@ -129,6 +103,7 @@ const Blog = ({ blogData, token }) => {
         toast.error("Failed to follow user.");
       }
     } catch (err) {
+      console.error(err);
       toast.error("Failure to follow user.");
     }
   };
@@ -382,7 +357,7 @@ export default Blog;
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.blog__token;
-    let userInfo = context.req.cookies.blog__userInfo;
+    // let userInfo = context.req.cookies.blog__userInfo;
 
     let post_id = context.query.slug;
     let initPostInfo = '';

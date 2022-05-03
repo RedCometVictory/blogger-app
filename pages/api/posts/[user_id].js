@@ -1,11 +1,9 @@
 import nc from 'next-connect';
 import { onError, onNoMatch } from '@/utils/ncOptions';
 import db from '@/utils/database';
-import User from '@/models/User';
 import Post from '@/models/Post';
 
-// *** interact with search bar located in user blog homepage, get all blog posts matching query
-// /[username]/blog/ <-FE
+// *** get posts for user blog homepage, get all blog posts matching query
 // /api/posts/[user_id] <- BE
 const handler = nc({onError, onNoMatch});
 
@@ -27,21 +25,12 @@ handler.get(async (req, res) => {
   let totalBlogs;
   let blogs;
   const rgx = (pattern) => new RegExp(`.*${pattern}.*`);
-  // TODO --- check if category, tag are empty stings
   let keywordTrim = keyword.trim();
   let keywordRGX = rgx(keywordTrim);
   let categoryTrim = category.trim();
   let categoryRGX = rgx(categoryTrim);
   let tagTrim = tag.trim();
   let tagRGX = rgx(tagTrim);
-
-  console.log(keyword)
-  console.log(category)
-  console.log(tag)
-  console.log("----RGX---")
-  console.log(keywordRGX)
-  console.log(categoryRGX)
-  console.log(tagRGX)
 
   const keywordFilter = keywordRGX && keywordRGX !== 'null' ? {
     $and: [
@@ -88,60 +77,3 @@ handler.get(async (req, res) => {
 });
 
 export default handler;
-/*
-#####################################################
-original version of route
-#####################################################
-import nc from 'next-connect';
-import { onError, onNoMatch } from '../../../utils/ncOptions';
-import db from '../../../utils/database';
-import User from '../../../models/User';
-import Post from '../../../models/Post';
-
-// *** get all blog posts of username, use in user blog hompage feed
-// /[username]/blog/ <-FE
-// /api/posts/[user_id] <- BE
-const handler = nc({onError, onNoMatch});
-
-handler.get(async (req, res) => {
-  const {
-    user_id,
-    category,
-    tag,
-    username,
-    limit,
-    currentPage
-  } = req.query;
-  // TODO --- look into sending multiple queries (category, tag, username) to this route
-  // TODO --- implement pagination
-  // *** searching for all posts by username requires regex
-  await db.connectToDB();
-  // TODO --- move this search query to client side search bar
-  // const user = await User.findOne({
-  //   name: {
-  //     $regex: username,
-  //     $options: 'i',
-  //   },
-  // });
-  // TODO --- move this search query to client side search bar
-    
-  const posts = await Post.find({
-    user: user_id
-  }).sort({ "timestamp": -1 });
-  // }).sort({ createdAt: -1 });
-  await db.disconnect();
-
-  // TODO --- consider looping through posts to change timestamp date to ISOString
-  res.status(200).json({
-    status: "All posts for blog.",
-    data: {
-      // user,
-      posts
-    }
-  })
-});
-
-export default handler;
-#####################################################
-#####################################################
-*/

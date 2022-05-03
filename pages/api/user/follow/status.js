@@ -6,7 +6,6 @@ import Follow from '@/models/Follow';
 
 const handler = nc({onError, onNoMatch});
 
-// get all (users) you follow
 // *** insomnia tested - passed
 handler.use(verifAuth, authRole).get(async (req, res) => {
   await db.connectToDB();

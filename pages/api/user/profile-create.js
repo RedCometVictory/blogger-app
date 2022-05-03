@@ -1,7 +1,6 @@
 import nc from 'next-connect';
 import multer from 'multer';
 import normalize from 'normalize-url';
-import { v2 as cloudinary } from 'cloudinary';
 import { onError, onNoMatch } from '@/utils/ncOptions';
 import { verifAuth, authRole } from '@/utils/verifAuth';
 import { storage, removeOnErr } from '@/utils/cloudinary';
@@ -30,7 +29,6 @@ const upload = multer({
 const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRole);
 
-// create user profile
 // *** insomnia tested - passed
 handler.use(upload.single('image_url')).post(async(req, res) => {
   const { id } = req.user;

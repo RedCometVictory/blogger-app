@@ -6,17 +6,13 @@ import User from '@/models/User';
 
 const handler = nc({onError, onNoMatch});
 
-// handler.use(verifAuth, authRole);
 // *** Insomnia Tested - passed
 handler.use(verifAuth, authRole).get(async (req, res) => {
-  console.log("passed auth and role");
-  console.log(req.user);
   let { id } = req.user;
   await db.connectToDB();
   const user = await User.findById({_id: id});
   await db.disconnect();
 
-  console.log(user)
   if (!user) {
     return res.status(403).json({ errors: [{ msg: "No user found." }] });
   };

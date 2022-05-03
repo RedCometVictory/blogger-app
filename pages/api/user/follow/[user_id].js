@@ -10,7 +10,6 @@ export const config = {
 
 const handler = nc({onError, onNoMatch});
 
-// add to following user
 // *** insomnia tested - passed
 handler.use(verifAuth, authRole).post(async (req, res) => {
   const { id } = req.user;

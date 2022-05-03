@@ -2,7 +2,6 @@
   @include flex(row, center, center);
   margin-top:5rem;
   &__body {
-    height: 100vh;
     overflow: hidden;
   }
   &__screen {

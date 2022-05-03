@@ -7,7 +7,7 @@ import { FaPalette, FaChevronLeft } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import api from "@/utils/api";
 import { ThemeContext } from 'use-theme-switcher';
-import { useAppContext } from '../context/Store';
+import { useAppContext, logoutUser } from '../context/Store';
 import SearchBar from "./UI/SearchBar";
 import ThemePicker from "./ThemePicker";
 
@@ -21,8 +21,7 @@ const Navbar = ({openMenu, setOpenMenu}) => {
     try {
       await api.post("/auth/signout");
       dispatch({type: "LOGOUT"});
-      Cookies.remove("blog__isLoggedIn");
-      Cookies.remove("blog__userInfo");
+      logoutUser();
       toast.success("Logged out.");
       router.push("/");
     } catch (err) {

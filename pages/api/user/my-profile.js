@@ -7,7 +7,6 @@ import Profile from '@/models/Profile';
 
 const handler = nc({onError, onNoMatch});
 
-// get user profile
 // *** insomnia tested - passed
 handler.use(verifAuth, authRole).get(async (req, res) => {
   const { id } = req.user;

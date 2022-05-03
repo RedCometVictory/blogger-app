@@ -7,7 +7,6 @@ import { verifAuth, authRole } from '@/utils/verifAuth';
 import { storage, removeOnErr } from '@/utils/cloudinary';
 import db from '@/utils/database';
 import User from '@/models/User';
-import Post from '@/models/Post';
 import Profile from '@/models/Profile';
 
 export const config = {
@@ -31,19 +30,10 @@ const upload = multer({
 const handler = nc({onError, onNoMatch});
 handler.use(verifAuth, authRole);
 
-// update profile, update background image for user profile
 // *** insomnia tested - passed
 handler.use(upload.single('image_url')).put(async(req, res) => {
-  console.log("req.query")
-  console.log(req.query ? req.query : "undefined")
-  // console.log("req.params")
-  // console.log(req.params)
   const { user_id } = req.query;
-  // const { user_id } = req.params;
-  console.log("updating profile")
   let { bio = "", location = "", themes = "", website = "", youtube = "", facebook = "", twitter = "", linkedin = "", instagram = "", reddit = "", github = "" } = req.body;
-  console.log("req.body")
-  console.log(req.body)
 
   let imageUrl = '';
   let imageFilename = '';
@@ -61,9 +51,6 @@ handler.use(upload.single('image_url')).put(async(req, res) => {
   };
 
   const profileExists = await Profile.findOne({user: user_id}).select("_id");
-
-  console.log("profileExists")
-  console.log(profileExists)
   
   if (!profileExists) {
     if (req.file) {
@@ -81,14 +68,9 @@ handler.use(upload.single('image_url')).put(async(req, res) => {
     imageUrl = editImgUrl;
   }
 
-  // console.log("themes")
-  // console.log(themes)
   if (themes && themes.length > 0 && typeof themes === "string") {
     themesToArr = themes.split(',').map(theme=> '' + theme.trim());
   };
-
-  console.log("themes to array")
-  // console.log(themesToArr)
   
   // ensure only two or less themes exist:
   let savedThemes = [];
@@ -100,9 +82,6 @@ handler.use(upload.single('image_url')).put(async(req, res) => {
   } else {
     savedThemes = themesToArr;
   };
-
-  console.log("themes saved")
-  // console.log(savedThemes)
 
   const socialFields = {
     website, youtube, facebook, twitter, linkedin, instagram, reddit, github
