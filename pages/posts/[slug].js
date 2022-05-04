@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from "next/link";
-import Cookies from "js-cookie";
 import dynamic from 'next/dynamic';
 const Output = dynamic(() => import("editorjs-react-renderer"), { ssr: false });
 import Blocks from "editorjs-blocks-react-renderer";

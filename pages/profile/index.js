@@ -90,7 +90,7 @@ const Profile = ({initProfile, token}) => {
         <div className="profile__container">
           <div className="profile__container-bg"></div>
           <div className="profile__center-content">
-            <div className="profile__user-avatar">
+            <div className="profile__user-avatar base-icon">
               {auth?.user?.avatarImage && (
                 <Image
                   className="profile__avatar-img"

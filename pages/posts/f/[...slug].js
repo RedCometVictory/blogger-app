@@ -88,12 +88,13 @@ const BlogForm = ({ blogData, token }) => {
     let formText = await editorInstance.save();
     formData.text = JSON.stringify(formText);
     setIsLoading(true);
-    if (formData.text?.blocks?.length === 0 || Object.keys(formData.text).length === 0) {
-      setIsLoading(false);
-      return;
-    };
     if (blogData) {
       try {
+        if (formText.blocks.length === 0) {
+          setIsLoading(false);
+          toast.error("Please provide text.");
+          return;
+        };
         let servicedData = await createUpdatePostForm(formData);
         let res = await api.put(`/post/${blogData._id}`, servicedData);
         if (res) toast.success("Submission successful.");
@@ -105,6 +106,11 @@ const BlogForm = ({ blogData, token }) => {
       }
     } else {
       try {
+        if (formText.blocks.length === 0) {
+          setIsLoading(false);
+          toast.error("Please provide text.");
+          return;
+        };
         let servicedData = await createUpdatePostForm(formData);
         await api.post("/post/create", servicedData);
         router.push("/");
@@ -184,7 +190,7 @@ const BlogForm = ({ blogData, token }) => {
                 className={"fui-user"}
                 onChange={onChange}
                 value={tags}
-                required={false}
+                required={true}
               />
               {Editor && (
                 <Editor

@@ -28,8 +28,6 @@ export const PostReducer = (state = postInitialState, action) => {
         post: {
           ...state.post,
           posts: updatedFeed,
-          // posts: payload.posts,
-          // trends: payload.trends,
           loading: false
         },
       };
@@ -43,31 +41,30 @@ export const PostReducer = (state = postInitialState, action) => {
           loading: false
         },
       };
-    case "CREATE_POST":
+    case "CREATE_POST": // not yet used
       return {
         ...state,
         posts: [payload, ...state.posts], // reversing places, the latest post on top in the UI
         loading: false
       };
-    case "UPDATE_POST":
+    case "UPDATE_POST": // not yet used
       return {
         ...state,
         post: {
-          // ...state.post,
           postData: payload,
           postComments: [...state.post.postComments],
           postLikes: [...state.post.postLikes],
           loading: false
         },
       };
-    case "CLEAR_POST":
+    case "CLEAR_POST": // not yet used
       return {
         ...state,
         post: null,
         loading: false
       };
 
-    case "CLEAR_FEED_POSTS":
+    case "CLEAR_FEED_POSTS": // not yet used
       return {
         ...state,
         posts: null
@@ -84,7 +81,7 @@ export const PostReducer = (state = postInitialState, action) => {
           loading: false
         },
       };
-    case "UNLIKE_POST": 
+    case "UNLIKE_POST":
       return {
         ...state,
         post: {
@@ -96,29 +93,6 @@ export const PostReducer = (state = postInitialState, action) => {
           loading: false
         },
       };
-    // case "LIKE_COMMENT":
-    //   let commentId = payload.commentId;
-    //   let updatedCommentLikes;
-    //   updatedCommentLikes = state.post.post.comments.map((comment, i) => {
-    //     if (comment._id === commentId) {
-    //       // updatedCommentLikes = state.post.post.comments[i].likes.unshift({ user: req.user.id });
-    //       //*** updatedCommentLikes = state.post.post.comments[i].likes = payload.commentLikes;
-    //       state.post.post.comments[i].likes.unshift({ user: payload.commentLikes });
-    //     };
-    //   });
-    //   return {
-    //     ...state,
-    //     post: {
-    //       post: {
-    //         ...state.post.post,
-    //         comments: [...state.post.post.comments, updatedCommentLikes]
-    //         // comments: updatedCommentLikes -
-    //         // comments: [payload] -
-    //         // update obj in arr
-    //       }
-    //     },
-    //     loading: false
-    //   };
     case "LIKE_COMMENT":
       let commentId = payload.commentId;
       let updatedCommentLikes;
@@ -136,12 +110,6 @@ export const PostReducer = (state = postInitialState, action) => {
           loading: false
         },
       };
-      // const index = state.post.post.comments.findIndex(comment => comment._id === payload.commentId);
-      // state.post.post.comments[index].likes.unshift({ user: payload.commentLikes });
-      // return {
-      //   ...state,
-      //   loading: false
-      // };
     case "UNLIKE_COMMENT":
       const index = state.post.post.comments.findIndex(comment => comment._id === payload.commentId);
       const likeRemoved = state.post.post.comments[index].likes.filter(
@@ -155,7 +123,7 @@ export const PostReducer = (state = postInitialState, action) => {
           loading: false
         },
       };
-    case "CREATE_COMMENT": 
+    case "CREATE_COMMENT":
       return {
         ...state,
         post: {
@@ -198,30 +166,13 @@ export const PostReducer = (state = postInitialState, action) => {
           loading: false
        },
       };
-    case "DELETE_FEED_POST":
+    case "DELETE_FEED_POST": // not yet used
       return {
         ...state,
         posts: state.posts.filter(post => post.id !== payload),
         loading: false
       };
-    case "DELETE_POST":
-      return {
-        ...state,
-        loading: false
-      };
     case "POST_ERROR":
-      return {
-        ...state,
-        error: payload,
-        loading: false
-      };
-    case "LIKE_ERROR":
-      return {
-        ...state,
-        error: payload,
-        loading: false
-      };
-    case "COMMENT_ERROR":
       return {
         ...state,
         error: payload,

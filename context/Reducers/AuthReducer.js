@@ -2,12 +2,8 @@ import Cookies from "js-cookie";
 export const authInitialState = {
   token: '',
   isAuthenticated: Cookies.get("blog__isLoggedIn") ? true : false,
-  // isAuthenticated: !Cookies.get("blog__isLoggedIn") ? false : JSON.parse(Cookies.get("blog__isLoggedIn")) ? true : false,
-  // isAuthenticated: false,
   loading: true,
-  // user: {}
   user: Cookies.get("blog__userInfo") ? JSON.parse(Cookies.get("blog__userInfo")) : {}
-  // user: localStorage.getItem("blog__auth") ? JSON.parse(localStorage.getItem("blog__auth")) : {}
 };
 
 export const AuthReducer = (state = authInitialState, action) => {

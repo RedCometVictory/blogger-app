@@ -12,13 +12,13 @@ export const profileInitialState = {
 export const ProfileReducer = (state = profileInitialState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case "GET_PROFILES":
+    case "GET_PROFILES": // not used yet
       return {
         ...state,
         profiles: payload,
         loading: false
       };
-    case "GET_PROFILE":
+    case "GET_PROFILE": 
       return {
         ...state,
         profile: {
@@ -51,8 +51,7 @@ export const ProfileReducer = (state = profileInitialState, action) => {
           loading: false
         }
       }
-
-    case "FOLLOW_PROFILE":
+    case "FOLLOW_PROFILE": // not used yet
       return {
         ...state,
         profileStats: {
@@ -63,8 +62,7 @@ export const ProfileReducer = (state = profileInitialState, action) => {
         },
         loading: false
       }
-
-    case "UNFOLLOW_PROFILE":
+    case "UNFOLLOW_PROFILE": // not yet used
       return {
         ...state,
         profileStats: {
@@ -75,15 +73,13 @@ export const ProfileReducer = (state = profileInitialState, action) => {
         },
         loading: false
       }
-
-    case "CLEAR_PROFILE":
+    case "CLEAR_PROFILE": // not yet used
       return {
         ...state,
         profileData: null,
         profileStats: null,
         profilePosts: null,
       };
-
     case "ACCOUNT_DELETED":
       return {
         ...state,
@@ -92,28 +88,18 @@ export const ProfileReducer = (state = profileInitialState, action) => {
         profilePosts: null,
         loading: false
       }
-
+    case "FOLLOWERS_PROFILE_LIST": // not used yet
+      return {
+        ...state,
+        followersList: payload.followers,
+        loading: false
+      };
     case "PROFILE_ERROR":
       return {
         ...state,
         error: payload,
         loading: false
       };
-
-    case "FOLLOWING_PROFILE_LIST": 
-      return {
-        ...state,
-        followingList: payload.following,
-        loading: false
-      };
-
-    case "FOLLOWERS_PROFILE_LIST":
-      return {
-        ...state,
-        followersList: payload.followers,
-        loading: false
-      };
-
     default: return state;
   }
 };
