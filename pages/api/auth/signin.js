@@ -15,14 +15,14 @@ const handler = nc({onError, onNoMatch});
 handler.post(async (req, res) => {
   const { email, password } = req.body;
 
-  await db.connectToDB();
-  let user = await User.findOne({ email });
-  // let user = await User.findOne({ email }).select('-password');
-  if (!user) {
-    return res.status(403).json({ errors: [{ msg: "Invalid credentials." }] });
-  }
-  await db.disconnect();
-
+  // await db.connectToDB();
+  // let user = await User.findOne({ email });
+  // // let user = await User.findOne({ email }).select('-password');
+  // if (!user) {
+  //   return res.status(403).json({ errors: [{ msg: "Invalid credentials." }] });
+  // }
+  // await db.disconnect();
+  return console.log(req.body)
   const verify = await bcrypt.compare(password, user.password);
 
   if (!verify) {
