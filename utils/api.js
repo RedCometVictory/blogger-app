@@ -5,12 +5,12 @@ import { toast } from "react-toastify";
 
 const api = Axios.create({
   // baseURL: 'http://localhost:3000/api',
-  baseURL: `${process.env.DOMAIN}`,
+  // baseURL: `${process.env.DOMAIN}`,
   // baseURL: `${process.env.DOMAIN}/api`,
   // baseURL: `/api`,
   // baseURL: 'https://blogger-app-umber.vercel.app/api',
   // baseURL: `${process.env.NEXTAUTH_URL}/api`,
-  // baseURL: '/api', // ---
+  baseURL: '/api', // ---
   timeout:25000,
   // headers: context.req ? { cookie: context.req.headers.cookie } : undefined,
   // headers: {
