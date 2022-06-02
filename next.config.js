@@ -2,7 +2,15 @@
 // const {parsed:envKeys} = require("dotenv").config({path:"./.env"});
 
 module.exports = {
-  // baseUrl: process.env.DOMAIN,
+  baseUrl: process.env.DOMAIN,
+  async rewrites() {
+    return [
+      {
+        source: `${process.env.DOMAIN}/api/:path*`,
+        destination: '/api/:path*'
+      }
+    ]
+  },
   reactStrictMode: true,
   images: {
     domains: ['res.cloudinary.com'],
