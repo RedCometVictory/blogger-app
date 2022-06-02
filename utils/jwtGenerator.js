@@ -33,8 +33,7 @@ function accessTokenCookieOptions() {
       // secure: NODE_ENV === 'production' ? true : false,
       // httpOnly: NODE_ENV === 'production' ? true : false,
       sameSite: 'strict',
-      // "/" access whole app
-      path: '/'
+      path: '/' // access whole app
   }
 };
 
