@@ -68,42 +68,40 @@ const Navbar = ({openMenu, setOpenMenu}) => {
             </div>
           )}
         </div>
-      <div className="nav__sub-container right">
-        {state?.auth?.isAuthenticated ? (
-          <>
-          <h3 className="nav__content right">
-            <Link passHref href={"/about"}>
-              <div className="">
-                About
-              </div>
-            </Link>
-          </h3>
-          <h3 className="nav__content right">
-            <Link passHref href={"/profile"}>
-              <div className="">
-                Profile
-              </div>
-            </Link>
-          </h3>
-          <h3 className="nav__content right" onClick={logoutHandler}>
-            <Link passHref href={"/"}>
-              <div className="">
-                Logout
-              </div>
-            </Link>
-          </h3>
-          </>
-        ) : (
-          <>
-          <h3 className="nav__content right">
-            <Link passHref href={"/login"}>
-              <div className="">
-                Login
-              </div>
-            </Link>
-          </h3>
-          </>
-        )}
+        <div className="nav__sub-container right">
+          {state?.auth?.isAuthenticated ? (
+            <>
+            <h3 className="nav__content right">
+              <Link passHref href={"/about"}>
+                <div className="">
+                  About
+                </div>
+              </Link>
+            </h3>
+            <h3 className="nav__content right">
+              <Link passHref href={"/profile"}>
+                <div className="">
+                  Profile
+                </div>
+              </Link>
+            </h3>
+            <h3 className="nav__content right" onClick={logoutHandler}>
+              <Link passHref href={"/"}>
+                <div className="">
+                  Logout
+                </div>
+              </Link>
+            </h3>
+            </>
+          ) : (
+            <h3 className="nav__content right">
+              <Link passHref href={"/login"}>
+                <div className="">
+                  Login
+                </div>
+              </Link>
+            </h3>
+          )}
         </div>
       </div>
     </nav>

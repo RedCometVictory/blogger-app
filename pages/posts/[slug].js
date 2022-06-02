@@ -7,6 +7,7 @@ import Blocks from "editorjs-blocks-react-renderer";
 import { useRouter } from "next/router";
 import { useAppContext, logoutUser } from 'context/Store';
 import api from "@/utils/api";
+import { getData } from "@/utils/fetchData";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Comment from '../../components/comments/Comment';
@@ -362,11 +363,12 @@ export const getServerSideProps = async (context) => {
     let initPostInfo = '';
     if (context.query.slug !== 'create') {
       // retreive post data
-      initPostInfo = await api.get(`/post/${post_id}`, 
-      { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-      );
+      // initPostInfo = await api.get(`/post/${post_id}`, 
+      // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+      // );
+      initPostInfo = await getData(`/post/${post_id}`, context.req ? { cookie: context.req.headers.cookie } : undefined);
     }
-    let initBlog = initPostInfo.data.data;
+    let initBlog = initPostInfo.data;
     return {
       props: {
         blogData: initBlog ? initBlog.postData : '',

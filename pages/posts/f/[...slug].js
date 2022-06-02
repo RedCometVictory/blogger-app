@@ -9,6 +9,7 @@ import { createUpdatePostForm } from "@/utils/formDataServices";
 import Editor from "../../../components/editor/Editor";
 import Spinner from "../../../components/Spinner";
 import api from "@/utils/api";
+import { getData } from "@/utils/fetchData";
 import { FaUpload } from 'react-icons/fa';
 
 const BlogForm = ({ blogData, token }) => {
@@ -243,13 +244,14 @@ export const getServerSideProps = async (context) => {
     if (context.query.slug[0] !== 'create') {
       post_id = context.query.slug[1];
 
-      initPostInfo = await api.get(`/post/${post_id}`,
-      { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-      );
+      // initPostInfo = await api.get(`/post/${post_id}`,
+      // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+      // );
+      initPostInfo = await getData(`/post/${post_id}`, context.req ? { cookie: context.req.headers.cookie } : undefined);
     }
     return {
       props: {
-        blogData: initPostInfo ? initPostInfo.data.data.postData : '',
+        blogData: initPostInfo ? initPostInfo.data.postData : '',
         token: token
       }
     };

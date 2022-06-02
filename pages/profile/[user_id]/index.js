@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAppContext, logoutUser } from "context/Store";
 import api from "@/utils/api";
+import { getData } from "@/utils/fetchData";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { FaRegThumbsUp, FaRegCommentDots } from "react-icons/fa";
@@ -314,12 +315,13 @@ export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.blog__token;
     // let userInfo = context.req.cookies.blog__userInfo;
-    const publicProfile = await api.get(`/user/public-profile?user_id=${context.query.user_id}`,
-    { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-    );
+    // const publicProfile = await api.get(`/user/public-profile?user_id=${context.query.user_id}`,
+    // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    // );
+    const publicProfile = await getData(`/user/public-profile?user_id=${context.query.user_id}`, context.req ? { cookie: context.req.headers.cookie } : undefined);
     return {
       props: {
-        publicProfile: publicProfile.data.data,
+        publicProfile: publicProfile.data,
         token: token
       }
     }

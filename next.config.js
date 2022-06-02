@@ -2,6 +2,7 @@
 // const {parsed:envKeys} = require("dotenv").config({path:"./.env"});
 
 module.exports = {
+  // baseUrl: process.env.DOMAIN,
   reactStrictMode: true,
   images: {
     domains: ['res.cloudinary.com'],

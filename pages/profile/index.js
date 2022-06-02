@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAppContext, logoutUser } from "context/Store";
 import api from "@/utils/api";
+import { getData } from "@/utils/fetchData";
 import Cookies from "js-cookie";
 import ProfileField from "components/profile/profileField";
 import Image from "next/image";
@@ -148,12 +149,13 @@ export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.blog__token;
 
-    const initProfileData = await api.get('/user/my-profile',
-    { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-    );
+    const initProfileData = await getData('/user/my-profile', context.req ? { cookie: context.req.headers.cookie } : undefined);
+    // const initProfileData = await api.get('/user/my-profile',
+    // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
+    // );
     return {
       props: {
-        initProfile: initProfileData.data.data.profile,
+        initProfile: initProfileData.data.profile,
         token: token
       }
     }
