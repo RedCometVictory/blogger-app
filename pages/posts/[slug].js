@@ -357,15 +357,10 @@ export default Blog;
 export const getServerSideProps = async (context) => {
   try {
     let token = context.req.cookies.blog__token;
-    // let userInfo = context.req.cookies.blog__userInfo;
 
     let post_id = context.query.slug;
     let initPostInfo = '';
     if (context.query.slug !== 'create') {
-      // retreive post data
-      // initPostInfo = await api.get(`/post/${post_id}`, 
-      // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-      // );
       initPostInfo = await getData(`/post/${post_id}`, context.req ? { cookie: context.req.headers.cookie } : undefined);
     }
     let initBlog = initPostInfo.data;

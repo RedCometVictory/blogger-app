@@ -95,10 +95,8 @@ export const PostReducer = (state = postInitialState, action) => {
       };
     case "LIKE_COMMENT":
       let commentId = payload.commentId;
-      let updatedCommentLikes;
       state.post.post.comments.map((comment, i) => {
         if (comment._id === commentId) {
-          // updatedCommentLikes = state.post.post.comments[i].likes.unshift({ user: payload.commentLikes });
           state.post.post.comments[i].likes.unshift(payload.commentLikes);
         };
       });
@@ -136,8 +134,6 @@ export const PostReducer = (state = postInitialState, action) => {
         },
       };
     case "UPDATE_COMMENT":
-      // state.post.post.comments.map(comment => comment._id === payload.comment._id ? comment = payload.updatedPostComment : comment);
-      // state.post.post.comments.map(comment => comment._id === payload._id ? comment = payload : comment);
       let postComments = state.post.post.comments.map(comment => comment._id === payload._id ? comment = payload : comment);
       return {
         ...state,
@@ -152,9 +148,7 @@ export const PostReducer = (state = postInitialState, action) => {
       };
 
     case "DELETE_COMMENT":
-      // const commentRemoved = state.post.post.comments.filter(comment => comment.id !== payload.commentId);
       const commentRemoved = state.post.post.comments.filter(comment => comment._id !== payload);
-      // state.post.post.comments = commentRemoved;
       return {
        ...state,
        post: {

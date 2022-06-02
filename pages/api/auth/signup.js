@@ -121,10 +121,6 @@ handler.use(upload.single('image_url')).post(async (req, res) => {
 
   let cookieOptions = accessTokenCookieOptions();
 
-  // res.setHeader(
-  //   "Set-Cookie",
-  //   cookie.serialize("blog__token", jwtAccessToken, cookieOptions)
-  // );
   res.setHeader(
     "Set-Cookie", [
       cookie.serialize("blog__token", jwtAccessToken, cookieOptions),

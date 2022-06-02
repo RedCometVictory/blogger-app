@@ -31,9 +31,5 @@ handler.post(async (req, res) => {
     });
   */
   res.send({ success: "Logged out successfully!" });
-  /*
-  res.setHeader('Allow', ['POST'])
-    res.status(405).json({ message: `Method ${req.method} not allowed` })
-  */
 });
 export default handler;

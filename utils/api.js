@@ -4,23 +4,12 @@ import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 
 const api = Axios.create({
-  // baseURL: 'http://localhost:3000/api',
-  // baseURL: `${process.env.DOMAIN}`,
-  // baseURL: `${process.env.DOMAIN}/api`,
+  // baseURL: 'http://localhost:3000/api', // ---
   // baseURL: `${process.env.NEXT_APP_DOMAIN}/api`,
   // baseURL: 'https://blogger-app-umber.vercel.app/api',
-  // baseURL: `${process.env.NEXTAUTH_URL}/api`,
   baseURL: '/api', // ---
   timeout:25000,
   // headers: context.req ? { cookie: context.req.headers.cookie } : undefined,
-  // headers: {
-  //   "Authorization": "Bearer " + Cookies.get("blog__token")
-  // },
-  // headers: {
-    // 'X-Content-Type-Options': "nosniff",
-    // 'Content-Type': 'application/json',
-    // 'Content-Type': 'multipart/form-data'
-  // },
   withCredentials: true,
   credentials: 'include',
 });

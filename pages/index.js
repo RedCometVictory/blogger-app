@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAppContext } from "context/Store";
 import { toast } from "react-toastify";
-import api from "@/utils/api"
 import { getData } from "@/utils/fetchData";
 import { HiOutlineDesktopComputer, HiViewGridAdd, HiOutlineCode } from "react-icons/hi";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -173,44 +172,12 @@ export const getServerSideProps = async (context) => {
     };
 
     if (token) {
-      // initGeneralFeed = await api.get(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&page=${page}&pageNumber=${pageNumber}`,
-      // {headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-      // );
-      // initGeneralFeed = await getData(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&page=${page}&pageNumber=${pageNumber}`);
-      // initGeneralFeed = await getData(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&page=${page}&pageNumber=${pageNumber}`, {headers: context.req ? { cookie: context.req.headers.cookie } : undefined});
       initGeneralFeed = await getData(`/posts?keyword=${keyword}&category=${category}&tag=${tag}&page=${page}&pageNumber=${pageNumber}`, context.req ? { cookie: context.req.headers.cookie } : undefined);
-
-      // const initTrendingFeed = await api.get('/posts/trending', 
-      // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-      // );
-  
-      // const initTrendingFeed = await getData(`/posts/trending`, {headers: context.req ? { cookie: context.req.headers.cookie } : undefined});
+      
       const initTrendingFeed = await getData(`/posts/trending`, context.req ? { cookie: context.req.headers.cookie } : undefined);
-      // const initTrendingFeed = await getData(`/posts/trending`);
 
-      // const initFollow = await api.get('/user/follow/status', 
-      // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-      // );
-
-      // const initFollow = await getData(`/user/follow/status`, {headers: context.req ? { cookie: context.req.headers.cookie } : undefined});
       const initFollow = await getData(`/user/follow/status`, context.req ? { cookie: context.req.headers.cookie } : undefined);
-      // const initFollow = await getData(`/user/follow/status`);
 
-      // return {
-      //   props: {
-      //     initGeneral: initGeneralFeed.data.data,
-      //     initTrend: initTrendingFeed.data.data.defaultTrends,
-      //     initFollow: initFollow.data.data.followers,
-      //     token: token,
-      //     feedBtn: loadFeedBtn
-      //   }
-      // }
-      console.log("initGeneralFeed")
-      console.log(initGeneralFeed)
-      console.log("initTrendingFeed")
-      console.log(initTrendingFeed)
-      console.log("initFollow")
-      console.log(initFollow)
       return {
         props: {
           initGeneral: initGeneralFeed.data,

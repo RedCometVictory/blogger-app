@@ -244,9 +244,6 @@ export const getServerSideProps = async (context) => {
     if (context.query.slug[0] !== 'create') {
       post_id = context.query.slug[1];
 
-      // initPostInfo = await api.get(`/post/${post_id}`,
-      // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-      // );
       initPostInfo = await getData(`/post/${post_id}`, context.req ? { cookie: context.req.headers.cookie } : undefined);
     }
     return {
@@ -262,7 +259,7 @@ export const getServerSideProps = async (context) => {
         destination: `/404`,
         permanent: false,
       },
-      props: {},
+      props: { blogData: ''},
     };
   }
 };

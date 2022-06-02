@@ -150,9 +150,6 @@ export const getServerSideProps = async (context) => {
     let token = context.req.cookies.blog__token;
 
     const initProfileData = await getData('/user/my-profile', context.req ? { cookie: context.req.headers.cookie } : undefined);
-    // const initProfileData = await api.get('/user/my-profile',
-    // { headers: context.req ? { cookie: context.req.headers.cookie } : undefined}
-    // );
     return {
       props: {
         initProfile: initProfileData.data.profile,
@@ -165,10 +162,7 @@ export const getServerSideProps = async (context) => {
         destination: `/404`,
         permanent: false,
       },
-      props: {},
+      props: { initProfile: [], token: "" },
     };
-    // return {
-    //   props: { initProfile: [], token: "" }
-    // }
   }
 };
