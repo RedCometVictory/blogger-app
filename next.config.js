@@ -1,6 +1,7 @@
 // const webpack = require("webpack");
 // const {parsed:envKeys} = require("dotenv").config({path:"./.env"});
 
+// *** disable rewrites for dev
 module.exports = {
   baseUrl: process.env.DOMAIN,
   async rewrites() {
