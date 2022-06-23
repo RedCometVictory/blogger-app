@@ -1,3 +1,4 @@
+require('dotenv').config();
 import jwt from 'jsonwebtoken';
 import { compare } from 'bcryptjs';
 
@@ -27,8 +28,10 @@ function accessTokenCookieOptions() {
       // domain: NODE_ENV === 'production' ? DOMAIN : DOMAIN_LOCAL,
       // expires: new Date(Date.now() + 60*1000), //60secs
       expires: new Date(Date.now() + 7*24*60*60*1000), //7d
-      secure: NODE_ENV === 'production' ? true : false,
-      httpOnly: NODE_ENV === 'production' ? true : false,
+      secure: NODE_ENV === 'production' ? true : true,
+      httpOnly: NODE_ENV === 'production' ? true : true,
+      // secure: NODE_ENV === 'production' ? true : false,
+      // httpOnly: NODE_ENV === 'production' ? true : false,
       sameSite: 'strict',
       path: '/' // access whole app
   }
