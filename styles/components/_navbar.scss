@@ -23,6 +23,9 @@
     }
     &.right {
       @include flex(row, flex-end, center);
+      .demo-link {
+        white-space: nowrap;
+      }
     }
   }
   &__content {
@@ -37,6 +40,19 @@
     &.right {
       display: none;
       margin: 0 22px 0 0;
+    }
+    &.demo {
+      display: hidden;
+    }
+  }
+}
+
+@media (min-width: 320px) {
+  .nav {
+    &__content {
+      &.demo {
+        display: initial;
+      }
     }
   }
 }

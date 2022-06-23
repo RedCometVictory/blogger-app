@@ -113,15 +113,15 @@ const Navbar = ({openMenu, setOpenMenu}) => {
             </h3>
             </>
           ) : (<>
-            <h3 className="nav__content right">
+            <h3 className="nav__content right demo">
               {/* <Link passHref href={"/login"}> */}
               <>
-                <div className="" onClick={(e) => demoSigninHandler(e)}>
+                <div className="demo-link" onClick={(e) => demoSigninHandler(e)}>
                   Try Demo
                 </div>
               </>
             </h3>
-            <h3 className="nav__content right">
+            <h3 className="nav__content right demo">
               <Link passHref href={"/login"}>
                 <div className="">
                   Login
