@@ -4,17 +4,17 @@
 // *** disable rewrites for dev
 module.exports = {
   baseUrl: process.env.DOMAIN,
-  async rewrites() {
-    return [
-      {
-        // source: '/api/:path*',
-        source: '/api/:path*',
-        // destination: `${process.env.DOMAIN}/api/:path*`,
-        destination: `${process.env.DOMAIN}/:path*`,
-        // destination: `/:path*`,
-      }
-    ]
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       // source: '/api/:path*',
+  //       source: '/api/:path*',
+  //       // destination: `${process.env.DOMAIN}/api/:path*`,
+  //       destination: `${process.env.DOMAIN}/:path*`,
+  //       // destination: `/:path*`,
+  //     }
+  //   ]
+  // },
   reactStrictMode: true,
   images: {
     domains: ['res.cloudinary.com'],
