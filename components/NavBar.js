@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
