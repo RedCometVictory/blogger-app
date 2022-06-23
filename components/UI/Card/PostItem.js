@@ -28,7 +28,9 @@ const PostItem = ({post}) => {
                   passHref
                   href={`/posts/${post?._id}`}
                 >
-                  {post.title}
+                  <a>
+                    {post.title}
+                  </a>
                 </Link>
               </div>
             </h2>
