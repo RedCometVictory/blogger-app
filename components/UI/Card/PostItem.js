@@ -26,7 +26,9 @@ const PostItem = ({post}) => {
               <div className="post__title-container">
                 <Link
                   passHref
-                  href={`/posts/${post?._id}`}
+                  // href={`/posts/${post?._id}`}
+                  href={`/posts?slug=${post?._id}`}
+                  as={`/posts/${post?._id}`}
                 >
                   <a>
                     {post.title}
