@@ -9,8 +9,9 @@ module.exports = {
       {
         // source: '/api/:path*',
         // destination: `${process.env.DOMAIN}/api/:path*`,
-        source: '/:path*',
-        destination: `${process.env.DOMAIN}/:path*`,
+        // destination: `${process.env.DOMAIN}/:path*`,
+        source: '/api/:path*',
+        destination: `/:path*`,
       }
     ]
   },
