@@ -32,7 +32,6 @@ export const StoreProvider = ({ reducer, initialState, children }) => {
 
   const checkUserLoggedIn = async () => {
     try {
-      // const res = await fetch(`http://localhost:3000/api/auth/checkAuth`);
       const res = await fetch(`http://process.env.DOMAIN/api/auth/checkAuth`);
       const data = await res.json();
       if (res.ok) {
