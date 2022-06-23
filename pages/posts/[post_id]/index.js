@@ -10,10 +10,10 @@ import api from "@/utils/api";
 import { getData } from "@/utils/fetchData";
 import { FaRegThumbsUp, FaRegThumbsDown } from "react-icons/fa";
 import { toast } from "react-toastify";
-import Comment from '../../components/comments/Comment';
-import CommentForm from '../../components/comments/CommentForm';
-import TrendAside from "../../components/TrendAside";
-import Spinner from "../../components/Spinner";
+import Comment from '../../../components/comments/Comment';
+import CommentForm from '../../../components/comments/CommentForm';
+import TrendAside from "../../../components/TrendAside";
+import Spinner from "../../../components/Spinner";
 
 const Blog = ({ blogData, token }) => {
   const { state, dispatch } = useAppContext();
