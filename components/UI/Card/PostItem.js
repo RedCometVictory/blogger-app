@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import { FaRegThumbsUp, FaRegThumbsDown, FaRegCommentDots } from "react-icons/fa";
+import { FaRegThumbsUp, FaRegCommentDots } from "react-icons/fa";
 
 const PostItem = ({post}) => {
   let router = useRouter();
@@ -43,13 +43,13 @@ const PostItem = ({post}) => {
                     passHref
                     href={`/profile/${post?.user}`}
                   >
-                    <Image
-                      className="post__img-avatar"
-                      src={post.avatarImage}
-                      alt="avatar"
-                      placeholder={blur}
-                      layout="fill"
-                    />
+                    <a className="post__img-avatar">
+                      <Image
+                        src={post.avatarImage}
+                        alt="avatar"
+                        layout="fill"
+                      />
+                    </a>
                   </Link>
                 )}
               </div>

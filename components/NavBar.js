@@ -30,6 +30,26 @@ const Navbar = ({openMenu, setOpenMenu}) => {
     }
   };
 
+  const demoSigninHandler = async (e) => {
+    e.preventDefault();
+    let formData = {
+      email: process.env.NEXT_PUBLIC_DEMO_EMAIL,
+      password: process.env.NEXT_PUBLIC_DEMO_PASSWORD
+    }
+    
+    // console.log("FE - formData")
+    // console.log(formData)
+
+    try {
+      let res = await api.post('/auth/demo', formData);
+      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.data.user });
+      router.push('/');
+    } catch (err) {
+      console.error(err);
+      toast.error('Invalid password or email. Try again.');
+    }
+  };
+
   const ThemeSelectModal = ({show, showHandler}) => {
     let activeClass = show ? 'active' : '';
     return (
@@ -93,7 +113,15 @@ const Navbar = ({openMenu, setOpenMenu}) => {
               </Link>
             </h3>
             </>
-          ) : (
+          ) : (<>
+            <h3 className="nav__content right">
+              {/* <Link passHref href={"/login"}> */}
+              <>
+                <div className="" onClick={(e) => demoSigninHandler(e)}>
+                  Try Demo
+                </div>
+              </>
+            </h3>
             <h3 className="nav__content right">
               <Link passHref href={"/login"}>
                 <div className="">
@@ -101,7 +129,7 @@ const Navbar = ({openMenu, setOpenMenu}) => {
                 </div>
               </Link>
             </h3>
-          )}
+          </>)}
         </div>
       </div>
     </nav>

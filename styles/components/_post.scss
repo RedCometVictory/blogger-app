@@ -53,14 +53,12 @@
     }
   }
   &__img-avatar {
-    //*** !important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill
+    display: flex;
+    position: relative;
     cursor: pointer;
     object-fit: contain;
-    width: 100% !important;
-    position: relative !important;
-    height: unset !important;
-    min-width: unset !important;
-    max-width: 50px !important;
+    height: 50px;
+    width: 50px;
   }
   &__user-name {
     cursor: pointer;

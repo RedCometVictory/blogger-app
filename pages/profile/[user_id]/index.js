@@ -157,7 +157,7 @@ const PublicProfile = ({publicProfile, token}) => {
             <h2>User Profile</h2>
             <div className="blog__user-info">
               {profileData.user.avatarImage && (
-                <div className="blog__image-avatar">
+                <div className="blog__image-avatar uncursor">
                   <Image
                     className={"blog__img"}
                     src={profileData.user.avatarImage}
@@ -266,13 +266,14 @@ const PublicProfile = ({publicProfile, token}) => {
                   passHref
                   href={`/profile`}
                 >
-                  <Image
-                    className={"blog__img"}
-                    src={profileData?.user?.avatarImage}
-                    fill="layout"
-                    alt="user avatar"
-                    layout="fill"
-                  />
+                  <a className="blog__img-to-profile">
+                    <Image
+                      src={profileData?.user?.avatarImage}
+                      fill="layout"
+                      alt="user avatar"
+                      layout="fill"
+                    />
+                  </a>
                 </Link>
               </div>
             )}

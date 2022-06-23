@@ -1,5 +1,4 @@
 import NavItem from "./NavItem";
-import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { FaHome } from "react-icons/fa";
 import { MdInfo, MdPerson, MdExitToApp } from "react-icons/md";
@@ -39,12 +38,14 @@ const AsideNav = ({openMenu}) => {
           icon={<MdInfo className={"asideIcon"} size={50} />}
           text={"About"}
         />
-        <NavItem
-          className={`aside__menu-item ${openMenu ? "active" : ""}`}
-          path={"/profile"}
-          icon={<MdPerson className={"asideIcon"} size={50} />}
-          text={"Profile"}
-        />
+        {state?.auth?.isAuthenticated && (
+          <NavItem
+            className={`aside__menu-item ${openMenu ? "active" : ""}`}
+            path={"/profile"}
+            icon={<MdPerson className={"asideIcon"} size={50} />}
+            text={"Profile"}
+          />
+        )}
         {state?.auth?.isAuthenticated ? (
           <NavItem
             className={`aside__menu-item ${openMenu ? "active" : ""}`}

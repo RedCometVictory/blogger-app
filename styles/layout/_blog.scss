@@ -25,9 +25,11 @@
     background-color: var(--bg-primary);
     border-radius: 50%;
     @include flex(row, center, center);
-    
     > span {
       position: unset !important;
+    }
+    &.uncursor {
+      cursor: default;
     }
   }
   &__img {
@@ -38,6 +40,14 @@
     height: unset !important;
     max-width: 800px !important;
     z-index: 50;
+  }
+  &__img-to-profile {
+    display: flex;
+    position: relative;
+    cursor: pointer;
+    object-fit: contain;
+    height: 50px;
+    width: 50px;
   }
   &__img-avatar {
     // ***!important used to make Image tag images more flexible/responsive, please do not change! Ensure Image tag width and height are commented out and that layout = fill

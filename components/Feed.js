@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from "next/router";
 import { useAppContext } from 'context/Store';
 import Link from 'next/link';
@@ -8,13 +8,13 @@ import PostItem from "./UI/Card/PostItem";
 const Feed = ({feedBtn}) => {
   const router = useRouter();
   const { state, dispatch } = useAppContext();
-  const { auth, profile, post } = state;
+  const { auth, post } = state;
   const [feedPosts, setFeedPosts] = useState(post.posts || []);
   // current Page
   const [pageNumber, setPageNumber] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(12);
+  // const [itemsPerPage, setItemsPerPage] = useState(12);
   const [category, setCategory] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [addingPosts, setAddingPosts] = useState(false);
   const [allPosts, setAllPosts] = useState(false);
 
